@@ -30,8 +30,7 @@ function App() {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
-            <PrivateRoute path="/" component={Layout} isAuthenticated={e => isAuthenticated()} />
-            <Redirect from="/" to="/login" />
+            {isAuthenticated() ? <PrivateRoute path="/" component={Layout} isAuthenticated={e => isAuthenticated()} /> :  <Redirect from="/" to="/login" />}
           </Switch>
         {/* <Footer /> */}
       </Router>

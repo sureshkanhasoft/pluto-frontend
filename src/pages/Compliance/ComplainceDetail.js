@@ -15,7 +15,7 @@ const ComplainceDetail = () => {
             <Box display="flex">
                 <Box flexGrow={1} className="image-preview-container">
                     <span className="image-text-center">Click on a document name to preview it.</span>
-                    <img src="" />
+                    <img src="" alt="details" />
                 </Box>
                 <Box className="right-box-inner">
                     <Box >

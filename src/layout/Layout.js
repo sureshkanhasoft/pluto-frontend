@@ -1,14 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route,Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 // import {Routes} from './'
-import BrowserShift from '../pages/BrowserShift/BrowserShift';
-import ShiftsDetail from '../pages/BrowserShift/ShiftsDetail';
-import ComplainceDetail from '../pages/Compliance/ComplainceDetail';
-import Compliance from '../pages/Compliance/Compliance';
-import MyShift from '../pages/MyShift/MyShift';
-import Profile from '../pages/Profile/Profile';
+
 import Routes from '../routes';
 
 const Layout = ({match}) => {
@@ -28,6 +23,7 @@ const Layout = ({match}) => {
                         );
                     })
                 }
+                <Redirect from="/" to="/shifts" />
             </Switch>
         </div>
         <Footer />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Grid, Card, TextField, Button, makeStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
@@ -87,11 +87,12 @@ const Login = () => {
                     <img src={logo} alt="" />
                 </div>
         <Card className={classes.loginCard}>
-            <form className={classes.form} onSubmit={(e) => loginSubmit(e)}>
+            <form className={classes.form} onSubmit={(e) => loginSubmit(e)} autoComplete="off">
                 <TextField
                     id="email"
                     name="email"
                     label="Email"
+                    autoComplete="off"
                     variant="outlined"
                     onChange={handleChange}
                     InputProps={{
@@ -104,8 +105,9 @@ const Login = () => {
                     name="password"
                     label="Password"
                     variant="outlined"
-                    type="password"
+                    autoComplete="new-password"
                     onChange={handleChange}
+                    type="password"
                     InputProps={{
                         startAdornment: <LockIcon />
                     }}
@@ -114,7 +116,7 @@ const Login = () => {
                 <div className={classes.forgotCont}>
                     <Link to="#" className={classes.forgotText}>Forgotten your password?</Link>
                 </div>
-                <Button variant="contained" color="primary" className={classes.loginBtn} type="submit">
+                <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
                     login
                 </Button>
             </form>

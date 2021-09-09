@@ -1,4 +1,4 @@
-import BrowserShift from "./pages/BrowserShift/BrowserShift";
+import Shifts from "./pages/BrowserShift/Shifts";
 import ShiftsDetail from "./pages/BrowserShift/ShiftsDetail";
 import ComplainceDetail from "./pages/Compliance/ComplainceDetail";
 import Compliance from "./pages/Compliance/Compliance";
@@ -9,12 +9,7 @@ const Routes = [
     {
         name:"Shift",
         path:"shifts",
-        component:BrowserShift,
-    },
-    {
-        name:"Shift detail",
-        path:"shift-details",
-        component:ShiftsDetail
+        component:Shifts,
     },
     {
         name:"My Shifts",
