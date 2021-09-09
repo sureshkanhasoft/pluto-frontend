@@ -1,5 +1,4 @@
 import Shifts from "./pages/BrowserShift/Shifts";
-import ShiftsDetail from "./pages/BrowserShift/ShiftsDetail";
 import ComplainceDetail from "./pages/Compliance/ComplainceDetail";
 import Compliance from "./pages/Compliance/Compliance";
 import MyShift from "./pages/MyShift/MyShift";

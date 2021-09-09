@@ -1,14 +1,16 @@
 import { apiClient } from '../../../config/apiClient';
 import history from '../../../utils/HistoryUtils';
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR, 
+import { 
+    LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR, 
+    REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_ERROR, 
     // FORGOT_SUCCESS, FORGOT_ERROR, FORGOT_REQUEST ,
-    // CHANGE_PASSWORD_SUCCESS , CHANGE_PASSWORD_REQUEST,CHANGE_PASSWORD_ERROR
+    
 } from '../actiontypes';
 
 export const login = (data) => {
     return async(dispatch) => {
         dispatch(getLoginRequest())
-        await apiClient(true).post(`api/superadmin/signin`,data)
+        await apiClient(true).post(`api/signee/signin`,data)
         .then(response => {
             console.log('response: ', response);
             const data = response.data
@@ -42,6 +44,50 @@ const getLoginSuccess = data => {
 const getLoginFailure = error => {
     return {
         type: LOGIN_ERROR,
+        payload: error
+    }
+}
+
+
+// ---------------------------
+
+export const registerUser = (data) => {
+    return async(dispatch) => {
+        dispatch(registerRequest())
+        await apiClient(true).post(`api/signee/signup`,data)
+        .then(response => {
+            console.log('response: ', response);
+            const data = response.data
+            if (data && data.status === true) {
+                dispatch(registerSuccess(data))
+                setTimeout(() => {
+                    history.push('./shift')
+                }, 2000);
+            } else {
+                dispatch(registerFailure(data))
+            }
+        }).catch(error => {
+            dispatch(registerFailure(error.message))
+        })
+    }
+}
+
+const registerRequest = () => {
+    return {
+        type: REGISTER_REQUEST
+    }
+}
+
+const registerSuccess = data => {
+    return {
+        type: REGISTER_SUCCESS,
+        payload: data
+    }
+}
+
+const registerFailure = error => {
+    return {
+        type: REGISTER_ERROR,
         payload: error
     }
 }
@@ -89,9 +135,9 @@ const getLoginFailure = error => {
 
 // // ------------------------------------
 
-// export const changepassword = ({ decode_id, password, confirm_password }) => {
+// export const resetPassword = ({ decode_id, password, confirm_password }) => {
 //     return (dispatch) => {
-//         dispatch(getChangePasswordRequest());
+//         dispatch(resetPasswordRequest());
 //         axios.post(`${Config.API_URL}api/reset-password`, {
 //             headers: {
 //                 'content-type': 'application/json',
@@ -102,36 +148,36 @@ const getLoginFailure = error => {
 //         }).then(response => {
 //             const data = response.data
 //             if (data && data.status === true) {
-//                 dispatch(getChangePasswordSuccess(data));
+//                 dispatch(resetPasswordSuccess(data));
 //                 setTimeout(() => {
 //                     history.push('./login')
 //                 }, 3000);
 //             } else {
-//                 dispatch(getChangePasswordFailure(data));
+//                 dispatch(resetPasswordFailure(data));
 //             }
 //         }).catch(error => {
-//             dispatch(getChangePasswordFailure(error.message));
+//             dispatch(resetPasswordFailure(error.message));
 //         })
 //     }
 // }
 
 
-// export const getChangePasswordRequest = () => {
+// export const resetPasswordRequest = () => {
 //     return {
-//         type: CHANGE_PASSWORD_REQUEST
+//         type: RESET_PASSWORD_REQUEST
 //     }
 // }
 
-// export const getChangePasswordSuccess = data => {
+// export const resetPasswordSuccess = data => {
 //     return {
-//         type: CHANGE_PASSWORD_SUCCESS,
+//         type: RESET_PASSWORD_SUCCESS,
 //         payload: data
 //     }
 // }
 
-// export const getChangePasswordFailure = error => {
+// export const resetPasswordFailure = error => {
 //     return {
-//         type: CHANGE_PASSWORD_ERROR,
+//         type: RESET_PASSWORD_ERROR,
 //         payload: error
 //     }
 // }

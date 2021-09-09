@@ -116,7 +116,6 @@ const Preferences = () => {
     })
     const handleChangeCheckbox = (event) => {
         const isChecked = event.target.checked
-        console.log('isChecked: ', isChecked);
         if(isChecked) {
             setData({ ...data, [event.target.name]: event.target.value });
         } else {
@@ -125,7 +124,6 @@ const Preferences = () => {
     };
 
     const handleChange = (event) => {
-        console.log('event: ', event.target.value);
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
