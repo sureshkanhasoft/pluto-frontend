@@ -12,6 +12,7 @@ import { Link, NavLink  } from 'react-router-dom';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import history from '../../utils/HistoryUtils';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -70,6 +71,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
     const classes = useStyles();
+
+    const logout = () => {
+        history.push('/login')
+    }
     return (
         <AppBar position="fixed">
             <Container maxWidth="lg">
@@ -92,7 +97,7 @@ const Navbar = () => {
                         </div>
                         <Typography variant="subtitle1">User 1</Typography>
                     </Link>
-                    <Button color="inherit">
+                    <Button color="inherit" onClick={logout}>
                         <ExitToAppIcon />
                     </Button>
                 </Toolbar>

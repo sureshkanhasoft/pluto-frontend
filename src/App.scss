@@ -24,11 +24,12 @@ html{
 }
 
 .main-page{
-    padding-top: 80px;
+    
     height: 100%;
     display: flex;
     flex-direction: column;
     .main-page-body{
+        padding-top: 80px;
         flex: auto;
     }
 }
@@ -101,6 +102,35 @@ a{
 .pb-32{
     padding-bottom: 32px;
 }
+
+// $sizes:12;
+// @mixin margin-classes{
+//     @for $var from 0 to $sizes {
+//         $margin: $var * 0.25rem;
+//         .m-#{$var} {margin: $margin;}
+//         .ml-#{$var} {margin-left: $margin;}
+//         .mr-#{$var} {margin-right: $margin;}
+//         .mt-#{$var} {margin-top: $margin;}
+//         .mb-#{$var} {margin-bottom: $margin;}
+//     }
+// }
+
+// @include margin-classes;
+
+// @mixin padding-classes{
+//     @for $var from 0 to $sizes {
+//         $padding: $var * 0.25rem;
+//         .p-#{$var} {margin: $padding;}
+//         .pl-#{$var} {margin-left: $padding;}
+//         .pr-#{$var} {margin-right: $padding;}
+//         .pt-#{$var} {margin-top: $padding;}
+//         .pb-#{$var} {margin-bottom: $padding;}
+//     }
+// }
+
+// @include padding-classes;
+
+
 .text-center{
     text-align: center;
 }
