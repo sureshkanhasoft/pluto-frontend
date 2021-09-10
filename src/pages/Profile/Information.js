@@ -15,6 +15,7 @@ import ProfileUpdateInfo from "../../components/ProfileUpdateInfo/ProfileUpdateI
 import EditIcon from '@material-ui/icons/Edit';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../../store/action/profile/profileAction';
+import {changePassword} from '../../store/action'
 // import WarningIcon from '@material-ui/icons/Warning';
 
 const useStyle = makeStyles(() => ({
@@ -119,10 +120,20 @@ const Information = () => {
         city:"",
         postcode:""
     })
+
+    const [pass, setPass] = useState({
+        password: "",
+        confirm_password: "",
+        old_password: "",
+    })
     const handleChange = (e) => {
         e.preventDefault();
         setData({ ...data, [e.target.name]: e.target.value })
 
+    }
+    const handlePassChange = (event) => {
+        event.preventDefault();
+        setPass({...pass, [event.target.name]: event.target.value})
     }
     useEffect(() => {
         setData(dataItem)
@@ -131,6 +142,12 @@ const Information = () => {
     useEffect(() => {
         dispatch(getProfile())
     }, [])
+
+    const changePasswordSubmit = (e) => {
+        e.preventDefault();
+        console.log('dsdsf', pass)
+        dispatch(changePassword(pass))
+    }
 
     return (
         <>
@@ -317,76 +334,76 @@ const Information = () => {
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
                     <h1 className="mb-16">Change Password</h1>
-                    <Grid container spacing={2} >
-                        <Grid item xs={12} md={4}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContainer}>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="OLD PASSWORD"
-                                            id="oldPssword"
-                                            placeholder="xxxxxxxx"
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="NEW PASSWORD"
-                                            id="newPassword"
-                                            placeholder="xxxxxxxx"
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="CONFIRM NEW PASSWORD"
-                                            id="conPassword"
-                                            placeholder="xxxxxxxx"
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                        />
-                                    </div>
-                                </CardContent>
-                            </Card>
+                    <form onSubmit={(e) => changePasswordSubmit(e)}>
+                        <Grid container spacing={2} >
+                            <Grid item xs={12} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContainer}>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="OLD PASSWORD"
+                                                id="old_password"
+                                                placeholder="xxxxxxxx"
+                                                name="old_password"
+                                                type="password"
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                onChange={handlePassChange}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="NEW PASSWORD"
+                                                id="password"
+                                                name="password"
+                                                placeholder="xxxxxxxx"
+                                                type="password"
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                onChange={handlePassChange}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="CONFIRM NEW PASSWORD"
+                                                id="confirm_password"
+                                                name="confirm_password"
+                                                placeholder="xxxxxxxx"
+                                                type="password"
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                onChange={handlePassChange}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                            />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Box className="mt-24">
-                        <Button variant="contained" className={classes.btnSecondary}>Update</Button>
-                        <Button variant="outlined" className={classes.btnCancel}>Cancel</Button>
-                    </Box>
+                        <Box className="mt-24">
+                            <Button type="submit" variant="contained" className={classes.btnSecondary} formNoValidate>Update</Button>
+                            <Button variant="outlined" className={classes.btnCancel}>Cancel</Button>
+                        </Box>
+                    </form>
                 </Container>
             </section>
-
-            {/* <section className="pt-16 pb-32">
-                <Container maxWidth="lg">
-                    <h1 className="mb-16">Delete profile</h1>
-                    <Box display="flex" alignItems="center" className={classes.deleteBox}>
-                        <WarningIcon className={classes.warningIcon} />
-                        <p className={classes.warningText}>If you wish to delete your profile, please bear in mind that all your historical data will be deleted from our servers and you won’t able to access it anymore.</p>
-                        <Button variant="contained" className={classes.deleteBtn}>I want to delete my profile</Button>
-                    </Box>
-                </Container>
-            </section> */}
         </>
     )
 }

@@ -18,5 +18,4 @@ export {
 export {
     getPreference,
     createPreference,
-    updatePreference
 } from "./preference/preferenceAction"

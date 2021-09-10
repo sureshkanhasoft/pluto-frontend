@@ -8,9 +8,6 @@ const initialState = {
 
     createPreferenceErrors: [],
     createPreferenceSuccess:[],
-
-    updatePreferenceErrors: [],
-    updatePreferenceSuccess:[],
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -53,27 +50,6 @@ const profileReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 createPreferenceErrors: action.payload
-            })
-
-        // --------------
-
-        case actionTypes.UPDATE_PREFERENCE_REQUEST:
-            return updateObject(state, {
-                loading: true,
-                updatePreferenceSuccess:"",
-                updatePreferenceErrors:""
-            })
-
-        case actionTypes.UPDATE_PREFERENCE_SUCCESS:
-            return updateObject(state, {
-                loading: false,
-                updatePreferenceSuccess: action.payload
-            })
-
-        case actionTypes.UPDATE_PREFERENCE_ERROR:
-            return updateObject(state, {
-                loading: false,
-                updatePreferenceErrors: action.payload
             })
         
 

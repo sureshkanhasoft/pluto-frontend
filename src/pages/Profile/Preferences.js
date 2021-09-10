@@ -16,6 +16,8 @@ import {
 } from '@material-ui/core';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createPreference } from '../../store/action';
 
 const useStyle = makeStyles(() => ({
     mainContainer:{
@@ -96,6 +98,7 @@ const dataList = [
 
 const Preferences = () => {
     const classes = useStyle();
+    const dispatch = useDispatch();
     const [data, setData] = useState({
         monday_day:0,
         monday_night:0,
@@ -111,8 +114,8 @@ const Preferences = () => {
         saturday_night:0,
         sunday_day:0,
         sunday_night:0,
-        travel:"",
-        shift:""
+        is_travel:"",
+        no_of_shift:""
     })
     const handleChangeCheckbox = (event) => {
         const isChecked = event.target.checked
@@ -129,13 +132,13 @@ const Preferences = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('data', data)
+        // console.log('data', data)
+        dispatch(createPreference(data))
     }
    
     return (
         <>
             <ProfileUpdateInfo />
-
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
                     <h1 className="mb-16">Preference</h1>
@@ -175,9 +178,9 @@ const Preferences = () => {
                                     <FormControl variant="outlined" style={{width:"100%"}}>
                                         {/* <InputLabel>Shift Type</InputLabel> */}
                                         <Select
-                                            value={data.shift}
+                                            value={data.no_of_shift}
                                             // label=""
-                                            name="shift"
+                                            name="no_of_shift"
                                             onChange={handleChange}
                                             className="w-100"
                                         >
@@ -196,9 +199,9 @@ const Preferences = () => {
                                     <FormControl component="fieldset">
                                         <h3 className="f-900 mb-8 mt-24">Would you travel for work?</h3>
                                         {/* <FormLabel component="legend">Would you travel for work?</FormLabel> */}
-                                        <RadioGroup name="travel" value={data.travel} onChange={handleChange} className={classes.radioGroup}>
-                                            <FormControlLabel value="yes" control={<Radio color="primary" />} label="Yes" />
-                                            <FormControlLabel value="no" control={<Radio color="primary" />} label="No" />
+                                        <RadioGroup name="is_travel" value={data.is_travel} onChange={handleChange} className={classes.radioGroup}>
+                                            <FormControlLabel value="1" control={<Radio color="primary" />} label="Yes" />
+                                            <FormControlLabel value="0" control={<Radio color="primary" />} label="No" />
                                         </RadioGroup>
                                     </FormControl>
                                 </Grid>
@@ -209,8 +212,6 @@ const Preferences = () => {
                                     Update
                                 </Button>
                             </Box>
-                            
-
                         </form>
                     </div>
                 </Container>

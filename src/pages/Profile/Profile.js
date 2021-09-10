@@ -4,7 +4,7 @@ import {
     Grid,
     makeStyles
 } from '@material-ui/core';
-import { NavLink, Switch, Route,useRouteMatch } from 'react-router-dom';
+import { NavLink, Switch, Route,useRouteMatch,Redirect } from 'react-router-dom';
 import Information from "./Information"
 import Preferences from './Preferences';
 
@@ -56,12 +56,12 @@ const Profile = () => {
                         <NavLink activeClassName="active" to={`${url}/information`} className={classes.navLink}>Personal Information</NavLink>
                         <NavLink activeClassName="active" to={`${url}/preferences`} className={classes.navLink}>Preferences</NavLink>
                     </Grid>
-
                 </Container>
             </nav>
             <Switch>
                 <Route exact path={`${path}/information`} component={Information} />
-                <Route path={`${path}/preferences`} component={Preferences}/>
+                <Route exact path={`${path}/preferences`} component={Preferences}/>
+                <Redirect from="/" to={`${path}/information`}/>
             </Switch>
         </>
     )

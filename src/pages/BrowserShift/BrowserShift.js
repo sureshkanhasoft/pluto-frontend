@@ -143,7 +143,7 @@ const BrowserShift = () => {
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                     getContentAnchorEl={null}
-                                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                                     className="filter-menuItem-container"
                                 >
                                     {
