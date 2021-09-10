@@ -13,6 +13,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import history from '../../utils/HistoryUtils';
+import { apiClient } from '../../config/apiClient';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -73,8 +74,18 @@ const Navbar = () => {
     const classes = useStyles();
 
     const logout = () => {
-        history.push('/login')
+        apiClient(true).get(`api/signee/logout`)
+        .then(response => {
+            if(response) {
+                localStorage.clear();
+                history.push('/login')
+            }
+          
+        }).catch(error => {
+          console.log("error.message", error.message);
+        });
     }
+
     return (
         <AppBar position="fixed">
             <Container maxWidth="lg">

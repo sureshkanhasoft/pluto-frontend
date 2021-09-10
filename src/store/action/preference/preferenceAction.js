@@ -46,7 +46,7 @@ export const createPreference = (data) => {
             if (data.status === true) {
                 dispatch(createPreferenceSuccess(data))
                 setTimeout(() => {
-                    dispatch(getProfile())
+                    dispatch(getPreference())
                 }, 2000);
             } else {
                 dispatch(createPreferenceError(data))
@@ -87,7 +87,7 @@ export const updatePreference = (data) => {
             if (data.status === true) {
                 dispatch(updatePreferenceSuccess(data))
                 setTimeout(() => {
-                    dispatch(getProfile())
+                    dispatch(getPreference())
                 }, 2000);
             } else {
                 dispatch(updatePreferenceError(data))

@@ -1,6 +1,6 @@
 import { apiClient } from "../../../config/apiClient";
 import { 
-    CHANGE_PASS_ERROR, CHANGE_PASS_REQUEST, CHANGE_PASS_SUCCESS, 
+    CHANGE_PASSWORD_ERROR, CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS,
     GET_PROFILE_ERROR, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, 
     UPDATE_PROFILE_ERROR, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS 
 } from "../actiontypes";
@@ -83,12 +83,11 @@ export const updateProfileError = (error) => {
 export const changePassword = (data) => {
     return async(dispatch) =>{
         dispatch(changePasswordRequest())
-        await apiClient(true).post(`api/superadmin/change-password`, data)
+        await apiClient(true).post(`api/signee/signee-change-password`, data)
         .then(response => {
             const data = response.data
             if (data.status === true) {
                 dispatch(changePasswordSuccess(data))
-                dispatch(putNotify('data success'))
             } else {
                 dispatch(changePasswordError(data))
             }

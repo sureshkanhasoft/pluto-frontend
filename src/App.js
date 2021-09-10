@@ -6,11 +6,12 @@ import Login from "./pages/Auth/Login";
 import Layout from "./layout/Layout";
 import PrivateRoute from "./config/PrivateRoute";
 import history from "./utils/HistoryUtils";
+import ForgottenPassword from "./pages/Auth/ForgottenPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
 
 function App() {
   const isAuthenticated = () => {
-    // const token = localStorage.getItem('token');
-    const token = true;
+    const token = localStorage.getItem('token');
     try {
       if (token) {
         return true;
@@ -30,7 +31,11 @@ function App() {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
-            {isAuthenticated() ? <PrivateRoute path="/" component={Layout} isAuthenticated={e => isAuthenticated()} /> :  <Redirect from="/" to="/login" />}
+            <Route exact path="/forgotten-password" component={ForgottenPassword} />
+            <Route exact path="/reset-password" component={ResetPassword} />
+            {/* .{isAuthenticated() ? <PrivateRoute path="/" component={Layout} isAuthenticated={e => isAuthenticated()} /> :  <Redirect from="/" to="/login" />} */}
+            <PrivateRoute path="/" component={Layout} isAuthenticated={e => isAuthenticated()} /> 
+            <Redirect from="/" to="/login" />
           </Switch>
         {/* <Footer /> */}
       </Router>

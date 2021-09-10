@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
-import { Grid, Card, TextField, Button, makeStyles } from '@material-ui/core';
+import { 
+    Grid, Card, TextField, Button, makeStyles,
+    FormControl,Select,MenuItem, InputLabel
+ } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
 import LockIcon from '@material-ui/icons/Lock';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/action/auth/authAction';
 import logo from '../../assets/images/logo.svg'
+import { getOrganization } from '../../store/action';
+import { useEffect } from 'react';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -63,10 +68,12 @@ const useStyle = makeStyles({
 const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
+    const {getOrglist , loding} = useSelector(state => state.organization)
 
     const [data, setData] = useState({
         email: "",
-        password: ""
+        password: "",
+        organization_id:""
     })
 
     const handleChange = (event) => {
@@ -78,9 +85,9 @@ const Login = () => {
         dispatch(login(data))
     }
    
-    // useEffect(() => {
-    //     dispatch(login(data))
-    // },[])
+    useEffect(() => {
+        dispatch(getOrganization())
+    },[])
     return (
         <Grid className={classes.loginContainer}>
             <div className="mb-16">
@@ -113,8 +120,29 @@ const Login = () => {
                     }}
                     className={classes.textField}
                 />
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel>Select Organization</InputLabel>
+                    <Select
+                        value={data.organization_id}
+                        label="Select Organization"
+                        onChange={handleChange}
+                        name="organization_id"
+                    >
+                        <MenuItem value="">
+                            Select a shift time
+                        </MenuItem>
+                        {
+                            getOrglist?.data && getOrglist?.data.map((list, index) => {
+                                return (
+                                    <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
+                                )
+                            })
+                        }
+                    </Select>
+                </FormControl>
                 <div className={classes.forgotCont}>
-                    <Link to="#" className={classes.forgotText}>Forgotten your password?</Link>
+                    <Link to="forgotten-password" className={classes.forgotText}>Forgotten your password?</Link>
                 </div>
                 <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
                     login

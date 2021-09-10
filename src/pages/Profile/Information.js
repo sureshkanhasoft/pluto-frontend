@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Container,
     Grid,
@@ -13,6 +13,8 @@ import {
 
 import ProfileUpdateInfo from "../../components/ProfileUpdateInfo/ProfileUpdateInfo";
 import EditIcon from '@material-ui/icons/Edit';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfile } from '../../store/action/profile/profileAction';
 // import WarningIcon from '@material-ui/icons/Warning';
 
 const useStyle = makeStyles(() => ({
@@ -103,22 +105,33 @@ const useStyle = makeStyles(() => ({
 
 const Information = () => {
     const classes = useStyle();
+    const dispatch = useDispatch()
 
-    const [profile, setProfile] = useState({
-        email: "davidwarner@gmail.com",
-        firstname: "David",
-        lastname: "Warner",
-        number: "990000000",
-        address1: "Postal code in Cambridge, England",
-        address2: "Postal code in Cambridge, England",
-        city: "Cambridge",
-        postcode: "CB10BX"
+    const {getProfileList:{data:dataItem}, loading} = useSelector(state => state.profile)
+
+    const [data, setData] = useState({
+        first_name:"",
+        last_name:"",
+        email:"",
+        contact_number:"",
+        address_line_1:"",
+        address_line_2:"",
+        city:"",
+        postcode:""
     })
     const handleChange = (e) => {
         e.preventDefault();
-        setProfile({ ...profile, [e.target.name]: e.target.value })
+        setData({ ...data, [e.target.name]: e.target.value })
 
     }
+    useEffect(() => {
+        setData(dataItem)
+    }, [dataItem])
+
+    useEffect(() => {
+        dispatch(getProfile())
+    }, [])
+
     return (
         <>
             <ProfileUpdateInfo />
@@ -139,8 +152,8 @@ const Information = () => {
                                         <TextField
                                             label="EMAIL"
                                             fullWidth
-                                            value={profile.email}
-                                            // value="davidwarner@gmail.com"
+                                            value={data?.email ? data?.email :""}
+                                            placeholder="-"
                                             name="email"
                                             onChange={handleChange}
                                             InputLabelProps={{
@@ -149,16 +162,18 @@ const Information = () => {
                                             id="email"
                                             className={classes.textFiled}
                                             InputProps={{
-                                                endAdornment: <EditIcon />
+                                                // endAdornment: <EditIcon />,
+                                                readOnly: true,
                                             }}
                                         />
                                     </div>
                                     <div className="form-field">
                                         <TextField
-                                            label="LAST NAME"
-                                            id="lastName"
-                                            name="lastname"
-                                            value={profile.lastname}
+                                            label="FIRST NAME"
+                                            id="first_name"
+                                            name="first_name"
+                                            value={data?.first_name ? data?.first_name : ""}
+                                            placeholder="-"
                                             // value="Warner"
                                             onChange={handleChange}
                                             fullWidth
@@ -173,11 +188,12 @@ const Information = () => {
                                     </div>
                                     <div className="form-field">
                                         <TextField
-                                            label="FIRST NAME"
-                                            id="firstName"
-                                            name="firstname"
+                                            label="LAST NAME"
+                                            id="last_name"
+                                            name="last_name"
                                             // value="David"
-                                            value={profile.firstname}
+                                            value={data?.last_name ? data?.last_name : ""}
+                                            placeholder="-"
                                             onChange={handleChange}
                                             fullWidth
                                             InputLabelProps={{
@@ -192,10 +208,11 @@ const Information = () => {
                                     <div className="form-field">
                                         <TextField
                                             label="PHONE NUMBER"
-                                            id="phoneNumber"
-                                            name="number"
+                                            id="contact_number"
+                                            name="contact_number"
                                             // value="99000000"
-                                            value={profile.number}
+                                            value={data?.contact_number ? data?.contact_number :""}
+                                            placeholder="-"
                                             onChange={handleChange}
                                             fullWidth
                                             InputLabelProps={{
@@ -216,9 +233,10 @@ const Information = () => {
                                     <div className="form-field">
                                         <TextField
                                             label="ADDRESS LINE 1"
-                                            id="address1"
-                                            name="address1"
-                                            value={profile.address1}
+                                            id="address_line_1"
+                                            name="address_line_1"
+                                            value={data?.address_line_1 ? data?.address_line_1 : ""}
+                                            placeholder="-"
                                             onChange={handleChange}
                                             fullWidth
                                             InputLabelProps={{
@@ -233,9 +251,10 @@ const Information = () => {
                                     <div className="form-field">
                                         <TextField
                                             label="ADDRESS LINE 2"
-                                            id="address2"
-                                            name="address2"
-                                            value={profile.address2}
+                                            id="address_line_2"
+                                            name="address_line_2"
+                                            value={data?.address_line_2 ?data?.address_line_2 : ""}
+                                            placeholder="-"
                                             onChange={handleChange}
                                             fullWidth
                                             InputLabelProps={{
@@ -252,7 +271,8 @@ const Information = () => {
                                             label="CITY OR TOWN"
                                             id="city"
                                             name="city"
-                                            value={profile.city}
+                                            value={data?.city ? data?.city :""}
+                                            placeholder="-"
                                             onChange={handleChange}
                                             fullWidth
                                             InputLabelProps={{
@@ -269,7 +289,8 @@ const Information = () => {
                                             label="POST CODE"
                                             id="postCode"
                                             name="postcode"
-                                            value={profile.postcode}
+                                            value={data?.postcode ? data?.postcode : ""}
+                                            placeholder="-"
                                             onChange={handleChange}
                                             fullWidth
                                             InputLabelProps={{
