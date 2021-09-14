@@ -10,7 +10,7 @@ const initialState = {
     createPreferenceSuccess:[],
 }
 
-const profileReducer = (state = initialState, action) => {
+const preferenceReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.GET_PREFERENCE_REQUEST:
             return updateObject(state, {
@@ -58,4 +58,4 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
-export default profileReducer
+export default preferenceReducer

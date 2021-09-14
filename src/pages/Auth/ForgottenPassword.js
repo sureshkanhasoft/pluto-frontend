@@ -9,6 +9,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import logo from '../../assets/images/logo.svg';
 import { forgotPassword } from '../../store/action';
 import { useForm } from 'react-hook-form';
+import Notify from '../../components/Notify/Notify';
 // import { useForm } from "react-hook-form";
 // import Notification from '../../../components/Notification/Notification';
 
@@ -108,23 +109,28 @@ const ForgottenPassword = () => {
         // e.preventDefault();
         dispatch(forgotPassword(data));
         setForgotMsg(true);
-        // reset();
+        reset();
     };
 
     return (
         <>
+            {forgotMsg && (forgoterrors?.message || forgoterrors) && 
+                <Notify
+                    data= {forgoterrors?.message}
+                    status="error"
+                />
+            }
+            {forgotMsg && forgotsuccess?.message &&
+                <Notify
+                    data= {forgotsuccess?.message}
+                    status="success"
+                />
+            }
             <Grid className={classes.loginContainer}>
                 <div className="mb-6">
                     <img src={logo} alt="" />
                 </div>
                 <Typography className={classes.subTitle}>Forgot your Password?</Typography>
-                {
-                    forgotsuccess?.message && 
-                    <Alert severity="success" className="mb-24">
-                        <AlertTitle>Success</AlertTitle>
-                        If there's an account associated with this email address, <br/>we'll send you a link to reset your password.
-                    </Alert>
-                }
                 
                 <Card className={classes.loginCard}>
                     <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >

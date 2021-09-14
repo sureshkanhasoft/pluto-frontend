@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Container,
     Checkbox,
@@ -13,16 +13,22 @@ import {
     Box,
     MenuItem,
     Select,
+    Backdrop,
+    CircularProgress
 } from '@material-ui/core';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createPreference } from '../../store/action';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPreference, getPreference } from '../../store/action';
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles((theme) => ({
     mainContainer:{
         width:"100%",
         maxWidth:"600px"
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
     cardBox:{
         background:"#cae0f7",
@@ -99,6 +105,7 @@ const dataList = [
 const Preferences = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
+    const {getPreferenceList, loading} = useSelector(state => state.preference)
     const [data, setData] = useState({
         monday_day:0,
         monday_night:0,
@@ -132,12 +139,29 @@ const Preferences = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log('data', data)
         dispatch(createPreference(data))
     }
+
+    useEffect(() => {
+        setData(getPreferenceList?.data)
+        console.log('getPreferenceList: ', getPreferenceList);
+    },[getPreferenceList?.data])
+
+    console.log('data', data)
+
+    useEffect(() => {
+        dispatch(getPreference())
+    },[]) // eslint-disable-next-line
    
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> 
+                    : ""
+            }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
@@ -178,7 +202,7 @@ const Preferences = () => {
                                     <FormControl variant="outlined" style={{width:"100%"}}>
                                         {/* <InputLabel>Shift Type</InputLabel> */}
                                         <Select
-                                            value={data.no_of_shift}
+                                            value={data?.no_of_shift || ""}
                                             // label=""
                                             name="no_of_shift"
                                             onChange={handleChange}
@@ -199,7 +223,7 @@ const Preferences = () => {
                                     <FormControl component="fieldset">
                                         <h3 className="f-900 mb-8 mt-24">Would you travel for work?</h3>
                                         {/* <FormLabel component="legend">Would you travel for work?</FormLabel> */}
-                                        <RadioGroup name="is_travel" value={data.is_travel} onChange={handleChange} className={classes.radioGroup}>
+                                        <RadioGroup name="is_travel" value={data?.is_travel || ""} onChange={handleChange} className={classes.radioGroup}>
                                             <FormControlLabel value="1" control={<Radio color="primary" />} label="Yes" />
                                             <FormControlLabel value="0" control={<Radio color="primary" />} label="No" />
                                         </RadioGroup>

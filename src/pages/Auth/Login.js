@@ -12,6 +12,7 @@ import logo from '../../assets/images/logo.svg'
 import { getOrganization } from '../../store/action';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import Notify from '../../components/Notify/Notify';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -70,8 +71,10 @@ const useStyle = makeStyles({
 const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const {getOrglist , loding} = useSelector(state => state.organization)
+    const {getOrglist} = useSelector(state => state.organization)
+    const {loginErrors , userInfo} = useSelector(state => state.authenticate)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const [loginNotify, setLoginNotify]=useState(false)
 
     const [data, setData] = useState({
         email: "",
@@ -85,91 +88,107 @@ const Login = () => {
 
     const loginSubmit = () => {
         // e.preventDefault()
+        console.log("data11", data)
         dispatch(login(data))
+        setLoginNotify(true)
     }
    
     useEffect(() => {
         dispatch(getOrganization())
     },[])
     return (
-        <Grid className={classes.loginContainer}>
-            <div className="mb-16">
+        <>
+            {loginNotify && (loginErrors?.message || loginErrors) && 
+                <Notify
+                    data= {loginErrors}
+                    status="error"
+                />
+            }
+            {loginNotify && userInfo?.message &&
+                <Notify
+                    data= {userInfo?.message}
+                    status="success"
+                />
+            }
+            <Grid className={classes.loginContainer}>
+                <div className="mb-16">
                     <img src={logo} alt="" />
                 </div>
-        <Card className={classes.loginCard}>
-            <form className={classes.form} onSubmit={handleSubmit(loginSubmit)} autoComplete="off">
-                <TextField
-                    id="email"
-                    name="email"
-                    label="Email"
-                    autoComplete="off"
-                    variant="outlined"
-                    {...register('email', {
-                        required: "The email field is required.",
-                        pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: "Enter a valid e-mail address",
-                        },
-                    })}
-                    error={(errors.email ? true : false)}
-                    onChange={handleChange}
-                    InputProps={{
-                        startAdornment: <MailIcon />
-                    }}
-                    className={classes.textField}
-                />
-                <TextField
-                    id="password"
-                    name="password"
-                    label="Password"
-                    variant="outlined"
-                    autoComplete="new-password"
-                    {...register('password', {
-                        required: "The password field is required.",
-                    })}
-                    error={(errors.password ? true : false)}
-                    onChange={handleChange}
-                    type="password"
-                    InputProps={{
-                        startAdornment: <LockIcon />
-                    }}
-                    className={classes.textField}
-                />
+                <Card className={classes.loginCard}>
+                    <form className={classes.form} onSubmit={handleSubmit(loginSubmit)} autoComplete="off">
+                        <TextField
+                            id="email"
+                            name="email"
+                            label="Email"
+                            autoComplete="off"
+                            variant="outlined"
+                            {...register('email', {
+                                required: "The email field is required.",
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: "Enter a valid e-mail address",
+                                },
+                            })}
+                            error={(errors.email ? true : false)}
+                            onChange={handleChange}
+                            InputProps={{
+                                startAdornment: <MailIcon />
+                            }}
+                            className={classes.textField}
+                        />
+                        <TextField
+                            id="password"
+                            name="password"
+                            label="Password"
+                            variant="outlined"
+                            autoComplete="new-password"
+                            {...register('password', {
+                                required: "The password field is required.",
+                            })}
+                            error={(errors.password ? true : false)}
+                            onChange={handleChange}
+                            type="password"
+                            InputProps={{
+                                startAdornment: <LockIcon />
+                            }}
+                            className={classes.textField}
+                        />
 
-                <FormControl variant="outlined" className={classes.formControl}
-                    {...register('organization_id', {
-                        required: "The organization field is required.",
-                    })}
-                    error={(errors.organization_id ? true : false)}
-                    >
-                    <InputLabel>Select Organization</InputLabel>
-                    <Select
-                        value={data.organization_id}
-                        label="Select Organization"
-                        onChange={handleChange}
-                        name="organization_id"
-                    >
-                        <MenuItem value="">
-                            Select a shift time
-                        </MenuItem>
-                        {
-                            getOrglist?.data && getOrglist?.data.map((list, index) => {
-                                return (
-                                    <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
-                                )
-                            })
-                        }
-                    </Select>
-                </FormControl>
-                <div className={classes.forgotCont}>
-                    <Link to="forgotten-password" className={classes.forgotText}>Forgotten your password?</Link>
-                </div>
-                <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
-                    login
-                </Button>
-            </form>
-        </Card>
-    </Grid>
+                        <FormControl variant="outlined" className={classes.formControl}
+                            {...register('organization_id', {
+                                required: "The organization field is required.",
+                            })}
+                            error={(errors.organization_id ? true : false)}
+                            >
+                            <InputLabel>Select Organization</InputLabel>
+                            <Select
+                                value={data.organization_id}
+                                label="Select Organization"
+                                onChange={handleChange}
+                                name="organization_id"
+                            >
+                                <MenuItem value="">
+                                    Select a shift time
+                                </MenuItem>
+                                {
+                                    getOrglist?.data && getOrglist?.data.map((list, index) => {
+                                        return (
+                                            <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
+                                        )
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
+                        <div className={classes.forgotCont}>
+                            <Link to="forgotten-password" className={classes.forgotText}>Forgotten your password?</Link>
+                        </div>
+                        <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
+                            login
+                        </Button>
+                    </form>
+                </Card>
+            </Grid>
+        </>
     );
 };
 

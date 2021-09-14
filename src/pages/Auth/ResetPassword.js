@@ -7,8 +7,7 @@ import logo from '../../assets/images/logo.svg';
 import LockIcon from '@material-ui/icons/Lock';
 import { resetPassword } from '../../store/action';
 import { useForm } from 'react-hook-form';
-// import { useForm } from "react-hook-form";
-// import Notification from '../../../components/Notification/Notification';
+import Notify from '../../components/Notify/Notify';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -93,7 +92,7 @@ const ResetPassword = ({ history }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [resetMsg, setReset]=useState(false)
     const dId = params.get('query');
-    // const { changesuccess, changeerrors } = useSelector(state => state.authReducer)
+    const { resetSuccess, resetErrors } = useSelector(state => state.authenticate)
     const [data, setData] = useState({
         password: "",
         confirm_password: "",
@@ -102,7 +101,7 @@ const ResetPassword = ({ history }) => {
     const onSubmit = () => {
         // e.preventDefault();
         dispatch(resetPassword(data));
-        // setReset(true)
+        setReset(true)
         // reset();
     };
     const handleChange = (event) => {
@@ -116,26 +115,25 @@ const ResetPassword = ({ history }) => {
                 </div>
                 <Typography className={classes.subTitle}>Reset your password</Typography>
                 <Card className={classes.loginCard}>
-                    {/* {resetMsg && changeerrors?.message &&
-                        <Notification
-                            data={changeerrors?.message}
+                    {resetMsg && resetErrors?.message &&
+                        <Notify
+                            data={resetErrors?.message}
                             status="error"
                         />
                     }
-                    {resetMsg && changesuccess?.message &&
-                        <Notification
-                            data={changesuccess?.message}
+                    {resetMsg && resetSuccess?.message &&
+                        <Notify
+                            data={resetSuccess?.message}
                             status="success"
                         />
-                    } */}
+                    }
                     <form className={classes.form} autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                         <TextField
                             id="password"
                             name="password"
                             label="Password"
                             autoComplete="off"
-                            // value={data.password}
-                            onChange={handleChange}
+                            value={data?.password || ""}
                             type="password"
                             variant="outlined"
                             InputProps={{
@@ -150,16 +148,18 @@ const ResetPassword = ({ history }) => {
                                     message: "min length is 5"
                                 }
                             })}
+                            error={errors.password ? true : false}
+                            onChange={handleChange}
                             className={classes.textField}
                         />
-                        {errors.password && <span className={classes.validationError} role="alert"> {errors.password.message}</span>}
+                        {/* {errors.password && <span className={classes.validationError} role="alert"> {errors.password.message}</span>} */}
 
                         <TextField
                             id="confirm_password"
                             name="confirm_password"
                             label="Confirm password"
-                            // value={data.confirm_password}
-                            onChange={handleChange}
+                            value={data?.confirm_password || ""}
+                            autoComplete="off"
                             type="password"
                             variant="outlined"
                             InputProps={{
@@ -174,8 +174,10 @@ const ResetPassword = ({ history }) => {
                                     message: "min length is 5"
                                 }
                             })}
+                            error={errors.confirm_password ? true : false}
+                            onChange={handleChange}
                         />
-                        {errors.confirm_password && <span className={classes.validationError} role="alert">{errors.confirm_password.message}</span>}
+                        {/* {errors.confirm_password && <span className={classes.validationError} role="alert">{errors.confirm_password.message}</span>} */}
                         <Button variant="contained" color="primary" type="submit" className={classes.resetBtn} formNoValidate>
                             Reset Password
                         </Button>

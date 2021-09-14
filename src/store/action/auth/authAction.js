@@ -17,16 +17,17 @@ export const login = (data) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(getLoginSuccess(data))
-                console.log('data: ', data);
                 localStorage.setItem('signeeInfo', JSON.stringify(data.data));
                 localStorage.setItem('token', JSON.stringify(data.data.token));
                 setTimeout(() => {
                     history.push('/shift')
                 }, 2000);
             } else {
+                dispatch(getLoginSuccess(""))
                 dispatch(getLoginFailure(data))
             }
         }).catch(error => {
+            console.log('error: ', error);
             dispatch(getLoginFailure(error.message))
         })
     }
@@ -71,7 +72,7 @@ export const registerUser = (data) => {
                 dispatch(registerFailure(data))
             }
         }).catch(error => {
-            dispatch(registerFailure(error.message))
+            dispatch(registerFailure(error.response.data.message))
         })
     }
 }
@@ -108,7 +109,7 @@ export const forgotPassword = (data) => {
                 dispatch(getForgotFailure(data));
             }
         }).catch(error => {
-            dispatch(getForgotFailure(error.message));
+            dispatch(getForgotFailure(error.response.data.message));
         })
     }
 }
@@ -150,7 +151,7 @@ export const resetPassword = (data) => {
                 dispatch(resetPasswordFailure(data));
             }
         }).catch(error => {
-            dispatch(resetPasswordFailure(error.message));
+            dispatch(resetPasswordFailure(error.response.data.message));
         })
     }
 }
