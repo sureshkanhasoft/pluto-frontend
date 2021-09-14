@@ -692,6 +692,11 @@ footer{
                 opacity: 0.5;
             }
         }
+        &.Mui-error{
+            &::after{
+                border-bottom: none !important;
+            }
+        }
         &::before{
             border-bottom: 1px solid rgba(0, 0, 0, 0.17) !important;
         }
@@ -703,6 +708,9 @@ footer{
             // &::before{
             //     border-bottom: 1px solid rgba(0, 0, 0, 0.47) !important;
             // }
+        }
+        ::after{
+            border-bottom: none !important;
         }
        
     }
