@@ -108,7 +108,7 @@ const Information = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
 
-    const {getProfileList:{data:dataItem}, loading} = useSelector(state => state.profile)
+    const {getProfileList:{data:dataItem}} = useSelector(state => state.profile)
 
     const [data, setData] = useState({
         first_name:"",
@@ -141,11 +141,11 @@ const Information = () => {
 
     useEffect(() => {
         dispatch(getProfile())
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const changePasswordSubmit = (e) => {
         e.preventDefault();
-        console.log('dsdsf', pass)
+        // console.log('dsdsf', pass)
         dispatch(changePassword(pass))
     }
 

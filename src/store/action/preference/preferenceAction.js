@@ -12,7 +12,6 @@ export const getPreference = () => {
             dispatch(getPreferenceSuccess(response.data))
         }).catch(error => {
             dispatch(getPreferenceError(error))
-
         })
     }
 }
@@ -39,7 +38,7 @@ export const getPreferenceError = (error) => {
 export const createPreference = (data) => {
     return async(dispatch) =>{
         dispatch(createPreferenceRequest())
-        await apiClient(true).post(`api/signee/add-preferences`, data)
+        await apiClient(true).put(`api/signee/add-preferences`, data)
         .then(response => {
             const data = response.data
             if (data.status === true) {
