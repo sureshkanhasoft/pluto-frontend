@@ -121,20 +121,21 @@ const Preferences = () => {
         saturday_night:0,
         sunday_day:0,
         sunday_night:0,
-        is_travel:"",
+        is_travel:0,
         no_of_shift:""
     })
     const handleChangeCheckbox = (event) => {
         const isChecked = event.target.checked
         if(isChecked) {
-            setData({ ...data, [event.target.name]: event.target.value });
+            setData({ ...data, [event.target.name]: parseInt(event.target.value) });
         } else {
             setData({ ...data, [event.target.name]: 0 });
         }
     };
 
     const handleChange = (event) => {
-        setData({ ...data, [event.target.name]: event.target.value });
+        console.log('event: ', typeof parseInt(event.target.value));
+        setData({ ...data, [event.target.name]: parseInt(event.target.value) });
     };
 
     const handleSubmit = (e) => {
@@ -145,13 +146,11 @@ const Preferences = () => {
     useEffect(() => {
         setData(getPreferenceList?.data)
         console.log('getPreferenceList: ', getPreferenceList);
-    },[getPreferenceList?.data])
-
-    console.log('data', data)
+    },[getPreferenceList])
 
     useEffect(() => {
         dispatch(getPreference())
-    },[]) // eslint-disable-next-line
+    },[]) // eslint-disable-line react-hooks/exhaustive-deps
    
     return (
         <>
@@ -181,7 +180,7 @@ const Preferences = () => {
                                                         <p className="f-500 mb-8"> {list.weekday}</p>
                                                         <div>
                                                             <FormControlLabel
-                                                                control={<Checkbox onChange={handleChangeCheckbox} value={1} name={list.list[0]} color="primary" />}
+                                                                control={<Checkbox onChange={handleChangeCheckbox}  value={data?.monday_day} name={list.list[0]} color="primary" />}
                                                                 label="Day"
                                                             />
                                                             <FormControlLabel
@@ -223,9 +222,9 @@ const Preferences = () => {
                                     <FormControl component="fieldset">
                                         <h3 className="f-900 mb-8 mt-24">Would you travel for work?</h3>
                                         {/* <FormLabel component="legend">Would you travel for work?</FormLabel> */}
-                                        <RadioGroup name="is_travel" value={data?.is_travel || ""} onChange={handleChange} className={classes.radioGroup}>
-                                            <FormControlLabel value="1" control={<Radio color="primary" />} label="Yes" />
-                                            <FormControlLabel value="0" control={<Radio color="primary" />} label="No" />
+                                        <RadioGroup name="is_travel" value={data?.is_travel} onChange={handleChange} className={classes.radioGroup}>
+                                            <FormControlLabel value={1} control={<Radio color="primary" />} label="Yes" />
+                                            <FormControlLabel value={0} control={<Radio color="primary" />} label="No" />
                                         </RadioGroup>
                                     </FormControl>
                                 </Grid>
