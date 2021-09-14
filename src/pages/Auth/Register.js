@@ -4,6 +4,7 @@ import {
     FormControl,Select,MenuItem, InputLabel,
     FormLabel,FormControlLabel,Checkbox
  } from '@material-ui/core';
+ import { Link } from 'react-router-dom';
  import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
  import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import logo from '../../assets/images/logo.svg'
@@ -95,6 +96,19 @@ const useStyle = makeStyles({
     },
     inputHide:{
         display:"none"
+    },
+    bottomLink:{
+        marginTop:16,
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"flex-end",
+        fontSize:14
+    },
+    registerBtn:{
+        marginLeft:12,
+        fontSize:15,
+        fontWeight:"500",
+        color:"#2b68a4"
     }
 })
 
@@ -384,6 +398,11 @@ const Register = () => {
                             </Button> 
                         </div> :""
                     }
+
+                    <div className={classes.bottomLink}>
+                        <p className="mb-0">Already have an account?</p>
+                        <Link to="login" className={classes.registerBtn}>Login</Link>
+                    </div>
 
 
                     

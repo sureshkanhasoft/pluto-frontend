@@ -65,6 +65,19 @@ const useStyle = makeStyles({
         "&:hover":{
             background:"#ff8b46"
         }
+    },
+    bottomLink:{
+        marginTop:16,
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        fontSize:14
+    },
+    registerBtn:{
+        marginLeft:12,
+        fontSize:15,
+        fontWeight:"500",
+        color:"#2b68a4"
     }
 })
 
@@ -185,6 +198,10 @@ const Login = () => {
                         <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
                             login
                         </Button>
+                        <div className={classes.bottomLink}>
+                            <p className="mb-0">Don't have an account?</p>
+                            <Link to="register" className={classes.registerBtn}>Register</Link>
+                        </div>
                     </form>
                 </Card>
             </Grid>
