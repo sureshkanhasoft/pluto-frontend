@@ -15,7 +15,9 @@ import ProfileUpdateInfo from "../../components/ProfileUpdateInfo/ProfileUpdateI
 import EditIcon from '@material-ui/icons/Edit';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../../store/action/profile/profileAction';
-import {changePassword} from '../../store/action'
+import {changePassword, updateProfile} from '../../store/action'
+import { useForm } from 'react-hook-form';
+import Notify from '../../components/Notify/Notify';
 // import WarningIcon from '@material-ui/icons/Warning';
 
 const useStyle = makeStyles(() => ({
@@ -108,7 +110,9 @@ const Information = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
 
-    const {getProfileList:{data:dataItem}} = useSelector(state => state.profile)
+    const {getProfileList:{data:dataItem}, passChange, passErrors} = useSelector(state => state.profile)
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const [changePassNotify, setChangePassNotify]=useState(false)
 
     const [data, setData] = useState({
         first_name:"",
@@ -143,18 +147,40 @@ const Information = () => {
         dispatch(getProfile())
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const changePasswordSubmit = (e) => {
-        e.preventDefault();
-        // console.log('dsdsf', pass)
+    const changePasswordSubmit = () => {
         dispatch(changePassword(pass))
+        setChangePassNotify(true)
+        reset();
+    }
+
+    const resetForm = () => {
+        reset();
+    }
+
+    const updateProfile = (e) => {
+        e.preventDefault()
+        // dispatch(updateProfile(data))
     }
 
     return (
         <>
+            {changePassNotify && passErrors?.message &&
+                <Notify
+                    data= {passErrors?.message}
+                    status="error"
+                />
+            }
+            {changePassNotify && passChange?.message &&
+                <Notify
+                    data= {passChange?.message}
+                    status="success"
+                />
+            }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
                     <h1 className="mb-16">My details</h1>
+                    <form onSubmit={(e) => updateProfile(e)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={4}>
                             <Card className={classes.userImage}>
@@ -324,9 +350,11 @@ const Information = () => {
                         </Grid>
                     </Grid>
                     <Box display="flex" justifyContent="flex-end" className="mt-24">
-                        <Button variant="contained" className={classes.btnSecondary}>Update</Button>
+                        <Button variant="contained" className={classes.btnSecondary} type="submit">Update</Button>
                         <Button variant="outlined" className={classes.btnCancel}>Cancel</Button>
                     </Box>
+
+                    </form>
 
                 </Container>
             </section>
@@ -334,7 +362,7 @@ const Information = () => {
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
                     <h1 className="mb-16">Change Password</h1>
-                    <form onSubmit={(e) => changePasswordSubmit(e)}>
+                    <form onSubmit={handleSubmit(changePasswordSubmit)}>
                         <Grid container spacing={2} >
                             <Grid item xs={12} md={4}>
                                 <Card className={classes.card}>
@@ -350,6 +378,14 @@ const Information = () => {
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
+                                                {...register("old_password", {
+                                                    required: "Please enter confirm password",
+                                                    minLength: {
+                                                        value: 5,
+                                                        message: "min length is 5"
+                                                    }
+                                                })}
+                                                error={errors.old_password ? true : false}
                                                 className={classes.textFiled}
                                                 onChange={handlePassChange}
                                                 InputProps={{
@@ -368,6 +404,14 @@ const Information = () => {
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
+                                                {...register("password", {
+                                                    required: "Please enter confirm password",
+                                                    minLength: {
+                                                        value: 5,
+                                                        message: "min length is 5"
+                                                    }
+                                                })}
+                                                error={errors.password ? true : false}
                                                 className={classes.textFiled}
                                                 onChange={handlePassChange}
                                                 InputProps={{
@@ -386,6 +430,14 @@ const Information = () => {
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
+                                                {...register("confirm_password", {
+                                                    required: "Please enter confirm password",
+                                                    minLength: {
+                                                        value: 5,
+                                                        message: "min length is 5"
+                                                    }
+                                                })}
+                                                error={errors.confirm_password ? true : false}
                                                 className={classes.textFiled}
                                                 onChange={handlePassChange}
                                                 InputProps={{
@@ -399,7 +451,7 @@ const Information = () => {
                         </Grid>
                         <Box className="mt-24">
                             <Button type="submit" variant="contained" className={classes.btnSecondary} formNoValidate>Update</Button>
-                            <Button variant="outlined" className={classes.btnCancel}>Cancel</Button>
+                            <Button variant="outlined" className={classes.btnCancel} onClick={resetForm}>Cancel</Button>
                         </Box>
                     </form>
                 </Container>
