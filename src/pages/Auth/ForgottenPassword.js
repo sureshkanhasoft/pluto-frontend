@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
 import logo from '../../assets/images/logo.svg';
 import { forgotPassword } from '../../store/action';
+import { useForm } from 'react-hook-form';
 // import { useForm } from "react-hook-form";
 // import Notification from '../../../components/Notification/Notification';
 
@@ -91,22 +92,22 @@ const ForgottenPassword = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const { forgotsuccess, forgoterrors } = useSelector(state => state.authenticate)
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [forgotMsg, setForgotMsg]=useState(false)
     const [data, setData] = useState(
         { 
             email: "" 
         }
     )
-    // const { register, handleSubmit, formState: { errors }, reset } = useForm();
     
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = () => {
+        // e.preventDefault();
         dispatch(forgotPassword(data));
-        setForgotMsg(true)
+        setForgotMsg(true);
         // reset();
     };
 
@@ -118,7 +119,7 @@ const ForgottenPassword = () => {
                 </div>
                 <Typography className={classes.subTitle}>Forgot your Password?</Typography>
                 {
-                    forgotsuccess && 
+                    forgotsuccess?.message && 
                     <Alert severity="success" className="mb-24">
                         <AlertTitle>Success</AlertTitle>
                         If there's an account associated with this email address, <br/>we'll send you a link to reset your password.
@@ -126,24 +127,29 @@ const ForgottenPassword = () => {
                 }
                 
                 <Card className={classes.loginCard}>
-                    <form className={classes.form} onSubmit={(e) => onSubmit(e)} >
+                    <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
                         <TextField
                             id="email"
                             name="email"
                             label="Email"
                             autoComplete="off"
                             // value={data.email}
-                            onChange={handleChange}
+                            
                             type="email"
                             variant="outlined"
                             required
                             InputProps={{
                                 startAdornment: <MailIcon />
                             }}
-                            // aria-invalid={errors.password ? "true" : "false"}
-                            // {...register("email", {
-                            //     required: "Please enter email",
-                            // })}
+                            {...register("email", {
+                                required: "Please enter email",
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: "Enter a valid e-mail address",
+                                },
+                            })}
+                            error={errors.email ? true : false}
+                            onChange={handleChange}
                             className={classes.textField}
                         />
                         {/* {errors.email && <span className={classes.validationError} role="alert"> {errors.email.message}</span>} */}

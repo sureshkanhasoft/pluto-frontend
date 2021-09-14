@@ -11,6 +11,7 @@ import { login } from '../../store/action/auth/authAction';
 import logo from '../../assets/images/logo.svg'
 import { getOrganization } from '../../store/action';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -48,6 +49,7 @@ const useStyle = makeStyles({
         display:"flex",
         justifyContent:"flex-end",
         marginBottom:24,
+        marginTop:12
     },
     forgotText:{
         color:"#2b68a4",
@@ -69,6 +71,7 @@ const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const {getOrglist , loding} = useSelector(state => state.organization)
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const [data, setData] = useState({
         email: "",
@@ -80,8 +83,8 @@ const Login = () => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
 
-    const loginSubmit = (e) => {
-        e.preventDefault()
+    const loginSubmit = () => {
+        // e.preventDefault()
         dispatch(login(data))
     }
    
@@ -94,13 +97,21 @@ const Login = () => {
                     <img src={logo} alt="" />
                 </div>
         <Card className={classes.loginCard}>
-            <form className={classes.form} onSubmit={(e) => loginSubmit(e)} autoComplete="off">
+            <form className={classes.form} onSubmit={handleSubmit(loginSubmit)} autoComplete="off">
                 <TextField
                     id="email"
                     name="email"
                     label="Email"
                     autoComplete="off"
                     variant="outlined"
+                    {...register('email', {
+                        required: "The email field is required.",
+                        pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                            message: "Enter a valid e-mail address",
+                        },
+                    })}
+                    error={(errors.email ? true : false)}
                     onChange={handleChange}
                     InputProps={{
                         startAdornment: <MailIcon />
@@ -113,6 +124,10 @@ const Login = () => {
                     label="Password"
                     variant="outlined"
                     autoComplete="new-password"
+                    {...register('password', {
+                        required: "The password field is required.",
+                    })}
+                    error={(errors.password ? true : false)}
                     onChange={handleChange}
                     type="password"
                     InputProps={{
@@ -121,7 +136,12 @@ const Login = () => {
                     className={classes.textField}
                 />
 
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl variant="outlined" className={classes.formControl}
+                    {...register('organization_id', {
+                        required: "The organization field is required.",
+                    })}
+                    error={(errors.organization_id ? true : false)}
+                    >
                     <InputLabel>Select Organization</InputLabel>
                     <Select
                         value={data.organization_id}

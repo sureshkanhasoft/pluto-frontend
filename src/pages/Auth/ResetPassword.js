@@ -6,6 +6,7 @@ import {
 import logo from '../../assets/images/logo.svg';
 import LockIcon from '@material-ui/icons/Lock';
 import { resetPassword } from '../../store/action';
+import { useForm } from 'react-hook-form';
 // import { useForm } from "react-hook-form";
 // import Notification from '../../../components/Notification/Notification';
 
@@ -89,6 +90,7 @@ const ResetPassword = ({ history }) => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const params = new URLSearchParams(window.location.search);
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [resetMsg, setReset]=useState(false)
     const dId = params.get('query');
     // const { changesuccess, changeerrors } = useSelector(state => state.authReducer)
@@ -97,9 +99,8 @@ const ResetPassword = ({ history }) => {
         confirm_password: "",
         decode_id: dId,
     })
-    // const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = () => {
+        // e.preventDefault();
         dispatch(resetPassword(data));
         // setReset(true)
         // reset();
@@ -127,7 +128,7 @@ const ResetPassword = ({ history }) => {
                             status="success"
                         />
                     } */}
-                    <form className={classes.form} autoComplete="off" onSubmit={onSubmit}>
+                    <form className={classes.form} autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                         <TextField
                             id="password"
                             name="password"
@@ -142,16 +143,16 @@ const ResetPassword = ({ history }) => {
                             }}
                             // aria-invalid={errors.password ? "true" : "false"}
                             required
-                            // {...register("password", {
-                            //     required: "Please enter password",
-                            //     minLength: {
-                            //         value: 5,
-                            //         message: "min length is 5"
-                            //     }
-                            // })}
+                            {...register("password", {
+                                required: "Please enter password",
+                                minLength: {
+                                    value: 5,
+                                    message: "min length is 5"
+                                }
+                            })}
                             className={classes.textField}
                         />
-                        {/* {errors.password && <span className={classes.validationError} role="alert"> {errors.password.message}</span>} */}
+                        {errors.password && <span className={classes.validationError} role="alert"> {errors.password.message}</span>}
 
                         <TextField
                             id="confirm_password"
@@ -166,15 +167,15 @@ const ResetPassword = ({ history }) => {
                             }}
                             className={classes.textField}
                             required
-                            // {...register("confirm_password", {
-                            //     required: "Please enter confirm password",
-                            //     minLength: {
-                            //         value: 5,
-                            //         message: "min length is 5"
-                            //     }
-                            // })}
+                            {...register("confirm_password", {
+                                required: "Please enter confirm password",
+                                minLength: {
+                                    value: 5,
+                                    message: "min length is 5"
+                                }
+                            })}
                         />
-                        {/* {errors.confirm_password && <span className={classes.validationError} role="alert">{errors.confirm_password.message}</span>} */}
+                        {errors.confirm_password && <span className={classes.validationError} role="alert">{errors.confirm_password.message}</span>}
                         <Button variant="contained" color="primary" type="submit" className={classes.resetBtn} formNoValidate>
                             Reset Password
                         </Button>

@@ -12,8 +12,9 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 function App() {
   const isAuthenticated = () => {
     const token = localStorage.getItem('token');
+    const signeeInfo = localStorage.getItem('signeeInfo');
     try {
-      if (token) {
+      if (token && signeeInfo) {
         return true;
       }
       else {
@@ -25,7 +26,6 @@ function App() {
   }
   return (
     <div className="main-page">
-     
       <Router history={history}>
         {/* <Navbar /> */}
           <Switch>
