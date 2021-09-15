@@ -237,6 +237,7 @@ const Register = () => {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         autoFocus
+                                        required
                                         name="first_name"
                                         label="First name"         
                                         variant="outlined"
@@ -260,6 +261,7 @@ const Register = () => {
                                             required: true,
                                         })}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -277,6 +279,7 @@ const Register = () => {
                                             },
                                         })}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -290,11 +293,12 @@ const Register = () => {
                                             required: true,
                                         })}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </Grid>
 
                                 <Grid item xs={12} sm={12}>
-                                    <FormControl variant="outlined" className={classes.formControl} 
+                                    <FormControl variant="outlined" className={classes.formControl} required
                                         error={(errors.organization_id ? true : false)}
                                         {...register("organization_id", {
                                             required: true,
@@ -350,7 +354,7 @@ const Register = () => {
                             <div className={classes.bottomBtn}>
                                 <span></span>
 
-                                <Button type="submit" variant="contained" color="primary" className={classes.loginBtn} >
+                                <Button type="submit" variant="contained" color="primary" className={classes.loginBtn} formNoValidate>
                                     Next <ArrowForwardIosIcon className={classes.arroWForIcon}/>
                                 </Button> 
                             </div>
@@ -374,6 +378,7 @@ const Register = () => {
                                             required: true,
                                         })}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -391,11 +396,12 @@ const Register = () => {
                                         label="City"
                                         variant="outlined"
                                         className={classes.textField}
-                                        error={(errors.city ? true : false)}
-                                        {...register("city", {
+                                        error={(errors2.city ? true : false)}
+                                        {...register2("city", {
                                             required: true,
                                         })}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -404,11 +410,12 @@ const Register = () => {
                                         label="Postcode"
                                         variant="outlined"
                                         className={classes.textField}
-                                        error={(errors.postcode ? true : false)}
-                                        {...register("postcode", {
+                                        error={(errors2.postcode ? true : false)}
+                                        {...register2("postcode", {
                                             required: true,
                                         })}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -421,9 +428,9 @@ const Register = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl variant="outlined" className={classes.formControl}
-                                        error={(errors.candidate_referred_from ? true : false)}
-                                        {...register("candidate_referred_from", {
+                                    <FormControl variant="outlined" className={classes.formControl} required
+                                        error={(errors2.candidate_referred_from ? true : false)}
+                                        {...register2("candidate_referred_from", {
                                             required: true,
                                         })}
                                     >
@@ -448,7 +455,7 @@ const Register = () => {
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                {/* <Grid item xs={12}>
                                     <div className="mb-24">
                                         <input accept="image/*,.pdf" className={classes.inputHide} id="contained-button-file" multiple type="file" onChange={(e) => uploadImage(e)}/>
                                         <label htmlFor="contained-button-file">
@@ -457,7 +464,7 @@ const Register = () => {
                                             </Button>
                                         </label>
                                     </div>
-                                </Grid>
+                                </Grid> */}
                                 
                             </Grid>
                             <div className={classes.bottomBtn}>
@@ -466,7 +473,7 @@ const Register = () => {
                                     Back
                                 </Button>
 
-                                <Button variant="contained" color="primary" className={classes.loginBtn} type="submit">
+                                <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
                                     Register
                                 </Button> 
                             </div>
