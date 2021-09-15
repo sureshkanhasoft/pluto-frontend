@@ -20,6 +20,7 @@ import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateI
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPreference, getPreference } from '../../store/action';
+import Notify from '../../components/Notify/Notify';
 
 const useStyle = makeStyles((theme) => ({
     mainContainer:{
@@ -50,65 +51,15 @@ const useStyle = makeStyles((theme) => ({
     },
 }))
 
-const dataList = [
-    {
-        "weekday":"Monday",
-        "list":[
-            "monday_day",
-            "monday_night"
-        ]
-    },
-    {
-        "weekday":"Tuesday",
-        "list":[
-            "tuesday_day",
-            "tuesday_night"
-        ]
-    },
-    {
-        "weekday":"Wednesday",
-        "list":[
-            "wednesday_day",
-            "wednesday_night"
-        ]
-    },
-    {
-        "weekday":"Thursday",
-        "list":[
-            "thursday_day",
-            "thursday_night"
-        ]
-    },
-    {
-        "weekday":"Friday",
-        "list":[
-            "friday_day",
-            "friday_night"
-        ]
-    },
-    {
-        "weekday":"Saturday",
-        "list":[
-            "saturday_day",
-            "saturday_night"
-        ]
-    },
-    {
-        "weekday":"Sunday",
-        "list":[
-            "sunday_day",
-            "sunday_night"
-        ]
-    },
-]
 
 const Preferences = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const {getPreferenceList, loading} = useSelector(state => state.preference)
+    const {getPreferenceList, loading, createPreferenceSuccess} = useSelector(state => state.preference)
+    const [preferencetMsg, setPreferencetMsg]=useState(false)
     const [data, setData] = useState({
-        monday_day:0,
-        monday_night:0,
+        monday_day:false,
+        monday_night:false,
         tuesday_day:0,
         tuesday_night:0,
         wednesday_day:0,
@@ -127,25 +78,26 @@ const Preferences = () => {
     const handleChangeCheckbox = (event) => {
         const isChecked = event.target.checked
         if(isChecked) {
-            setData({ ...data, [event.target.name]: parseInt(event.target.value) });
+            setData({ ...data, [event.target.name]:1 });
         } else {
-            setData({ ...data, [event.target.name]: 0 });
+            setData({ ...data, [event.target.name]:0 });
         }
     };
 
     const handleChange = (event) => {
-        console.log('event: ', typeof parseInt(event.target.value));
+        // console.log('event11: ', parseInt(event.target.value));
         setData({ ...data, [event.target.name]: parseInt(event.target.value) });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(createPreference(data))
+        setPreferencetMsg(true)
     }
 
     useEffect(() => {
         setData(getPreferenceList?.data)
-        console.log('getPreferenceList: ', getPreferenceList);
+        // console.log('getPreferenceList: ', getPreferenceList);
     },[getPreferenceList])
 
     useEffect(() => {
@@ -161,6 +113,12 @@ const Preferences = () => {
                     </Backdrop> 
                     : ""
             }
+            {preferencetMsg && createPreferenceSuccess?.message &&
+                <Notify
+                    data= {createPreferenceSuccess?.message}
+                    status="success"
+                />
+            }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
@@ -171,29 +129,132 @@ const Preferences = () => {
                         <p className="f-300">Please provide your general working patterns/preferences. Once you are compliant you can log onto Pluto at any time to see and book available shifts.</p>
                         <form onSubmit={(e) => handleSubmit(e)}>
                             <Grid container spacing={2}>
-                                {
-                                    dataList.map((list, index) => {
-                                        return (
-                                            <Grid item xs={12} sm={6} key={index}>
-                                                <Card className={classes.cardBox}>
-                                                    <FormControl component="fieldset" className={classes.formControl}>
-                                                        <p className="f-500 mb-8"> {list.weekday}</p>
-                                                        <div>
-                                                            <FormControlLabel
-                                                                control={<Checkbox onChange={handleChangeCheckbox}  value={data?.monday_day} name={list.list[0]} color="primary" />}
-                                                                label="Day"
-                                                            />
-                                                            <FormControlLabel
-                                                                control={<Checkbox onChange={handleChangeCheckbox} name={list.list[1]} value={1} color="primary" />}
-                                                                label="Night"
-                                                            />
-                                                        </div>
-                                                    </FormControl>
-                                                </Card>
-                                            </Grid>
-                                        )
-                                    })
-                                }
+
+                                <Grid item xs={12} sm={6}>
+                                    <Card className={classes.cardBox}>
+                                        <FormControl component="fieldset" className={classes.formControl}>
+                                            <p className="f-500 mb-8"> Monday</p>
+                                            <div>
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.monday_day === 1 ? true : false} name="monday_day" color="primary" />}
+                                                    label="Day"
+                                                />
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.monday_night === 1 ? true : false} name="monday_night" color="primary" />}
+                                                    label="Night"
+                                                />
+                                            </div>
+                                        </FormControl>
+                                    </Card>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <Card className={classes.cardBox}>
+                                        <FormControl component="fieldset" className={classes.formControl}>
+                                            <p className="f-500 mb-8"> Tuesday</p>
+                                            <div>
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.tuesday_day === 1 ? true : false} name="tuesday_day" color="primary" />}
+                                                    label="Day"
+                                                />
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.tuesday_night === 1 ? true : false} name="tuesday_night" color="primary" />}
+                                                    label="Night"
+                                                />
+                                            </div>
+                                        </FormControl>
+                                    </Card>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <Card className={classes.cardBox}>
+                                        <FormControl component="fieldset" className={classes.formControl}>
+                                            <p className="f-500 mb-8"> Wednesday</p>
+                                            <div>
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.wednesday_day === 1 ? true : false} name="wednesday_day" color="primary" />}
+                                                    label="Day"
+                                                />
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.wednesday_night === 1 ? true : false} name="wednesday_night" color="primary" />}
+                                                    label="Night"
+                                                />
+                                            </div>
+                                        </FormControl>
+                                    </Card>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <Card className={classes.cardBox}>
+                                        <FormControl component="fieldset" className={classes.formControl}>
+                                            <p className="f-500 mb-8">Thursday</p>
+                                            <div>
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.thursday_day === 1 ? true : false} name="thursday_day" color="primary" />}
+                                                    label="Day"
+                                                />
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.thursday_night === 1 ? true : false} name="thursday_night" color="primary" />}
+                                                    label="Night"
+                                                />
+                                            </div>
+                                        </FormControl>
+                                    </Card>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <Card className={classes.cardBox}>
+                                        <FormControl component="fieldset" className={classes.formControl}>
+                                            <p className="f-500 mb-8">Friday</p>
+                                            <div>
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.friday_day === 1 ? true : false} name="friday_day" color="primary" />}
+                                                    label="Day"
+                                                />
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.friday_night === 1 ? true : false} name="friday_night" color="primary" />}
+                                                    label="Night"
+                                                />
+                                            </div>
+                                        </FormControl>
+                                    </Card>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <Card className={classes.cardBox}>
+                                        <FormControl component="fieldset" className={classes.formControl}>
+                                            <p className="f-500 mb-8">Saturday</p>
+                                            <div>
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.saturday_day === 1 ? true : false} name="saturday_day" color="primary" />}
+                                                    label="Day"
+                                                />
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.saturday_night === 1 ? true : false} name="saturday_night" color="primary" />}
+                                                    label="Night"
+                                                />
+                                            </div>
+                                        </FormControl>
+                                    </Card>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <Card className={classes.cardBox}>
+                                        <FormControl component="fieldset" className={classes.formControl}>
+                                            <p className="f-500 mb-8">Sunday</p>
+                                            <div>
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.sunday_day === 1 ? true : false} name="sunday_day" color="primary" />}
+                                                    label="Day"
+                                                />
+                                                <FormControlLabel
+                                                    control={<Checkbox onChange={handleChangeCheckbox} checked={data?.sunday_night === 1 ? true : false} name="sunday_night" color="primary" />}
+                                                    label="Night"
+                                                />
+                                            </div>
+                                        </FormControl>
+                                    </Card>
+                                </Grid>
                                
                                 <Grid item xs={12} sm={12}>
                                     <h3 className="f-900 mb-8 mt-24">How many shift are you looking to work per week?</h3>
