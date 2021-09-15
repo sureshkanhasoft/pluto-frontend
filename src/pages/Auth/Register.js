@@ -10,8 +10,9 @@ import {
 import logo from '../../assets/images/logo.svg'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrganization } from '../../store/action';
-// import { apiClient } from '../../config/apiClient';
+import { getOrganization, registerUser } from '../../store/action';
+import { apiClient } from '../../config/apiClient';
+import { useForm } from 'react-hook-form';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -116,9 +117,13 @@ const Register = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const [count, setCount] = useState(0)
-    const [speciality, setSpeciality] = useState(['Specilaity 1', 'Specilaity 2'])
+    const [speciality, setSpeciality] = useState([])
     const {getOrglist} = useSelector(state => state.organization)
-    const [errors, setErrors] = useState({})
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register: register2, formState: { errors: errors2 }, handleSubmit: handleSubmit2, } = useForm();
+
+    const [orgId, setOrgId] = useState()
+    const [getCandidateReferrredForm, setGetCandidateReferrredForm] = useState([])
 
     const [data, setData] = useState({
         email: "",
@@ -127,17 +132,23 @@ const Register = () => {
         organization_id:"",
         speciality: [],
 
-        mobile_number:"",
+        contact_number:"",
         address_line_1:"",
         address_line_2:"",
         city:"",
-        zipcode:"",
+        postcode:"",
         nmc_dmc_pin:"",
         candidate_referred_from:"",
+        candidate_id:""
     })
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
+    }
+
+    const handleOrgChange = (event) => {
+        setData({ ...data, [event.target.name]: event.target.value });
+        setOrgId(event.target.value)
     }
 
     useEffect(() => {
@@ -165,31 +176,52 @@ const Register = () => {
         formData.append('file', logoFile)
     }
 
-    // const getSpecialities = async () => {
-    //     await apiClient(true).get(`api/organization/get-all-speciality`)
-    //     .then(response => {
-    //         console.log('response: ', response);
-    //         setSpeciality(response.data.data)
-    //     }).catch(error => {
-    //         console.log('error: ', error);
-    //     })
-    // }
+    const getSpecialities = async () => {
+        await apiClient(true).get(`api/signee/get-org-specialities/${orgId}`)
+        .then(response => {
+            setSpeciality(response.data.data)
+        }).catch(error => {
+            console.log('error: ', error);
+        })
+    }
 
-    // useEffect(() => {
-    //     getSpecialities()
-    // }, [])
+    useEffect(() => {
+        getSpecialities()
+    }, [orgId])
 
-    // const isValidate = () => {
-        
-    // }
+    const getCandidateId= async () => {
+        await apiClient(true).get(`api/signee/generate-candidateId`)
+        .then(response => {
+            setData({ ...data, candidate_id: parseFloat(response.data.data.candidate_id) })
+        }).catch(error => {
+            console.log("error.message", error.message);
+        });
+    }
+    useEffect(() => {
+        getCandidateId()
+    }, [])
 
-    const handleNext = () => {
+    const getCandidateReferredFrom = async() => {
+        await apiClient(true).get(`api/signee/candidate-referred-from`)
+        .then(response => {
+            const dataItem = response.data
+            if (dataItem.status === true) {
+                setGetCandidateReferrredForm(dataItem)
+            } 
+        }).catch(error => {
+            console.log('error: ', error);
+        })
+    }
+    useEffect(() => {
+        getCandidateReferredFrom()
+    }, [])
+
+    const handleSubmit1 = () => {
         setCount(count + 1)
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('data', data);
+    const handleSubmit4 = () => {
+        dispatch(registerUser(data))
     }
 
     return (
@@ -198,216 +230,253 @@ const Register = () => {
                 <img src={logo} alt="" />
             </div>
             <Card className={classes.loginCard}>
-                <form className={classes.form} onSubmit={(e) => handleSubmit(e)}>
                     {
                         count === 0 && 
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="first_name"
-                                    label="First name"
-                                    variant="outlined"
-                                    onChange={handleChange}
-                                    className={classes.textField}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="last_name"
-                                    label="Last Name"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    error={errors.last_name}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="email"
-                                    label="Email"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="mobile_number"
-                                    label="Contact Number"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} sm={12}>
-                                <FormControl variant="outlined" className={classes.formControl}>
-                                    <InputLabel>Select Organization</InputLabel>
-                                    <Select
-                                        value={data.organization_id}
-                                        label="Select Organization"
+                        <form className={classes.form} onSubmit={handleSubmit(handleSubmit1)}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        autoFocus
+                                        name="first_name"
+                                        label="First name"         
+                                        variant="outlined"
+                                        // value={data?.first_name || ""}
+                                        error={(errors.first_name ? true : false)}
+                                        {...register("first_name", {
+                                            required: true,
+                                        })}
                                         onChange={handleChange}
-                                        name="organization_id"
-                                    >
-                                        <MenuItem value="">
-                                            Select a shift time
-                                        </MenuItem>
-                                        {
-                                            getOrglist?.data && getOrglist?.data.map((list, index) => {
-                                                return (
-                                                    <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
-                                                )
-                                            })
-                                        }
-                                    </Select>
-                                    <small className="mt-8 mb-8">Select an organization wherein you want to work</small>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset" className={classes.formControl}>
-                                    <FormLabel component="legend">Specialities</FormLabel>
-                                    <Grid container>
-                                        {
-                                            speciality && speciality.map((items, index) => {
-                                                return (
-                                                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                                        <FormControlLabel
-                                                            control={<Checkbox color="primary" value={items} onChange={handleChangeCheck} name="speciality" />}
-                                                            label={items}
-                                                        />
-                                                    </Grid>
-                                                )
+                                        className={classes.textField}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        name="last_name"
+                                        label="Last Name"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        error={(errors.last_name ? true : false)}
+                                        {...register("last_name", {
+                                            required: true,
+                                        })}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        name="email"
+                                        label="Email"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        error={(errors.email ? true : false)}
+                                        {...register("email", {
+                                            required: true,
+                                            pattern: {
+                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                                message: "Enter a valid e-mail address",
+                                            },
+                                        })}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        name="contact_number"
+                                        label="Contact Number"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        error={(errors.contact_number ? true : false)}
+                                        {...register("contact_number", {
+                                            required: true,
+                                        })}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
 
-                                            })
+                                <Grid item xs={12} sm={12}>
+                                    <FormControl variant="outlined" className={classes.formControl} 
+                                        error={(errors.organization_id ? true : false)}
+                                        {...register("organization_id", {
+                                            required: true,
+                                        })}
+                                    >
+                                        <InputLabel>Select Organization</InputLabel>
+                                        <Select
+                                            value={data.organization_id}
+                                            label="Select Organization"
+                                            onChange={handleOrgChange}
+                                            name="organization_id"
+                                        >
+                                            <MenuItem value="">
+                                                Select a shift time
+                                            </MenuItem>
+                                            {
+                                                getOrglist?.data && getOrglist?.data.map((list, index) => {
+                                                    return (
+                                                        <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </Select>
+                                        <small className="mt-8 mb-8">Select an organization wherein you want to work</small>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl component="fieldset" className={classes.formControl}>
+                                        {
+                                            (!!speciality && orgId) && <FormLabel component="legend">Specialities</FormLabel>
                                         }
-                                    </Grid>
-                                    {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
-                                </FormControl>
+                                        
+                                        <Grid container>
+                                            {
+                                                speciality && speciality.map((items, index) => {
+                                                    // console.log('items: ', items);
+                                                    return (
+                                                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                                            <FormControlLabel
+                                                                control={<Checkbox color="primary" value={items.id} onChange={handleChangeCheck} name="speciality" />}
+                                                                label={items.speciality_name}
+                                                            />
+                                                        </Grid>
+                                                    )
+
+                                                })
+                                            }
+                                        </Grid>
+                                        {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
+                                    </FormControl>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                            <div className={classes.bottomBtn}>
+                                <span></span>
+
+                                <Button type="submit" variant="contained" color="primary" className={classes.loginBtn} >
+                                    Next <ArrowForwardIosIcon className={classes.arroWForIcon}/>
+                                </Button> 
+                            </div>
+                            
+                        </form>
                     }
 
                     {
                         count === 1 && 
-                        <Grid container spacing={2}>
-                        
-                            <Grid item xs={12}>
-                                <TextField
-                                    name="address_line_1"
-                                    label="Address line 1"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    name="address_line_2"
-                                    label="Address line 2"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="city"
-                                    label="city"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="postcode"
-                                    label="Postcode"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="nmc_dmc_pin"
-                                    label="NMC DMC Pin"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <FormControl variant="outlined" className={classes.formControl}>
-                                    <InputLabel>Candidate Referred From</InputLabel>
-                                    <Select
-                                        value={data?.candidate_referred_from || ''}
-                                        name="candidate_referred_from"
-                                        label="Candidate Referred From"
-                                        onChange={handleChange}
-                                    >
-                                        <MenuItem value="">
-                                            Select a ward
-                                        </MenuItem>
-                                        <MenuItem value="wrwer">
-                                            wrwer
-                                        </MenuItem>
-                                        {/* {
-                                            getCandidateReferrredForm?.data && getCandidateReferrredForm?.data.map((list, index) => {
-                                                return (
-                                                    <MenuItem value={list.id} key={index}>{list.name}</MenuItem>
-                                                )
-                                            })
-                                        } */}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <div className="mb-24">
-                                    <input accept="image/*,.pdf" className={classes.inputHide} id="contained-button-file" multiple type="file" onChange={(e) => uploadImage(e)}/>
-                                    <label htmlFor="contained-button-file">
-                                        <Button variant="contained" color="primary" component="span">
-                                        Upload CV
-                                        </Button>
-                                    </label>
-                                </div>
-                            </Grid>
+                        <form className={classes.form} onSubmit={handleSubmit2(handleSubmit4)}>
+                            <Grid container spacing={2}>
                             
-                        </Grid>
-                    }
+                                <Grid item xs={12}>
+                                    <TextField
+                                        name="address_line_1"
+                                        label="Address line 1"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        error={(errors2.address_line_1 ? true : false)}
+                                        {...register2("address_line_1", {
+                                            required: true,
+                                        })}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        name="address_line_2"
+                                        label="Address line 2"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        name="city"
+                                        label="City"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        error={(errors.city ? true : false)}
+                                        {...register("city", {
+                                            required: true,
+                                        })}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        name="postcode"
+                                        label="Postcode"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        error={(errors.postcode ? true : false)}
+                                        {...register("postcode", {
+                                            required: true,
+                                        })}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        name="nmc_dmc_pin"
+                                        label="NMC DMC Pin"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl variant="outlined" className={classes.formControl}
+                                        error={(errors.candidate_referred_from ? true : false)}
+                                        {...register("candidate_referred_from", {
+                                            required: true,
+                                        })}
+                                    >
+                                        <InputLabel>Candidate Referred From</InputLabel>
+                                        <Select
+                                            value={data?.candidate_referred_from || ''}
+                                            name="candidate_referred_from"
+                                            label="Candidate Referred From"
+                                            onChange={handleChange}
+                                        >
+                                            <MenuItem value="">
+                                                Select a ward
+                                            </MenuItem>
+                                            {
+                                                getCandidateReferrredForm?.data && getCandidateReferrredForm?.data.map((list, index) => {
+                                                    return (
+                                                        <MenuItem value={list.id} key={index}>{list.name}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
 
-                    {
-                        count === 0 ?  
-                        <div className={classes.bottomBtn}>
-                            <span></span>
-                            <Button variant="contained" color="primary" className={classes.loginBtn} onClick={ handleNext}>
-                                Next <ArrowForwardIosIcon className={classes.arroWForIcon}/>
-                            </Button> 
-                        </div>:""
-                    }
+                                <Grid item xs={12}>
+                                    <div className="mb-24">
+                                        <input accept="image/*,.pdf" className={classes.inputHide} id="contained-button-file" multiple type="file" onChange={(e) => uploadImage(e)}/>
+                                        <label htmlFor="contained-button-file">
+                                            <Button variant="contained" color="primary" component="span">
+                                            Upload CV
+                                            </Button>
+                                        </label>
+                                    </div>
+                                </Grid>
+                                
+                            </Grid>
+                            <div className={classes.bottomBtn}>
+                                <Button variant="text" color="primary" onClick={ () => setCount(count - 1) }>
+                                    <ArrowBackIosIcon className={classes.arroWBackIcon} />
+                                    Back
+                                </Button>
 
-                    {
-                        count === 1 ? 
-                        <div className={classes.bottomBtn}>
-                            <Button variant="text" color="primary" onClick={ () => setCount(count - 1) }>
-                                <ArrowBackIosIcon className={classes.arroWBackIcon} />
-                                Back
-                            </Button> 
-                            <Button variant="contained" color="primary" className={classes.loginBtn} type="submit">
-                                Register
-                            </Button> 
-                        </div> :""
+                                <Button variant="contained" color="primary" className={classes.loginBtn} type="submit">
+                                    Register
+                                </Button> 
+                            </div>
+                        </form>
                     }
 
                     <div className={classes.bottomLink}>
                         <p className="mb-0">Already have an account?</p>
                         <Link to="login" className={classes.registerBtn}>Login</Link>
-                    </div>
-
-
-                    
-                    
-                </form>
+                    </div> 
             </Card>
         </Grid>
     )
