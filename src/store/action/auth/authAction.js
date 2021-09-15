@@ -27,8 +27,7 @@ export const login = (data) => {
                 dispatch(getLoginFailure(data))
             }
         }).catch(error => {
-            console.log('error: ', error);
-            dispatch(getLoginFailure(error.message))
+            dispatch(getLoginFailure(error.response.data.message))
         })
     }
 }
