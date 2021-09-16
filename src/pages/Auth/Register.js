@@ -299,85 +299,14 @@ const Register = () => {
                                         required
                                     />
                                 </Grid>
-
-                                <Grid item xs={12} sm={12}>
-                                    <FormControl variant="outlined" className={classes.formControl} required
-                                        error={(errors.organization_id ? true : false)}
-                                        {...register("organization_id", {
-                                            required: true,
-                                        })}
-                                    >
-                                        <InputLabel>Select Organization</InputLabel>
-                                        <Select
-                                            value={data.organization_id}
-                                            label="Select Organization"
-                                            onChange={handleOrgChange}
-                                            name="organization_id"
-                                        >
-                                            <MenuItem value="">
-                                                Select a shift time
-                                            </MenuItem>
-                                            {
-                                                getOrglist?.data && getOrglist?.data.map((list, index) => {
-                                                    return (
-                                                        <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </Select>
-                                        <small className="mt-8 mb-8">Select an organization wherein you want to work</small>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FormControl component="fieldset" className={classes.formControl}>
-                                        {
-                                            (!!speciality && orgId) && <FormLabel component="legend">Specialities</FormLabel>
-                                        }
-                                        
-                                        <Grid container>
-                                            {
-                                                speciality && speciality.map((items, index) => {
-                                                    // console.log('items: ', items);
-                                                    return (
-                                                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                                            <FormControlLabel
-                                                                control={<Checkbox color="primary" value={items.id} onChange={handleChangeCheck} name="speciality" />}
-                                                                label={items.speciality_name}
-                                                            />
-                                                        </Grid>
-                                                    )
-
-                                                })
-                                            }
-                                        </Grid>
-                                        {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
-                                    </FormControl>
-                                </Grid>
-                            </Grid>
-                            <div className={classes.bottomBtn}>
-                                <span></span>
-
-                                <Button type="submit" variant="contained" color="primary" className={classes.loginBtn} formNoValidate>
-                                    Next <ArrowForwardIosIcon className={classes.arroWForIcon}/>
-                                </Button> 
-                            </div>
-                            
-                        </form>
-                    }
-
-                    {
-                        count === 1 && 
-                        <form className={classes.form} onSubmit={handleSubmit2(handleSubmit4)}>
-                            <Grid container spacing={2}>
-                            
                                 <Grid item xs={12}>
                                     <TextField
                                         name="address_line_1"
                                         label="Address line 1"
                                         variant="outlined"
                                         className={classes.textField}
-                                        error={(errors2.address_line_1 ? true : false)}
-                                        {...register2("address_line_1", {
+                                        error={(errors.address_line_1 ? true : false)}
+                                        {...register("address_line_1", {
                                             required: true,
                                         })}
                                         onChange={handleChange}
@@ -399,8 +328,8 @@ const Register = () => {
                                         label="City"
                                         variant="outlined"
                                         className={classes.textField}
-                                        error={(errors2.city ? true : false)}
-                                        {...register2("city", {
+                                        error={(errors.city ? true : false)}
+                                        {...register("city", {
                                             required: true,
                                         })}
                                         onChange={handleChange}
@@ -413,8 +342,8 @@ const Register = () => {
                                         label="Postcode"
                                         variant="outlined"
                                         className={classes.textField}
-                                        error={(errors2.postcode ? true : false)}
-                                        {...register2("postcode", {
+                                        error={(errors.postcode ? true : false)}
+                                        {...register("postcode", {
                                             required: true,
                                         })}
                                         onChange={handleChange}
@@ -448,7 +377,53 @@ const Register = () => {
                                         }}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+
+                                
+                            </Grid>
+                            <div className={classes.bottomBtn}>
+                                <span></span>
+
+                                <Button type="submit" variant="contained" color="primary" className={classes.loginBtn} formNoValidate>
+                                    Next <ArrowForwardIosIcon className={classes.arroWForIcon}/>
+                                </Button> 
+                            </div>
+                            
+                        </form>
+                    }
+
+                    {
+                        count === 1 && 
+                        <form className={classes.form} onSubmit={handleSubmit2(handleSubmit4)}>
+                            <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12}>
+                                    <FormControl variant="outlined" className={classes.formControl} required
+                                        error={(errors2.organization_id ? true : false)}
+                                        {...register2("organization_id", {
+                                            required: true,
+                                        })}
+                                    >
+                                        <InputLabel>Select Organization</InputLabel>
+                                        <Select
+                                            value={data.organization_id}
+                                            label="Select Organization"
+                                            onChange={handleOrgChange}
+                                            name="organization_id"
+                                        >
+                                            <MenuItem value="">
+                                                Select a shift time
+                                            </MenuItem>
+                                            {
+                                                getOrglist?.data && getOrglist?.data.map((list, index) => {
+                                                    return (
+                                                        <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </Select>
+                                        <small className="mt-8 mb-8">Select an organization wherein you want to work</small>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
                                     <TextField
                                         name="nmc_dmc_pin"
                                         label="NMC DMC Pin"
@@ -457,33 +432,34 @@ const Register = () => {
                                         onChange={handleChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl variant="outlined" className={classes.formControl} required
-                                        error={(errors2.candidate_referred_from ? true : false)}
-                                        {...register2("candidate_referred_from", {
-                                            required: true,
-                                        })}
-                                    >
-                                        <InputLabel>Candidate Referred From</InputLabel>
-                                        <Select
-                                            value={data?.candidate_referred_from || ''}
-                                            name="candidate_referred_from"
-                                            label="Candidate Referred From"
-                                            onChange={handleChange}
-                                        >
-                                            <MenuItem value="">
-                                                Select a ward
-                                            </MenuItem>
+                                <Grid item xs={12}>
+                                    <FormControl component="fieldset" className={classes.formControl}>
+                                        {
+                                            (!!speciality && orgId) && <FormLabel component="legend">Specialities</FormLabel>
+                                        }
+                                        
+                                        <Grid container>
                                             {
-                                                getCandidateReferrredForm?.data && getCandidateReferrredForm?.data.map((list, index) => {
+                                                speciality && speciality.map((items, index) => {
+                                                    // console.log('items: ', items);
                                                     return (
-                                                        <MenuItem value={list.id} key={index}>{list.name}</MenuItem>
+                                                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                                            <FormControlLabel
+                                                                control={<Checkbox color="primary" value={items.id} onChange={handleChangeCheck} name="speciality" />}
+                                                                label={items.speciality_name}
+                                                            />
+                                                        </Grid>
                                                     )
+
                                                 })
                                             }
-                                        </Select>
+                                        </Grid>
+                                        {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
                                     </FormControl>
                                 </Grid>
+                            
+                                
+                                
                                 
 
                                 {/* <Grid item xs={12}>
