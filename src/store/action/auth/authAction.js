@@ -13,7 +13,6 @@ export const login = (data) => {
         dispatch(getLoginRequest())
         await apiClient(true).post(`api/signee/signin`,data)
         .then(response => {
-            console.log('response: ', response);
             const data = response.data
             if (data && data.status === true) {
                 dispatch(getLoginSuccess(data))
@@ -60,7 +59,6 @@ export const registerUser = (data) => {
         dispatch(registerRequest())
         await apiClient(true).post(`api/signee/signup`,data)
         .then(response => {
-            console.log('response: ', response);
             const data = response.data
             if (data && data.status === true) {
                 dispatch(registerSuccess(data))

@@ -101,7 +101,6 @@ const Login = () => {
 
     const loginSubmit = () => {
         // e.preventDefault()
-        console.log("data11", data)
         dispatch(login(data))
         setLoginNotify(true)
     }

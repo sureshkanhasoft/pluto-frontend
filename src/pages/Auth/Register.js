@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getOrganization, registerUser } from '../../store/action';
 import { apiClient } from '../../config/apiClient';
 import { useForm } from 'react-hook-form';
+import UtilService from '../../helper/service';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -124,6 +125,7 @@ const Register = () => {
 
     const [orgId, setOrgId] = useState()
     const [getCandidateReferrredForm, setGetCandidateReferrredForm] = useState([])
+    const disFutureDate = UtilService.disabledPastDate()
 
     const [data, setData] = useState({
         email: "",
@@ -139,7 +141,9 @@ const Register = () => {
         postcode:"",
         nmc_dmc_pin:"",
         candidate_referred_from:"",
-        candidate_id:""
+        candidate_id:"",
+        nationality:"",
+        date_of_birth:"",
     })
 
     const handleChange = (event) => {
@@ -227,7 +231,7 @@ const Register = () => {
     return (
         <Grid className={classes.loginContainer}>
             <div className={classes.logoContainer}>
-                <img src={logo} alt="" />
+                <img src={logo} alt="pluto logo" />
             </div>
             <Card className={classes.loginCard}>
                     {
@@ -241,7 +245,6 @@ const Register = () => {
                                         name="first_name"
                                         label="First name"         
                                         variant="outlined"
-                                        // value={data?.first_name || ""}
                                         error={(errors.first_name ? true : false)}
                                         {...register("first_name", {
                                             required: true,
@@ -420,6 +423,33 @@ const Register = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
+                                        name="nationality"
+                                        label="Nationality"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        onChange={handleChange}
+                                        fullWidth
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        id="date_of_birth"
+                                        label="Date of birth"
+                                        type="date"
+                                        name="date_of_birth"
+                                        variant="outlined"
+                                        onChange={handleChange}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        fullWidth
+                                        inputProps = {{
+                                            max:disFutureDate
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
                                         name="nmc_dmc_pin"
                                         label="NMC DMC Pin"
                                         variant="outlined"
@@ -454,6 +484,7 @@ const Register = () => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
+                                
 
                                 {/* <Grid item xs={12}>
                                     <div className="mb-24">

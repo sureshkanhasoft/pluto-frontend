@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     AppBar,
     Container,
@@ -14,6 +14,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import history from '../../utils/HistoryUtils';
 import { apiClient } from '../../config/apiClient';
+import Notify from '../Notify/Notify';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -72,13 +73,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
     const classes = useStyles();
+    const [msg, setMsg] = useState()
 
     const logout = () => {
         apiClient(true).get(`api/signee/logout`)
         .then(response => {
             if(response) {
+                setMsg(response.data.message)
                 localStorage.clear();
-                history.push('/login')
+                setTimeout(() => {
+                    history.push('/login')
+
+                }, 2000);
             }
           
         }).catch(error => {
@@ -87,33 +93,41 @@ const Navbar = () => {
     }
 
     return (
-        <AppBar position="fixed">
-            <Container maxWidth="lg">
-                <Toolbar disableGutters className={classes.toolbar}>
-                    <Link to="/shifts" className={classes.logo}>
-                        <Typography variant="h4">Pluto</Typography>
-                    </Link>
-                    <div className={classes.grow}></div>
-                    <NavLink  to="/shifts" color="inherit" className="menu-link">BROWSE SHIFTS</NavLink>
-                    <NavLink  to="/my-shifts/upcoming" color="inherit" className="menu-link">MY SHIFTS</NavLink>
-                    <NavLink  to="/profile/documents" color="inherit" className="menu-link">COMPLIANCE</NavLink>
-                    <Button color="inherit">
-                        <Badge badgeContent={1} color="primary">
-                            <NotificationsIcon/>
-                        </Badge>
-                    </Button>
-                    <Link to="/profile/information" color="inherit" className={classes.userIconCont}>
-                        <div className={classes.userProfile}>
-                            <PersonIcon className={classes.userIcon}/>
-                        </div>
-                        <Typography variant="subtitle1">User 1</Typography>
-                    </Link>
-                    <Button color="inherit" onClick={logout}>
-                        <ExitToAppIcon />
-                    </Button>
-                </Toolbar>
-            </Container>
-        </AppBar>
+        <>
+        { msg && msg !== "" &&
+            <Notify
+                data= {msg}
+                status="success"
+            />
+        }
+            <AppBar position="fixed">
+                <Container maxWidth="lg">
+                    <Toolbar disableGutters className={classes.toolbar}>
+                        <Link to="/shifts" className={classes.logo}>
+                            <Typography variant="h4">Pluto</Typography>
+                        </Link>
+                        <div className={classes.grow}></div>
+                        <NavLink  to="/shifts" color="inherit" className="menu-link">BROWSE SHIFTS</NavLink>
+                        <NavLink  to="/my-shifts/upcoming" color="inherit" className="menu-link">MY SHIFTS</NavLink>
+                        <NavLink  to="/profile/documents" color="inherit" className="menu-link">COMPLIANCE</NavLink>
+                        <Button color="inherit">
+                            <Badge badgeContent={1} color="primary">
+                                <NotificationsIcon/>
+                            </Badge>
+                        </Button>
+                        <Link to="/profile/information" color="inherit" className={classes.userIconCont}>
+                            <div className={classes.userProfile}>
+                                <PersonIcon className={classes.userIcon}/>
+                            </div>
+                            <Typography variant="subtitle1">User 1</Typography>
+                        </Link>
+                        <Button color="inherit" onClick={logout}>
+                            <ExitToAppIcon />
+                        </Button>
+                    </Toolbar>
+                </Container>
+            </AppBar>
+        </>
     );
 };
 
