@@ -110,9 +110,10 @@ const Information = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
 
-    const {getProfileList:{data:dataItem}, passChange, passErrors} = useSelector(state => state.profile)
+    const {getProfileList:{data:dataItem}, passChange, passErrors, updateProfileErrors, updateProfileSuccess} = useSelector(state => state.profile)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [changePassNotify, setChangePassNotify]=useState(false)
+    const [updateProfileNotify, setUpdateProfileNotify]=useState(false)
 
     const [data, setData] = useState({
         first_name:"",
@@ -157,9 +158,10 @@ const Information = () => {
         reset();
     }
 
-    const updateProfile = (e) => {
+    const updateProfile1 = (e) => {
         e.preventDefault()
-        // dispatch(updateProfile(data))
+        dispatch(updateProfile(data))
+        setUpdateProfileNotify(true)
     }
 
     return (
@@ -176,16 +178,23 @@ const Information = () => {
                     status="success"
                 />
             }
+
+            {updateProfileNotify && updateProfileSuccess?.message &&
+                <Notify
+                    data= {updateProfileSuccess?.message}
+                    status="success"
+                />
+            }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
                     <h1 className="mb-16">My details</h1>
-                    <form onSubmit={(e) => updateProfile(e)}>
+                    <form onSubmit={(e) => updateProfile1(e)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={4}>
                             <Card className={classes.userImage}>
                                 <Typography variant="caption">PLUTO USER NUMBER</Typography>
-                                <Typography variant="body1">AN05619</Typography>
+                                <Typography variant="body1">{data?.candidate_id}</Typography>
                             </Card>
                         </Grid>
                         <Grid item xs={12} md={4}>
@@ -227,6 +236,8 @@ const Information = () => {
                                             InputProps={{
                                                 endAdornment: <EditIcon />
                                             }}
+                                            error={updateProfileErrors?.message?.first_name ? true : false}
+                                            required
                                         />
                                     </div>
                                     <div className="form-field">
@@ -246,6 +257,8 @@ const Information = () => {
                                             InputProps={{
                                                 endAdornment: <EditIcon />
                                             }}
+                                            error={updateProfileErrors?.message?.last_name ? true : false}
+                                            required
                                         />
                                     </div>
                                     <div className="form-field">
@@ -265,6 +278,8 @@ const Information = () => {
                                             InputProps={{
                                                 endAdornment: <EditIcon />
                                             }}
+                                            error={updateProfileErrors?.message?.contact_number ? true : false}
+                                            required
                                         />
                                     </div>
                                 </CardContent>
@@ -289,6 +304,8 @@ const Information = () => {
                                             InputProps={{
                                                 endAdornment: <EditIcon />
                                             }}
+                                            error={updateProfileErrors?.message?.address_line_1 ? true : false}
+                                            required
                                         />
                                     </div>
                                     <div className="form-field">
@@ -325,6 +342,8 @@ const Information = () => {
                                             InputProps={{
                                                 endAdornment: <EditIcon />
                                             }}
+                                            error={updateProfileErrors?.message?.city ? true : false}
+                                            required
                                         />
                                     </div>
                                     <div className="form-field">
@@ -343,6 +362,8 @@ const Information = () => {
                                             InputProps={{
                                                 endAdornment: <EditIcon />
                                             }}
+                                            error={updateProfileErrors?.message?.postcode ? true : false}
+                                            required
                                         />
                                     </div>
                                 </CardContent>
@@ -350,8 +371,8 @@ const Information = () => {
                         </Grid>
                     </Grid>
                     <Box display="flex" justifyContent="flex-end" className="mt-24">
-                        <Button variant="contained" className={classes.btnSecondary} type="submit">Update</Button>
-                        <Button variant="outlined" className={classes.btnCancel}>Cancel</Button>
+                        <Button variant="contained" className={classes.btnSecondary} type="submit" formNoValidate>Update</Button>
+                        {/* <Button variant="outlined" className={classes.btnCancel}>Cancel</Button> */}
                     </Box>
 
                     </form>

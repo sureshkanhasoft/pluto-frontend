@@ -8,7 +8,7 @@ import {
 export const getProfile = () => {
     return async(dispatch) =>{
         dispatch(getProfileRequest())
-        await apiClient(true).get(`api/superadmin/get-detail`)
+        await apiClient(true).get(`api/signee/get-signee-details`)
         .then(response => {
             dispatch(getProfileSuccess(response.data))
         }).catch(error => {
@@ -41,7 +41,7 @@ export const getProfileError = (error) => {
 export const updateProfile = (data) => {
     return async(dispatch) =>{
         dispatch(updateProfileRequest())
-        await apiClient(true).post(`api/superadmin/update-profile`, data)
+        await apiClient(true).post(`api/signee/signee-profile-update`, data)
         .then(response => {
             const data = response.data
             if (data.status === true) {
