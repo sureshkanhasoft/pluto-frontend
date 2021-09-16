@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Container,
     Card,
     CardContent,
     Grid,
     Typography,
-    makeStyles
+    makeStyles,
+    Backdrop,CircularProgress,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
@@ -13,6 +14,8 @@ import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import ApartmentIcon from '@material-ui/icons/Apartment';
+import { useDispatch, useSelector } from 'react-redux';
+import { getShiftDetail } from '../../store/action';
 
 const useStyles = makeStyles((theme) => ({
     leftBorder:{
@@ -29,20 +32,42 @@ const useStyles = makeStyles((theme) => ({
     link:{
         color:"#184a7b",
         fontWeight:"500"
-    }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }))
 
-const ShiftsDetail = () => {
+const ShiftsDetail = ({match}) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const shift_id = match.params.id;
+    const {getShiftDetails, loading} = useSelector(state => state.browseShift)
+
+    let today  = new Date(getShiftDetails?.data?.date);
+    // console.log('today: ', today.toDateString());
+    let options = { weekday: 'long', year: 'numeric', month: 'long', day: '2-digit' };
+    const shiftDate = today.toLocaleDateString("en-US", options)
+
+    useEffect(() => {
+        dispatch(getShiftDetail(shift_id))
+    },[])
     return (
         <>
+        {
+            loading ?
+            <Backdrop className={classes.backdrop} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop> : ""
+        }
         <ProfileUpdateInfo />
         <section className="pt-16 pb-32">
             <Container maxWidth="lg">
                 <Link to="/shifts" className="back-button"><KeyboardArrowLeftIcon /> Back to all shifts </Link>
                 <h1 className="mt-16">Shift Details</h1>
 
-                <Card className="shift-detial-container">
+                <Card className="shift-detail-container">
                     <CardContent>
                         <Grid container>
                             <Grid item xs={12} md={10}>
@@ -52,14 +77,14 @@ const ShiftsDetail = () => {
                                     </div>
                                     <div className="">
                                         <span className="title-text-sm">REFERENCE SHIFT ID</span>
-                                        <Typography variant="h6" className={classes.refId}>0521031755</Typography>
+                                        <Typography variant="h6" className={classes.refId}>{getShiftDetails?.data?.reference_id}</Typography>
                                     </div>
                                 </div>
                             </Grid>
                             <Grid item xs={12} md={2} className={classes.leftBorder}>
                                 <div className="">
                                     <span className="title-text-sm">RATE</span>
-                                    <Typography variant="body1" className={classes.number}>£33/h</Typography>
+                                    <Typography variant="body1" className={classes.number}>£{getShiftDetails?.data?.rate}/h</Typography>
                                 </div>
                             </Grid>
                         </Grid>
@@ -77,19 +102,22 @@ const ShiftsDetail = () => {
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">Specialist</span>
-                                    <p>Cardiologist</p>
+                                    {/* <p>Cardiologist</p> */}
+                                    <p>{getShiftDetails?.data?.speciality_name}</p>
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">SHIFT DATE</span>
-                                    <p>Thursday 08 July 2021</p>
+                                    {/* <p>Thursday 08 July 2021</p> */}
+                                    <p>{shiftDate}</p>
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">SHIFT TIMES</span>
-                                    <p>19:00—07:30</p>
+                                    <p>{getShiftDetails?.data?.start_time} - {getShiftDetails?.data?.end_time}</p>
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">DURATION</span>
-                                    <p>12:30:00</p>
+                                    {/* <p>12:30:00</p> */}
+                                    <p>{getShiftDetails?.data?.duration}</p>
                                 </div>
                             </Grid>
                             <Grid item xs={12} md={4} className={classes.leftBorder}>
@@ -99,19 +127,20 @@ const ShiftsDetail = () => {
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">HOSPITAL NAME</span>
-                                    <p>Grimsby - Diana, Princess of Wales Hospital</p>
+                                    <p>{getShiftDetails?.data?.hospital_name}</p>
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">NAME OF WARD</span>
-                                    <p>B2 Yellow A IAAU DPoW</p>
+                                    <p>{getShiftDetails?.data?.ward_name}</p>
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">TYPE OF WARD</span>
-                                    <p>Acute Assessment</p>
+                                    <p>{getShiftDetails?.data?.ward_type}</p>
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">HOSPITAL WEBSITE</span>
-                                    <p><a href="https://www.nlg.nhs.uk/hospitals/grimsby/" target="_blank" rel="noreferrer" className={classes.link}>https://www.nlg.nhs.uk/hospitals/grimsby/</a></p>
+                                    {/* <p><a href="https://www.nlg.nhs.uk/hospitals/grimsby/" target="_blank" rel="noreferrer" className={classes.link}>https://www.nlg.nhs.uk/hospitals/grimsby/</a></p> */}
+                                    <p><a href={getShiftDetails?.data?.trust_portal_url ? getShiftDetails?.data?.trust_portal_url :"#"} target="_blank" rel="noreferrer" className={classes.link}>{getShiftDetails?.data?.trust_portal_url}</a></p>
                                 </div>
                             </Grid>
                             <Grid item xs={12} md={4} className={classes.leftBorder}>

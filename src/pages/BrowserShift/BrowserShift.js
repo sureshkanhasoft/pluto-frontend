@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Button,
     Container,
@@ -6,11 +6,15 @@ import {
     Menu,
     MenuItem,
     Checkbox,
-    FormControlLabel
+    FormControlLabel,
+    makeStyles,
+    Backdrop, CircularProgress
 } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
 import ShiftTable from '../ShiftTable/ShiftTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { getShift } from '../../store/action';
 
 const dayofWeek = [
     {
@@ -98,12 +102,22 @@ const hospitalList = [
     }
 ]
 
-const shiftList=[1,2,3,4,5,6,7,8,9,10]
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+}))
+
 
 const BrowserShift = () => {
+    const classes = useStyles();
+    const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [specialist, setSpecialist] = React.useState(null);
     const [hospital, setHospital] = React.useState(null);
+    const {getShiftList, loading} = useSelector(state => state.browseShift)
+    
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -125,8 +139,19 @@ const BrowserShift = () => {
     const hospitalClose = () => {
         setHospital(null)
     };
+
+    useEffect(() => {
+        dispatch(getShift())
+    },[])
+
     return (
         <>
+            {
+                loading ?
+                <Backdrop className={classes.backdrop} open={loading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop> : ""
+            }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-16">
                 <Container maxWidth="lg">
@@ -210,7 +235,7 @@ const BrowserShift = () => {
             </section>
 
             <section className="pb-32">
-                <ShiftTable shiftList={shiftList} />
+                <ShiftTable shiftList={getShiftList} />
             </section>
 
         </>

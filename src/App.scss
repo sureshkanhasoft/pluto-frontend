@@ -402,11 +402,17 @@ button{
                     
                 }
                 &.job-role{
+                    .tag-box{
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
                     .tag{
                         border-radius: 4px;
                         background-color: rgba(204,208,233,.6);
                         color: #18264d;
                         text-transform: uppercase;
+                        margin-bottom: 6px;
+                        margin-right: 6px;
                     }
                 }
                 &.hospital{
@@ -594,7 +600,7 @@ footer{
 }
 
 
-.shift-detial-container{
+.shift-detail-container{
     .MuiCardContent-root{
         padding: 24px;
     }
