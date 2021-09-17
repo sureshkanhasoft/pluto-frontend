@@ -8,7 +8,7 @@ import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const ComplainceDetail = () => {
+const ComplianceDetail = () => {
     return (
         <>
             <ProfileUpdateInfo />
@@ -65,4 +65,4 @@ const ComplainceDetail = () => {
     )
 }
 
-export default ComplainceDetail
+export default ComplianceDetail

@@ -383,7 +383,7 @@ const Information = () => {
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
                     <h1 className="mb-16">Change Password</h1>
-                    <form onSubmit={handleSubmit(changePasswordSubmit)}>
+                    <form onSubmit={handleSubmit(changePasswordSubmit)} autoComplete="off">
                         <Grid container spacing={2} >
                             <Grid item xs={12} md={4}>
                                 <Card className={classes.card}>
@@ -412,6 +412,7 @@ const Information = () => {
                                                 InputProps={{
                                                     endAdornment: <EditIcon />
                                                 }}
+                                                autoComplete="new-password"
                                             />
                                         </div>
                                         <div className="form-field">
@@ -438,6 +439,7 @@ const Information = () => {
                                                 InputProps={{
                                                     endAdornment: <EditIcon />
                                                 }}
+                                                autoComplete="off"
                                             />
                                         </div>
                                         <div className="form-field">
@@ -464,6 +466,7 @@ const Information = () => {
                                                 InputProps={{
                                                     endAdornment: <EditIcon />
                                                 }}
+                                                autoComplete="new-password"
                                             />
                                         </div>
                                     </CardContent>

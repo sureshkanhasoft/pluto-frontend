@@ -1,6 +1,6 @@
 import Shifts from "./pages/BrowserShift/Shifts";
-import ComplainceDetail from "./pages/Compliance/ComplainceDetail";
 import Compliance from "./pages/Compliance/Compliance";
+import ComplianceDetail from "./pages/Compliance/ComplianceDetail";
 import MyShift from "./pages/MyShift/MyShift";
 import Profile from "./pages/Profile/Profile";
 
@@ -23,7 +23,7 @@ const Routes = [
     {
         name:"My Shifts",
         path:"profile/documents/:id",
-        component:ComplainceDetail
+        component:ComplianceDetail
     },
     {
         name:"Profile",

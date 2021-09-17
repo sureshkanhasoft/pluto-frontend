@@ -150,10 +150,8 @@ const ShiftsDetail = ({match}) => {
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">ADDRESS</span>
-                                    <p>Scartho Road, Grimsby</p>
-                                </div>
-                                <div className="">
-                                    
+                                    <p className="mb-0">{getShiftDetails?.data?.address_line_1}{getShiftDetails?.data?.address_line_2 ? ",":""} {getShiftDetails?.data?.address_line_2}</p>
+                                    <p>{getShiftDetails?.data?.city} - {getShiftDetails?.data?.post_code}</p>
                                 </div>
                             </Grid>
                         </Grid>

@@ -5,7 +5,7 @@ import {
     makeStyles,
     Box
 } from '@material-ui/core';
-import { NavLink, Switch, Route, useRouteMatch } from 'react-router-dom';
+import { NavLink, Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
 import UpcomingShift from './UpcomingShift';
 import PastShift from './PastShift';
@@ -32,7 +32,7 @@ const useStyle = makeStyles(() => ({
     }
 }))
 
-const MyShift = () => {
+const MyShift = ({match}) => {
     let { path, url } = useRouteMatch();
     const classes = useStyle();
     return (
@@ -45,11 +45,11 @@ const MyShift = () => {
                         <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/upcoming`} >Upcoming Shift <Chip size="small" label="2" className={classes.chipText} /></NavLink>
                         <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/past`} >Past Shift  <Chip size="small" label="4" className={classes.chipText} /></NavLink>
                     </Box>
-
                 </Container>
                 <Switch>
                     <Route exact path={`${path}/upcoming`} component={UpcomingShift} />
                     <Route path={`${path}/past`} component={PastShift} />
+                    <Redirect from="" to={`${match.url}`} />
                 </Switch>
             </section>
         </>
