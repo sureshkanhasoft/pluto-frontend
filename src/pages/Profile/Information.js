@@ -15,9 +15,10 @@ import ProfileUpdateInfo from "../../components/ProfileUpdateInfo/ProfileUpdateI
 import EditIcon from '@material-ui/icons/Edit';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../../store/action/profile/profileAction';
-import {changePassword, updateProfile} from '../../store/action'
+import { changePassword, updateProfile } from '../../store/action'
 import { useForm } from 'react-hook-form';
 import Notify from '../../components/Notify/Notify';
+import UtilService from '../../helper/service';
 // import WarningIcon from '@material-ui/icons/Warning';
 
 const useStyle = makeStyles(() => ({
@@ -110,20 +111,23 @@ const Information = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
 
-    const {getProfileList:{data:dataItem}, passChange, passErrors, updateProfileErrors, updateProfileSuccess} = useSelector(state => state.profile)
+    const { getProfileList: { data: dataItem }, passChange, passErrors, updateProfileErrors, updateProfileSuccess } = useSelector(state => state.profile)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const [changePassNotify, setChangePassNotify]=useState(false)
-    const [updateProfileNotify, setUpdateProfileNotify]=useState(false)
+    const [changePassNotify, setChangePassNotify] = useState(false)
+    const [updateProfileNotify, setUpdateProfileNotify] = useState(false)
+    const disFutureDate = UtilService.disabledPastDate()
 
     const [data, setData] = useState({
-        first_name:"",
-        last_name:"",
-        email:"",
-        contact_number:"",
-        address_line_1:"",
-        address_line_2:"",
-        city:"",
-        postcode:""
+        first_name: "",
+        last_name: "",
+        email: "",
+        contact_number: "",
+        address_line_1: "",
+        address_line_2: "",
+        city: "",
+        postcode: "",
+        nationality:"",
+        date_of_birth:"",
     })
 
     const [pass, setPass] = useState({
@@ -138,7 +142,7 @@ const Information = () => {
     }
     const handlePassChange = (event) => {
         event.preventDefault();
-        setPass({...pass, [event.target.name]: event.target.value})
+        setPass({ ...pass, [event.target.name]: event.target.value })
     }
     useEffect(() => {
         setData(dataItem)
@@ -168,20 +172,20 @@ const Information = () => {
         <>
             {changePassNotify && passErrors?.message &&
                 <Notify
-                    data= {passErrors?.message}
+                    data={passErrors?.message}
                     status="error"
                 />
             }
             {changePassNotify && passChange?.message &&
                 <Notify
-                    data= {passChange?.message}
+                    data={passChange?.message}
                     status="success"
                 />
             }
 
             {updateProfileNotify && updateProfileSuccess?.message &&
                 <Notify
-                    data= {updateProfileSuccess?.message}
+                    data={updateProfileSuccess?.message}
                     status="success"
                 />
             }
@@ -190,190 +194,238 @@ const Information = () => {
                 <Container maxWidth="lg">
                     <h1 className="mb-16">My details</h1>
                     <form onSubmit={(e) => updateProfile1(e)}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={4}>
-                            <Card className={classes.userImage}>
-                                <Typography variant="caption">PLUTO USER NUMBER</Typography>
-                                <Typography variant="body1">{data?.candidate_id}</Typography>
-                            </Card>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} md={4}>
+                                <Card className={classes.userImage}>
+                                    <Typography variant="caption">PLUTO USER NUMBER</Typography>
+                                    <Typography variant="body1">{data?.candidate_id}</Typography>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContainer}>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="EMAIL"
+                                                fullWidth
+                                                value={data?.email ? data?.email : ""}
+                                                placeholder="-"
+                                                name="email"
+                                                onChange={handleChange}
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                id="email"
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    // endAdornment: <EditIcon />,
+                                                    readOnly: true,
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="FIRST NAME"
+                                                id="first_name"
+                                                name="first_name"
+                                                value={data?.first_name ? data?.first_name : ""}
+                                                placeholder="-"
+                                                // value="Warner"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                                error={updateProfileErrors?.message?.first_name ? true : false}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="LAST NAME"
+                                                id="last_name"
+                                                name="last_name"
+                                                // value="David"
+                                                value={data?.last_name ? data?.last_name : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                                error={updateProfileErrors?.message?.last_name ? true : false}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="PHONE NUMBER"
+                                                id="contact_number"
+                                                name="contact_number"
+                                                // value="99000000"
+                                                value={data?.contact_number ? data?.contact_number : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                                error={updateProfileErrors?.message?.contact_number ? true : false}
+                                                required
+                                            />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContainer}>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="ADDRESS LINE 1"
+                                                id="address_line_1"
+                                                name="address_line_1"
+                                                value={data?.address_line_1 ? data?.address_line_1 : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                                error={updateProfileErrors?.message?.address_line_1 ? true : false}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="ADDRESS LINE 2"
+                                                id="address_line_2"
+                                                name="address_line_2"
+                                                value={data?.address_line_2 ? data?.address_line_2 : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="CITY OR TOWN"
+                                                id="city"
+                                                name="city"
+                                                value={data?.city ? data?.city : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                                error={updateProfileErrors?.message?.city ? true : false}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="POST CODE"
+                                                id="postCode"
+                                                name="postcode"
+                                                value={data?.postcode ? data?.postcode : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                                error={updateProfileErrors?.message?.postcode ? true : false}
+                                                required
+                                            />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContainer}>
+                                        <div className="form-field">
+                                            <TextField
+                                                label="Nationality"
+                                                id="nationality"
+                                                name="nationality"
+                                                value={data?.nationality ? data?.nationality : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
+                                                }}
+                                                error={updateProfileErrors?.message?.nationality ? true : false}
+                                                required
+                                            />
+                                        </div>
+                                        
+                                        <div className="form-field">
+                                            <TextField
+                                                label="Date of birth"
+                                                id="date_of_birth"
+                                                name="date_of_birth"
+                                                type="date"
+                                                value={data?.date_of_birth ? data?.date_of_birth : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                inputProps = {{
+                                                    max:disFutureDate
+                                                }}
+                                                error={updateProfileErrors?.message?.date_of_birth ? true : false}
+                                                required
+                                            />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContainer}>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="EMAIL"
-                                            fullWidth
-                                            value={data?.email ? data?.email :""}
-                                            placeholder="-"
-                                            name="email"
-                                            onChange={handleChange}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            id="email"
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                // endAdornment: <EditIcon />,
-                                                readOnly: true,
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="FIRST NAME"
-                                            id="first_name"
-                                            name="first_name"
-                                            value={data?.first_name ? data?.first_name : ""}
-                                            placeholder="-"
-                                            // value="Warner"
-                                            onChange={handleChange}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                            error={updateProfileErrors?.message?.first_name ? true : false}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="LAST NAME"
-                                            id="last_name"
-                                            name="last_name"
-                                            // value="David"
-                                            value={data?.last_name ? data?.last_name : ""}
-                                            placeholder="-"
-                                            onChange={handleChange}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                            error={updateProfileErrors?.message?.last_name ? true : false}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="PHONE NUMBER"
-                                            id="contact_number"
-                                            name="contact_number"
-                                            // value="99000000"
-                                            value={data?.contact_number ? data?.contact_number :""}
-                                            placeholder="-"
-                                            onChange={handleChange}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                            error={updateProfileErrors?.message?.contact_number ? true : false}
-                                            required
-                                        />
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContainer}>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="ADDRESS LINE 1"
-                                            id="address_line_1"
-                                            name="address_line_1"
-                                            value={data?.address_line_1 ? data?.address_line_1 : ""}
-                                            placeholder="-"
-                                            onChange={handleChange}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                            error={updateProfileErrors?.message?.address_line_1 ? true : false}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="ADDRESS LINE 2"
-                                            id="address_line_2"
-                                            name="address_line_2"
-                                            value={data?.address_line_2 ?data?.address_line_2 : ""}
-                                            placeholder="-"
-                                            onChange={handleChange}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="CITY OR TOWN"
-                                            id="city"
-                                            name="city"
-                                            value={data?.city ? data?.city :""}
-                                            placeholder="-"
-                                            onChange={handleChange}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                            error={updateProfileErrors?.message?.city ? true : false}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <TextField
-                                            label="POST CODE"
-                                            id="postCode"
-                                            name="postcode"
-                                            value={data?.postcode ? data?.postcode : ""}
-                                            placeholder="-"
-                                            onChange={handleChange}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            className={classes.textFiled}
-                                            InputProps={{
-                                                endAdornment: <EditIcon />
-                                            }}
-                                            error={updateProfileErrors?.message?.postcode ? true : false}
-                                            required
-                                        />
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    </Grid>
-                    <Box display="flex" justifyContent="flex-end" className="mt-24">
-                        <Button variant="contained" className={classes.btnSecondary} type="submit" formNoValidate>Update</Button>
-                        {/* <Button variant="outlined" className={classes.btnCancel}>Cancel</Button> */}
-                    </Box>
+                        <Box display="flex" justifyContent="flex-end" className="mt-24">
+                            <Button variant="contained" className={classes.btnSecondary} type="submit" formNoValidate>Update</Button>
+                            {/* <Button variant="outlined" className={classes.btnCancel}>Cancel</Button> */}
+                        </Box>
 
                     </form>
 
