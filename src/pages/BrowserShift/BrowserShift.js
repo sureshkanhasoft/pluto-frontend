@@ -183,28 +183,6 @@ const BrowserShift = () => {
                                 </Menu>
                             </div>
                             <div className="">
-                                <h4 onClick={specialistClick}>Speciality <KeyboardArrowDownIcon /></h4>
-                                <Menu
-                                    anchorEl={specialist}
-                                    keepMounted
-                                    open={Boolean(specialist)}
-                                    onClose={specialistClose}
-                                    getContentAnchorEl={null}
-                                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                                    className="filter-menuItem-container"
-                                >
-                                    {
-                                        speciality.map((item, index) => (
-                                            <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
-                                            </MenuItem>
-                                        ))
-                                    }
-                                    <Divider />
-                                    <MenuItem className="menu-item-clear">Clear</MenuItem>
-                                </Menu>
-                            </div>
-                            <div className="">
                                 <h4 onClick={hospitalClick}>Hospital <KeyboardArrowDownIcon /></h4>
                                 <Menu
                                     anchorEl={hospital}
@@ -227,6 +205,29 @@ const BrowserShift = () => {
                                 </Menu>
                             </div>
                             <div className="">
+                                <h4 onClick={specialistClick}>Speciality <KeyboardArrowDownIcon /></h4>
+                                <Menu
+                                    anchorEl={specialist}
+                                    keepMounted
+                                    open={Boolean(specialist)}
+                                    onClose={specialistClose}
+                                    getContentAnchorEl={null}
+                                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                                    className="filter-menuItem-container"
+                                >
+                                    {
+                                        speciality.map((item, index) => (
+                                            <MenuItem key={index}>
+                                                <FormControlLabel control={<Checkbox name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
+                                            </MenuItem>
+                                        ))
+                                    }
+                                    <Divider />
+                                    <MenuItem className="menu-item-clear">Clear</MenuItem>
+                                </Menu>
+                            </div>
+                            
+                            <div className="">
                                 <Button variant="outlined">Filter</Button>
                             </div>
                         </div>
@@ -235,7 +236,7 @@ const BrowserShift = () => {
             </section>
 
             <section className="pb-32">
-                <ShiftTable shiftList={getShiftList} />
+                <ShiftTable shiftList={getShiftList ? getShiftList : loading} />
             </section>
 
         </>
