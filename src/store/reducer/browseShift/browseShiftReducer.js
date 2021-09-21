@@ -7,7 +7,16 @@ const initialState = {
     getShiftListError:[],
 
     getShiftDetails:[],
-    getShiftDetailError:[]
+    getShiftDetailError:[],
+
+    filterLoader:false,
+
+    getHospitalList:[],
+    getHospitalError:[],
+
+    getFilterSpeciality:[],
+    getFilterSpecialityError:[]
+
 }
 
 const browseShiftReducer = (state = initialState, action) => {
@@ -50,6 +59,49 @@ const browseShiftReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 getShiftDetailError: true
+            })
+
+
+        // --------------------------------------
+
+        case actionTypes.GET_HOSPITAL_REQUEST:
+            return updateObject(state, {
+                filterLoader: true,
+                getHospitalList:"",
+                getHospitalError:""
+            })
+
+        case actionTypes.GET_HOSPITAL_SUCCESS:
+            return updateObject(state, {
+                filterLoader: false,
+                getHospitalList: action.payload
+            })
+
+        case actionTypes.GET_HOSPITAL_ERROR:
+            return updateObject(state, {
+                filterLoader: false,
+                getHospitalError: true
+            })
+
+        // ------------------------------
+
+        case actionTypes.GET_FILTER_SPECIALITY_REQUEST:
+            return updateObject(state, {
+                filterLoader: true,
+                getFilterSpeciality:"",
+                getFilterSpecialityError:""
+            })
+
+        case actionTypes.GET_FILTER_SPECIALITY_SUCCESS:
+            return updateObject(state, {
+                filterLoader: false,
+                getFilterSpeciality: action.payload
+            })
+
+        case actionTypes.GET_FILTER_SPECIALITY_ERROR:
+            return updateObject(state, {
+                filterLoader: false,
+                getFilterSpecialityError: true
             })
 
         default:

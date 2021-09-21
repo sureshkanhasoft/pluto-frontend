@@ -273,6 +273,7 @@ button{
 .filter-menuItem-container{
     .MuiPaper-root{
         min-width: 200px;
+        max-height: 310px;
     }
     label{
         .MuiFormControlLabel-label{

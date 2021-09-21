@@ -1,5 +1,11 @@
 import { apiClient } from "../../../config/apiClient";
 import { 
+    GET_FILTER_SPECIALITY_ERROR,
+    GET_FILTER_SPECIALITY_REQUEST,
+    GET_FILTER_SPECIALITY_SUCCESS,
+    GET_HOSPITAL_ERROR,
+    GET_HOSPITAL_REQUEST,
+    GET_HOSPITAL_SUCCESS,
     GET_SHIFT_DETAIL_ERROR, GET_SHIFT_DETAIL_REQUEST, GET_SHIFT_DETAIL_SUCCESS, 
     GET_SHIFT_ERROR, GET_SHIFT_REQUEST, GET_SHIFT_SUCCESS 
 } from "../actiontypes";
@@ -76,3 +82,78 @@ export const getShiftDetailFailure = error => {
     }
 }
 
+// ------------------------------------------
+
+export const getHospital = () => {
+    return async (dispatch) => {
+        dispatch(getHospitalRequest())
+        await apiClient(true).get(`api/signee/show-all-hospital`)
+        .then(response => {
+            console.log('response: ', response.data);
+            const dataItem = response.data;
+            dispatch(getHospitalSuccess(dataItem))
+        }).catch(error => {
+            dispatch(getHospitalSuccess(""))
+            dispatch(getHospitalFailure(error))
+        });
+    }
+
+}
+
+export const getHospitalRequest = () => {
+    return {
+        type: GET_HOSPITAL_REQUEST
+    }
+}
+
+export const getHospitalSuccess = data => {
+    return {
+        type: GET_HOSPITAL_SUCCESS,
+        payload: data
+    }
+}
+
+export const getHospitalFailure = error => {
+    return {
+        type: GET_HOSPITAL_ERROR,
+        payload: error
+    }
+}
+
+
+// ----------------------------------
+
+export const getfilterSpeciality = () => {
+    return async (dispatch) => {
+        dispatch(getfilterSpecialityRequest())
+        await apiClient(true).get(`api/signee/show-all-speciality`)
+        .then(response => {
+            const dataItem = response.data;
+            dispatch(getfilterSpecialitySuccess(dataItem))
+        }).catch(error => {
+            dispatch(getfilterSpecialitySuccess(""))
+            dispatch(getfilterSpecialityFailure(error))
+        });
+    }
+
+}
+
+export const getfilterSpecialityRequest = () => {
+    return {
+        type: GET_FILTER_SPECIALITY_REQUEST
+    }
+}
+
+export const getfilterSpecialitySuccess = data => {
+    return {
+        type: GET_FILTER_SPECIALITY_SUCCESS,
+        payload: data
+    }
+}
+
+export const getfilterSpecialityFailure = error => {
+    return {
+        type: GET_FILTER_SPECIALITY_ERROR,
+        payload: error
+    }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     Container,
@@ -14,7 +14,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
 import ShiftTable from '../ShiftTable/ShiftTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { getShift } from '../../store/action';
+import { getfilterSpeciality, getHospital, getShift } from '../../store/action';
 
 const dayofWeek = [
     {
@@ -47,60 +47,7 @@ const dayofWeek = [
     },
 ]
 
-const speciality = [
-    {
-        id: 1,
-        name: "Cardiologist"
-    },
-    {
-        id: 2,
-        name: "Neurosurgeon"
-    },
-    {
-        id: 3,
-        name: "Neurologist"
-    },
-    {
-        id: 4,
-        name: "Dentist"
-    },
-    {
-        id: 5,
-        name: "Psychiatrist"
-    },
-    {
-        id: 6,
-        name: "ENT"
-    }
-]
 
-
-const hospitalList = [
-    {
-        id: 1,
-        name: "Kent - Maidstone Hospital"
-    },
-    {
-        id: 2,
-        name: "Kent - Tunbridge Wells Hospital"
-    },
-    {
-        id: 3,
-        name: "Rugby - Hospital of St Cross"
-    },
-    {
-        id: 4,
-        name: "Coventry - University Hospital Coventry"
-    },
-    {
-        id: 5,
-        name: "Pontprennau - Spire Cardiff Hospital"
-    },
-    {
-        id: 6,
-        name: "Wigan - Royal Albert Edward Infirmary"
-    }
-]
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -116,7 +63,14 @@ const BrowserShift = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [specialist, setSpecialist] = React.useState(null);
     const [hospital, setHospital] = React.useState(null);
-    const {getShiftList, loading} = useSelector(state => state.browseShift)
+    const {getShiftList, loading, getHospitalList, getFilterSpeciality} = useSelector(state => state.browseShift)
+
+    const [data, setData] = useState({
+        speciality:[],
+        hospital:[],
+        weekday:[]
+    })
+    console.log('data: ', data);
     
 
     const handleClick = (event) => {
@@ -140,8 +94,57 @@ const BrowserShift = () => {
         setHospital(null)
     };
 
+    const handleChangeCheckbox = (event) => {
+        const specialityData = JSON.parse(JSON.stringify(data));
+        const isChecked = (event.target.checked);
+        console.log('isChecked: ', isChecked);
+        if (isChecked) {
+            specialityData.speciality.push(event.target.value);
+            setData(specialityData)
+        } else {
+            const newData = (specialityData.speciality).filter(item => item !== event.target.value);
+            specialityData.speciality = newData;
+            setData(specialityData)
+        }
+    };
+
+    const handleHospitalChangeCheckbox = (event) => {
+        const hospitalData = JSON.parse(JSON.stringify(data));
+        const isChecked = (event.target.checked);
+        console.log('isChecked: ', isChecked);
+        if (isChecked) {
+            hospitalData.hospital.push(event.target.value);
+            setData(hospitalData)
+        } else {
+            const newData = (hospitalData.hospital).filter(item => item !== event.target.value);
+            hospitalData.hospital = newData;
+            setData(hospitalData)
+        }
+    };
+    const handleWeekdayChangeCheckbox = (event) => {
+        const weekdayData = JSON.parse(JSON.stringify(data));
+        const isChecked = (event.target.checked);
+        console.log('isChecked: ', isChecked);
+        if (isChecked) {
+            weekdayData.weekday.push(event.target.value);
+            setData(weekdayData)
+        } else {
+            const newData = (weekdayData.weekday).filter(item => item !== event.target.value);
+            weekdayData.weekday = newData;
+            setData(weekdayData)
+        }
+    };
+
     useEffect(() => {
         dispatch(getShift())
+    },[])
+
+    useEffect(() => {
+        dispatch(getHospital())
+    },[])
+
+    useEffect(() => {
+        dispatch(getfilterSpeciality())
     },[])
 
     return (
@@ -174,7 +177,7 @@ const BrowserShift = () => {
                                     {
                                         dayofWeek.map((item, index) => (
                                             <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
+                                                <FormControlLabel control={<Checkbox onChange={handleWeekdayChangeCheckbox} value={item.name} name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
                                             </MenuItem>
                                         ))
                                     }
@@ -194,9 +197,9 @@ const BrowserShift = () => {
                                     className="filter-menuItem-container"
                                 >
                                     {
-                                        hospitalList.map((item, index) => (
+                                         getFilterSpeciality?.data && getFilterSpeciality?.data.map((item, index) => (
                                             <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
+                                                <FormControlLabel control={<Checkbox onChange={handleHospitalChangeCheckbox} value={item.speciality_name}  color="primary" className="menu-item-checkbox" />} label={item.speciality_name} />
                                             </MenuItem>
                                         ))
                                     }
@@ -216,9 +219,9 @@ const BrowserShift = () => {
                                     className="filter-menuItem-container"
                                 >
                                     {
-                                        speciality.map((item, index) => (
+                                        getFilterSpeciality?.data && getFilterSpeciality?.data.map((item, index) => (
                                             <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
+                                                <FormControlLabel control={<Checkbox onChange={handleChangeCheckbox} value={item.speciality_name} color="primary" className="menu-item-checkbox" />} label={item.speciality_name} />
                                             </MenuItem>
                                         ))
                                     }

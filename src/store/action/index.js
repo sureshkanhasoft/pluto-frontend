@@ -22,5 +22,7 @@ export {
 
 export {
     getShift,
-    getShiftDetail
+    getShiftDetail,
+    getHospital,
+    getfilterSpeciality
 } from "./browseShift/browseShiftAction"
