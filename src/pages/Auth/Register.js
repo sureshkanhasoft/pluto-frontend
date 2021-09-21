@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
-import { 
+import React, { useState } from 'react'
+import {
     Grid, Card, TextField, Button, makeStyles,
-    FormControl,Select,MenuItem, InputLabel,
-    FormLabel,FormControlLabel,Checkbox
- } from '@material-ui/core';
- import { Link } from 'react-router-dom';
- import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
- import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+    FormControl, Select, MenuItem, InputLabel,
+    FormLabel, FormControlLabel, Checkbox
+} from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import logo from '../../assets/images/logo.svg'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,19 +19,19 @@ const useStyle = makeStyles({
     loginContainer: {
         width: "100%",
         height: "100vh",
-        overflow:"auto",
+        overflow: "auto",
         // display: "flex",
         // justifyContent: "center",
         // alignItems: "center",
         background: "#2b68a4",
         flexDirection: "column"
     },
-    logoContainer:{
-        marginBottom:'16px',
-        paddingTop:40,
-        '& img':{
-            margin:'0 auto',
-            display:"block"
+    logoContainer: {
+        marginBottom: '16px',
+        paddingTop: 40,
+        '& img': {
+            margin: '0 auto',
+            display: "block"
         }
     },
     loginCard: {
@@ -40,7 +40,7 @@ const useStyle = makeStyles({
         padding: "36px 24px 24px",
         background: "#dceeff",
         boxShadow: "0 1px 35px rgba(11, 48, 86, 0.50)",
-        margin:'0 auto 30px'
+        margin: '0 auto 30px'
     },
     form: {
         width: "100%",
@@ -49,68 +49,68 @@ const useStyle = makeStyles({
     },
     textField: {
         marginBottom: 16,
-        color:"#000",
-        width:"100%",
-        "& input":{
-            paddingLeft:12
+        color: "#000",
+        width: "100%",
+        "& input": {
+            paddingLeft: 12
         },
         "& svg": {
             color: "#2b68a4"
         }
     },
-    forgotCont:{
-        display:"flex",
-        justifyContent:"flex-end",
-        marginBottom:24,
+    forgotCont: {
+        display: "flex",
+        justifyContent: "flex-end",
+        marginBottom: 24,
     },
-    forgotText:{
-        color:"#2b68a4",
-        fontSize:13,
-        borderBottom:"1px dashed #2b68a4"
+    forgotText: {
+        color: "#2b68a4",
+        fontSize: 13,
+        borderBottom: "1px dashed #2b68a4"
     },
-    loginBtn:{
-        width:140,
+    loginBtn: {
+        width: 140,
         borderRadius: "4px",
         // margin:"0 auto",
-        background:"#ff8b46",
-        "&:hover":{
-            background:"#ff8b46"
+        background: "#ff8b46",
+        "&:hover": {
+            background: "#ff8b46"
         }
     },
-    formControl:{
-        width:"100%"
+    formControl: {
+        width: "100%"
     },
-    bottomBtn:{
-        display:"flex",
-        justifyContent:"space-between"
+    bottomBtn: {
+        display: "flex",
+        justifyContent: "space-between"
     },
-    arroWForIcon:{
-        width:16,
-        position:"absolute",
-        right:12,
-        top:6
+    arroWForIcon: {
+        width: 16,
+        position: "absolute",
+        right: 12,
+        top: 6
     },
-    arroWBackIcon:{
-        width:16,
-        position:"absolute",
-        left:0,
-        top:6
+    arroWBackIcon: {
+        width: 16,
+        position: "absolute",
+        left: 0,
+        top: 6
     },
-    inputHide:{
-        display:"none"
+    inputHide: {
+        display: "none"
     },
-    bottomLink:{
-        marginTop:16,
-        display:"flex",
-        alignItems:"center",
-        justifyContent:"flex-end",
-        fontSize:14
+    bottomLink: {
+        marginTop: 16,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        fontSize: 14
     },
-    registerBtn:{
-        marginLeft:12,
-        fontSize:15,
-        fontWeight:"500",
-        color:"#2b68a4"
+    registerBtn: {
+        marginLeft: 12,
+        fontSize: 15,
+        fontWeight: "500",
+        color: "#2b68a4"
     }
 })
 
@@ -119,7 +119,7 @@ const Register = () => {
     const dispatch = useDispatch();
     const [count, setCount] = useState(0)
     const [speciality, setSpeciality] = useState([])
-    const {getOrglist} = useSelector(state => state.organization)
+    const { getOrglist } = useSelector(state => state.organization)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { register: register2, formState: { errors: errors2 }, handleSubmit: handleSubmit2, } = useForm();
 
@@ -130,20 +130,20 @@ const Register = () => {
     const [data, setData] = useState({
         email: "",
         first_name: "",
-        last_name:"",
-        organization_id:"",
+        last_name: "",
+        organization_id: "",
         speciality: [],
 
-        contact_number:"",
-        address_line_1:"",
-        address_line_2:"",
-        city:"",
-        postcode:"",
-        nmc_dmc_pin:"",
-        candidate_referred_from:"",
-        candidate_id:"",
-        nationality:"",
-        date_of_birth:"",
+        contact_number: "",
+        address_line_1: "",
+        address_line_2: "",
+        city: "",
+        postcode: "",
+        nmc_dmc_pin: "",
+        candidate_referred_from: "",
+        candidate_id: "",
+        nationality: "",
+        date_of_birth: "",
     })
 
     const handleChange = (event) => {
@@ -157,7 +157,7 @@ const Register = () => {
 
     useEffect(() => {
         dispatch(getOrganization())
-    },[])
+    }, [])
 
     const handleChangeCheck = (event) => {
         const specialityData = JSON.parse(JSON.stringify(data));
@@ -182,39 +182,39 @@ const Register = () => {
 
     const getSpecialities = async () => {
         await apiClient(true).get(`api/signee/get-org-specialities/${orgId}`)
-        .then(response => {
-            setSpeciality(response.data.data)
-        }).catch(error => {
-            console.log('error: ', error);
-        })
+            .then(response => {
+                setSpeciality(response.data.data)
+            }).catch(error => {
+                console.log('error: ', error);
+            })
     }
 
     useEffect(() => {
         getSpecialities()
     }, [orgId])
 
-    const getCandidateId= async () => {
+    const getCandidateId = async () => {
         await apiClient(true).get(`api/signee/generate-candidateId`)
-        .then(response => {
-            setData({ ...data, candidate_id: parseFloat(response.data.data.candidate_id) })
-        }).catch(error => {
-            console.log("error.message", error.message);
-        });
+            .then(response => {
+                setData({ ...data, candidate_id: parseFloat(response.data.data.candidate_id) })
+            }).catch(error => {
+                console.log("error.message", error.message);
+            });
     }
     useEffect(() => {
         getCandidateId()
     }, [])
 
-    const getCandidateReferredFrom = async() => {
+    const getCandidateReferredFrom = async () => {
         await apiClient(true).get(`api/signee/candidate-referred-from`)
-        .then(response => {
-            const dataItem = response.data
-            if (dataItem.status === true) {
-                setGetCandidateReferrredForm(dataItem)
-            } 
-        }).catch(error => {
-            console.log('error: ', error);
-        })
+            .then(response => {
+                const dataItem = response.data
+                if (dataItem.status === true) {
+                    setGetCandidateReferrredForm(dataItem)
+                }
+            }).catch(error => {
+                console.log('error: ', error);
+            })
     }
     useEffect(() => {
         getCandidateReferredFrom()
@@ -234,235 +234,231 @@ const Register = () => {
                 <img src={logo} alt="pluto logo" />
             </div>
             <Card className={classes.loginCard}>
-                    {
-                        count === 0 && 
-                        <form className={classes.form} onSubmit={handleSubmit(handleSubmit1)}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        autoFocus
-                                        required
-                                        name="first_name"
-                                        label="First name"         
-                                        variant="outlined"
-                                        error={(errors.first_name ? true : false)}
-                                        {...register("first_name", {
-                                            required: true,
-                                        })}
-                                        onChange={handleChange}
-                                        className={classes.textField}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        name="last_name"
-                                        label="Last Name"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        error={(errors.last_name ? true : false)}
-                                        {...register("last_name", {
-                                            required: true,
-                                        })}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        name="email"
-                                        label="Email"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        error={(errors.email ? true : false)}
-                                        {...register("email", {
-                                            required: true,
-                                            pattern: {
-                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                                message: "Enter a valid e-mail address",
-                                            },
-                                        })}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        name="contact_number"
-                                        label="Contact Number"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        error={(errors.contact_number ? true : false)}
-                                        {...register("contact_number", {
-                                            required: true,
-                                        })}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        name="address_line_1"
-                                        label="Address line 1"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        error={(errors.address_line_1 ? true : false)}
-                                        {...register("address_line_1", {
-                                            required: true,
-                                        })}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        name="address_line_2"
-                                        label="Address line 2"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        name="city"
-                                        label="City"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        error={(errors.city ? true : false)}
-                                        {...register("city", {
-                                            required: true,
-                                        })}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        name="postcode"
-                                        label="Postcode"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        error={(errors.postcode ? true : false)}
-                                        {...register("postcode", {
-                                            required: true,
-                                        })}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        name="nationality"
-                                        label="Nationality"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        onChange={handleChange}
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        id="date_of_birth"
-                                        label="Date of birth"
-                                        type="date"
-                                        name="date_of_birth"
-                                        variant="outlined"
-                                        onChange={handleChange}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                        fullWidth
-                                        inputProps = {{
-                                            max:disFutureDate
-                                        }}
-                                    />
-                                </Grid>
-
-                                
+                {
+                    count === 0 &&
+                    <form className={classes.form} onSubmit={handleSubmit(handleSubmit1)}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoFocus
+                                    required
+                                    name="first_name"
+                                    label="First name"
+                                    variant="outlined"
+                                    error={(errors.first_name ? true : false)}
+                                    {...register("first_name", {
+                                        required: true,
+                                    })}
+                                    onChange={handleChange}
+                                    className={classes.textField}
+                                />
                             </Grid>
-                            <div className={classes.bottomBtn}>
-                                <span></span>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="last_name"
+                                    label="Last Name"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    error={(errors.last_name ? true : false)}
+                                    {...register("last_name", {
+                                        required: true,
+                                    })}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="email"
+                                    label="Email"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    error={(errors.email ? true : false)}
+                                    {...register("email", {
+                                        required: true,
+                                        pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                            message: "Enter a valid e-mail address",
+                                        },
+                                    })}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="contact_number"
+                                    label="Contact Number"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    error={(errors.contact_number ? true : false)}
+                                    {...register("contact_number", {
+                                        required: true,
+                                    })}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="address_line_1"
+                                    label="Address line 1"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    error={(errors.address_line_1 ? true : false)}
+                                    {...register("address_line_1", {
+                                        required: true,
+                                    })}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="address_line_2"
+                                    label="Address line 2"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="city"
+                                    label="City"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    error={(errors.city ? true : false)}
+                                    {...register("city", {
+                                        required: true,
+                                    })}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="postcode"
+                                    label="Postcode"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    error={(errors.postcode ? true : false)}
+                                    {...register("postcode", {
+                                        required: true,
+                                    })}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="nationality"
+                                    label="Nationality"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    onChange={handleChange}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    id="date_of_birth"
+                                    label="Date of birth"
+                                    type="date"
+                                    name="date_of_birth"
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    fullWidth
+                                    inputProps={{
+                                        max: disFutureDate
+                                    }}
+                                />
+                            </Grid>
 
-                                <Button type="submit" variant="contained" color="primary" className={classes.loginBtn} formNoValidate>
-                                    Next <ArrowForwardIosIcon className={classes.arroWForIcon}/>
-                                </Button> 
-                            </div>
-                            
-                        </form>
-                    }
 
-                    {
-                        count === 1 && 
-                        <form className={classes.form} onSubmit={handleSubmit2(handleSubmit4)}>
-                            <Grid container spacing={2}>
+                        </Grid>
+                        <div className={classes.bottomBtn}>
+                            <span></span>
+
+                            <Button type="submit" variant="contained" color="primary" className={classes.loginBtn} formNoValidate>
+                                Next <ArrowForwardIosIcon className={classes.arroWForIcon} />
+                            </Button>
+                        </div>
+
+                    </form>
+                }
+
+                {
+                    count === 1 &&
+                    <form className={classes.form} onSubmit={handleSubmit2(handleSubmit4)}>
+                        <Grid container spacing={2}>
                             <Grid item xs={12} sm={12}>
-                                    <FormControl variant="outlined" className={classes.formControl} required
-                                        error={(errors2.organization_id ? true : false)}
-                                        {...register2("organization_id", {
-                                            required: true,
-                                        })}
+                                <FormControl variant="outlined" className={classes.formControl} required
+                                    error={(errors2.organization_id ? true : false)}
+                                    {...register2("organization_id", {
+                                        required: true,
+                                    })}
+                                >
+                                    <InputLabel>Select Organization</InputLabel>
+                                    <Select
+                                        value={data.organization_id}
+                                        label="Select Organization"
+                                        onChange={handleOrgChange}
+                                        name="organization_id"
                                     >
-                                        <InputLabel>Select Organization</InputLabel>
-                                        <Select
-                                            value={data.organization_id}
-                                            label="Select Organization"
-                                            onChange={handleOrgChange}
-                                            name="organization_id"
-                                        >
-                                            <MenuItem value="">
-                                                Select a shift time
-                                            </MenuItem>
-                                            {
-                                                getOrglist?.data && getOrglist?.data.map((list, index) => {
-                                                    return (
-                                                        <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </Select>
-                                        <small className="mt-8 mb-8">Select an organization wherein you want to work</small>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={12}>
-                                    <TextField
-                                        name="nmc_dmc_pin"
-                                        label="NMC DMC Pin"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FormControl component="fieldset" className={classes.formControl}>
+                                        <MenuItem value="">
+                                            Select a shift time
+                                        </MenuItem>
                                         {
-                                            (!!speciality && orgId) && <FormLabel component="legend">Specialities</FormLabel>
+                                            getOrglist?.data && getOrglist?.data.map((list, index) => {
+                                                return (
+                                                    <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
+                                                )
+                                            })
                                         }
-                                        
-                                        <Grid container>
-                                            {
-                                                speciality && speciality.map((items, index) => {
-                                                    // console.log('items: ', items);
-                                                    return (
-                                                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                                            <FormControlLabel
-                                                                control={<Checkbox color="primary" value={items.id} onChange={handleChangeCheck} name="speciality" />}
-                                                                label={items.speciality_name}
-                                                            />
-                                                        </Grid>
-                                                    )
+                                    </Select>
+                                    <small className="mt-8 mb-8">Select an organization wherein you want to work</small>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl component="fieldset" className={classes.formControl}>
+                                    {
+                                        (!!speciality && orgId) && <FormLabel component="legend">Specialities</FormLabel>
+                                    }
 
-                                                })
-                                            }
-                                        </Grid>
-                                        {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
-                                    </FormControl>
-                                </Grid>
-                            
-                                
-                                
-                                
+                                    <Grid container>
+                                        {
+                                            speciality && speciality.map((items, index) => {
+                                                // console.log('items: ', items);
+                                                return (
+                                                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                                        <FormControlLabel
+                                                            control={<Checkbox color="primary" value={items.id} onChange={handleChangeCheck} name="speciality" />}
+                                                            label={items.speciality_name}
+                                                        />
+                                                    </Grid>
+                                                )
 
-                                {/* <Grid item xs={12}>
+                                            })
+                                        }
+                                    </Grid>
+                                    {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
+                                <TextField
+                                    name="nmc_dmc_pin"
+                                    label="NMC DMC Pin"
+                                    variant="outlined"
+                                    className={classes.textField}
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+
+                            {/* <Grid item xs={12}>
                                     <div className="mb-24">
                                         <input accept="image/*,.pdf" className={classes.inputHide} id="contained-button-file" multiple type="file" onChange={(e) => uploadImage(e)}/>
                                         <label htmlFor="contained-button-file">
@@ -472,25 +468,25 @@ const Register = () => {
                                         </label>
                                     </div>
                                 </Grid> */}
-                                
-                            </Grid>
-                            <div className={classes.bottomBtn}>
-                                <Button variant="text" color="primary" onClick={ () => setCount(count - 1) }>
-                                    <ArrowBackIosIcon className={classes.arroWBackIcon} />
-                                    Back
-                                </Button>
 
-                                <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
-                                    Register
-                                </Button> 
-                            </div>
-                        </form>
-                    }
+                        </Grid>
+                        <div className={classes.bottomBtn}>
+                            <Button variant="text" color="primary" onClick={() => setCount(count - 1)}>
+                                <ArrowBackIosIcon className={classes.arroWBackIcon} />
+                                Back
+                            </Button>
 
-                    <div className={classes.bottomLink}>
-                        <p className="mb-0">Already have an account?</p>
-                        <Link to="login" className={classes.registerBtn}>Login</Link>
-                    </div> 
+                            <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
+                                Register
+                            </Button>
+                        </div>
+                    </form>
+                }
+
+                <div className={classes.bottomLink}>
+                    <p className="mb-0">Already have an account?</p>
+                    <Link to="login" className={classes.registerBtn}>Login</Link>
+                </div>
             </Card>
         </Grid>
     )
