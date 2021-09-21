@@ -70,7 +70,7 @@ const ShiftsDetail = ({match}) => {
                 <Card className="shift-detail-container">
                     <CardContent>
                         <Grid container>
-                            <Grid item xs={12} md={10}>
+                            <Grid item xs={12} md={8}>
                                 <div className="refrence-text">
                                     <div className="block-icon">
                                         <WatchLaterIcon />
@@ -79,6 +79,12 @@ const ShiftsDetail = ({match}) => {
                                         <span className="title-text-sm">REFERENCE SHIFT ID</span>
                                         <Typography variant="h6" className={classes.refId}>{getShiftDetails?.data?.reference_id}</Typography>
                                     </div>
+                                </div>
+                            </Grid>
+                            <Grid item xs={12} md={2} className={classes.leftBorder}>
+                                <div className="">
+                                    <span className="title-text-sm">Shift Type</span>
+                                    <Typography variant="body1" className={classes.number}>{getShiftDetails?.data?.shift_type}</Typography>
                                 </div>
                             </Grid>
                             <Grid item xs={12} md={2} className={classes.leftBorder}>
