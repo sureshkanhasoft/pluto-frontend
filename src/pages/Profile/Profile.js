@@ -7,6 +7,7 @@ import {
 import { NavLink, Switch, Route,useRouteMatch,Redirect } from 'react-router-dom';
 import Information from "./Information"
 import Preferences from './Preferences';
+import AddOrganization from './AddOrganization';
 
 const useStyle = makeStyles(() => ({
     root: {
@@ -55,12 +56,14 @@ const Profile = () => {
                     <Grid className={classes.gridContainer}>
                         <NavLink activeClassName="active" to={`${url}/information`} className={classes.navLink}>Personal Information</NavLink>
                         <NavLink activeClassName="active" to={`${url}/preferences`} className={classes.navLink}>Preferences</NavLink>
+                        <NavLink activeClassName="active" to={`${url}/organization`} className={classes.navLink}>Add Organization</NavLink>
                     </Grid>
                 </Container>
             </nav>
             <Switch>
                 <Route exact path={`${path}/information`} component={Information} />
                 <Route exact path={`${path}/preferences`} component={Preferences}/>
+                <Route exact path={`${path}/organization`} component={AddOrganization}/>
                 <Redirect from="/" to={`${path}/information`}/>
             </Switch>
         </>
