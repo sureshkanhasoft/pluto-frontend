@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 const BrowserShift = () => {
     const classes = useStyles();
     const dispatch = useDispatch()
+    const [page, setPage] = React.useState(1);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [specialist, setSpecialist] = React.useState(null);
     const [hospital, setHospital] = React.useState(null);
@@ -70,7 +71,6 @@ const BrowserShift = () => {
         hospital:[],
         weekday:[]
     })
-    console.log('data: ', data);
     
 
     const handleClick = (event) => {
@@ -146,6 +146,15 @@ const BrowserShift = () => {
     useEffect(() => {
         dispatch(getfilterSpeciality())
     },[])
+
+    const handleChangePage = (event, value) => {
+        setPage(value);
+        setTimeout(getShiftList1(value), 2000);
+    };
+
+    const getShiftList1 = (pageNo = 1) => {
+        dispatch(getShift(pageNo))
+    }
 
     const submitFilterData = () => {
         console.log('sdfds', data)
@@ -244,7 +253,7 @@ const BrowserShift = () => {
             </section>
 
             <section className="pb-32">
-                <ShiftTable shiftList={getShiftList ? getShiftList : loading} />
+                <ShiftTable shiftList={getShiftList ? getShiftList : loading}  handleChangePage={handleChangePage} page={page} />
             </section>
 
         </>

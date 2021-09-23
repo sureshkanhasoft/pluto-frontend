@@ -13,10 +13,10 @@ import {
     GET_SHIFT_ERROR, GET_SHIFT_REQUEST, GET_SHIFT_SUCCESS 
 } from "../actiontypes";
 
-export const getShift = () => {
+export const getShift = (pageNo=1) => {
     return async (dispatch) => {
         dispatch(getShiftRequest())
-        await apiClient(true).get(`api/signee/shift-list`)
+        await apiClient(true).get(`api/signee/shift-list?page=${pageNo}`)
         .then(response => {
             const dataItem = response.data;
             dispatch(getShiftSuccess(dataItem))
