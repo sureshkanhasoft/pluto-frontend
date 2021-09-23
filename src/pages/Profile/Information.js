@@ -126,8 +126,8 @@ const Information = () => {
         address_line_2: "",
         city: "",
         postcode: "",
-        nationality:"",
-        date_of_birth:"",
+        // nationality:"",
+        // date_of_birth:"",
     })
 
     const [pass, setPass] = useState({
@@ -197,8 +197,8 @@ const Information = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={4}>
                                 <Card className={classes.userImage}>
-                                    <Typography variant="caption">PLUTO USER NUMBER</Typography>
-                                    <Typography variant="body1">{data?.candidate_id}</Typography>
+                                    {/* <Typography variant="caption">PLUTO USER NUMBER</Typography>
+                                    <Typography variant="body1">{data?.candidate_id}</Typography> */}
                                 </Card>
                             </Grid>
                             <Grid item xs={12} md={4}>
@@ -373,7 +373,7 @@ const Information = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={12} md={4}>
+                            {/* <Grid item xs={12} md={4}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContainer}>
                                         <div className="form-field">
@@ -420,7 +420,7 @@ const Information = () => {
                                         </div>
                                     </CardContent>
                                 </Card>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                         <Box display="flex" justifyContent="flex-end" className="mt-24">
                             <Button variant="contained" className={classes.btnSecondary} type="submit" formNoValidate>Update</Button>
