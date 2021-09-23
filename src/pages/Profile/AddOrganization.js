@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react'
 import {
     Container,
     Grid,
-    Card,
-    CardContent,
-    TextField,
     makeStyles,
     Select,
     FormControl,
@@ -13,6 +10,7 @@ import {
     MenuItem,
     InputLabel, FormControlLabel, Checkbox,
 } from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo';
@@ -26,9 +24,45 @@ const useStyle = makeStyles(() => ({
         width: "100%"
     },
     formWidth: {
-        maxWidth: 500,
-        margin: '0 auto'
-    }
+        maxWidth: 600,
+        // margin: '0 auto'
+    },
+    checkboxList: {
+        display: "flex"
+    },
+    orgContainer: {
+        background: "#f4f5ff",
+        borderRadius: 12,
+        padding: 12,
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
+        margin: '0 0 16px 0',
+    },
+    addOrg: {
+        fontSize: 12,
+        display: "flex",
+        alignItems: "center",
+        marginLeft: 'auto',
+        color: "#ff8b46",
+        '& .MuiButton-label': {
+            display: "flex",
+            alignItems: "center",
+        },
+        '& .MuiSvgIcon-root': {
+            width: 18,
+            height: "auto"
+        }
+    },
+    btnSecondary: {
+        background: "#f78b46",
+        width: 140,
+        height: 36,
+        color: "#fff",
+        boxShadow: "none",
+        "&:hover": {
+            boxShadow: "none",
+            background: "#d76f2d",
+        }
+    },
 
 }))
 
@@ -36,7 +70,7 @@ const AddOrganization = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const [id1, setId1] = useState()
-    const [speciality, setSpeciality] = useState([])
+    const [speciality1, setSpeciality] = useState([])
     const [anotherSpe, setAnotherSpe] = useState({
         list: [
             {
@@ -68,7 +102,7 @@ const AddOrganization = () => {
         setId1(index)
 
     };
-    console.log('anotherSpe: ', anotherSpe);
+    // console.log('anotherSpe: ', anotherSpe);
 
     const addOrganization = () => {
         const organizationData = JSON.parse(JSON.stringify(data));
@@ -99,7 +133,6 @@ const AddOrganization = () => {
             .then(response => {
                 anotherSpe['list'][id1]['listing'] = response.data.data
                 setSpeciality(response.data.data)
-                // setAnotherSpe(response.data.data)
             }).catch(error => {
                 console.log('error: ', error);
             })
@@ -113,15 +146,27 @@ const AddOrganization = () => {
         console.log('data', data)
     }
 
-    const handleChangeCheck = (event) => {
+    const handleChangeCheck = (event, index, speIndex) => {
         const specialityData = JSON.parse(JSON.stringify(data));
         const isChecked = (event.target.checked);
         if (isChecked) {
-            specialityData.organization.speciality.push(parseFloat(event.target.value));
+            // specialityData.organization.[index2].speciality.push(parseFloat(event.target.value));
+            // setData(specialityData)
+            specialityData.organization.map((list, indexii) => {
+                if (index == indexii)
+                    return (
+                        list.speciality.push(parseFloat(event.target.value))
+                    )
+            })
             setData(specialityData)
         } else {
-            const newData = (specialityData.organization.speciality).filter(item => item !== parseFloat(event.target.value));
-            specialityData.organization.speciality = newData;
+            specialityData.organization.map((list, indexii) => {
+                if (index == indexii) {
+                    return (
+                        list.speciality = list.speciality.filter(item => item !== parseFloat(event.target.value))
+                    )
+                }
+            })
             setData(specialityData)
         }
 
@@ -134,51 +179,59 @@ const AddOrganization = () => {
                 <Container maxWidth="lg">
                     <h1 className="mb-16">Add Organization</h1>
                     <form className={classes.formWidth} onSubmit={handleSubmit(handleSubmit1)}>
-                        <Grid container spacing={2}>
-                            {
-                                data.organization.map((list, index) => {
-                                    return (
-                                        <React.Fragment key={index}>
-                                            <Grid item xs={12} sm={12} >
-                                                <FormControl variant="outlined" className={classes.formControl} required
-                                                    error={(errors.organization_id ? true : false)}
-                                                    {...register("organization_id", {
-                                                        required: true,
-                                                    })}
+                        {
+                            data.organization.map((list, index) => {
+                                return (
+                                    <Grid container spacing={2} key={index} className={classes.orgContainer}>
+                                        <Grid item xs={12} sm={12} >
+                                            <FormControl variant="outlined" className={classes.formControl} required
+                                                // error={(errors.organization_id ? true : false)}
+                                                // {...register("organization_id", {
+                                                //     required: true,
+                                                // })}
+                                            >
+                                                <InputLabel>Select Organization</InputLabel>
+                                                <Select
+                                                    label="Select Organization"
+                                                    name="organization_id"
+                                                    onChange={(e) => handleChangeHospital(index, e, 'organization')}
+                                                    value={list?.organization_id || ""}
                                                 >
-                                                    <InputLabel>Select Organization</InputLabel>
-                                                    <Select
-                                                        // value={data?.organization_id || ""}
-                                                        label="Select Organization"
-                                                        onChange={(e) => handleChangeHospital(index, e, 'organization')}
-                                                        name="organization_id"
-                                                    >
-                                                        <MenuItem value="">
-                                                            Select a shift time
-                                                        </MenuItem>
-                                                        {
-                                                            getOrglist?.data && getOrglist?.data.map((list, index) => {
-                                                                return (
-                                                                    <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
-                                                                )
-                                                            })
-                                                        }
-                                                    </Select>
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid>
-                                                {
-                                                    anotherSpe?.list && anotherSpe?.list.map((list, index1) => {
-                                                        console.log('list: ', typeof index1);
-                                                        if(list.id22 === index) {
+                                                    <MenuItem value="">
+                                                        Select a shift time
+                                                    </MenuItem>
+                                                    {
+                                                        getOrglist?.data && getOrglist?.data.map((list, index) => {
+                                                            return (
+                                                                <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
+                                                            )
+                                                        })
+                                                    }
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={12} >
+                                            {
+                                                anotherSpe?.list && anotherSpe?.list.map((list, index1) => {
+                                                    if (list.id22 === index) {
 
-                                                            return (<span>{list?.listing && list?.listing.map((i1, ii) => <p>{i1.speciality_name}</p>)}</span>)
-                                                        }
-                                                    })
-                                                }
-                                            </Grid>
+                                                        return (
+                                                            list?.listing && list?.listing.map((i1, speIndex) =>
+                                                                // <span>{i1.speciality_name}</span>
+                                                                // <div key={ii} className={classes.checkboxList}>
+                                                                <FormControlLabel key={speIndex}
+                                                                    control={<Checkbox color="primary" value={i1.id} onChange={e => handleChangeCheck(e, index, speIndex)} name="speciality" />}
+                                                                    label={i1.speciality_name}
+                                                                />
+                                                                // </div>
+                                                            )
+                                                        )
+                                                    }
+                                                })
+                                            }
+                                        </Grid>
 
-                                            {/* <Grid item xs={12} sm={12} style={{ display: "flex", flexWrap: 'wrap' }}>
+                                        {/* <Grid item xs={12} sm={12} style={{ display: "flex", flexWrap: 'wrap' }}>
                                                 {
                                                     (speciality && id1 === index) && speciality.map((items, index1) => {
                                                         // console.log('items: ', items);
@@ -194,20 +247,23 @@ const AddOrganization = () => {
                                                     })
                                                 }
                                             </Grid> */}
-                                        </React.Fragment>
-                                    )
-                                })
-                            }
+                                    </Grid>
+                                )
+                            })
+                        }
 
-                        </Grid>
                         <div>
-                            <Button className={classes.btnSecondary} variant="text" onClick={addOrganization}>
-                                Add another org
+                            <Button onClick={addOrganization} color="secondary" className={classes.addOrg}>
+                                <AddCircleOutlineIcon className="mr-3" />
+                                <span> Add another org</span>
                             </Button>
+                            {/* <Button className={classes.btnSecondary} variant="text" >
+                                Add another org
+                            </Button> */}
                         </div>
                         <Box className="mt-16">
                             <Button className={classes.btnSecondary} variant="contained" type="submit" formNoValidate>
-                                Add
+                                Register
                             </Button>
                         </Box>
                     </form>
