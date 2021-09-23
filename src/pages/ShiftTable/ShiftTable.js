@@ -17,7 +17,7 @@ import UtilService from '../../helper/service';
 // }))
 
 const ShiftTable = (props) => {
-    const { shiftList, handleChangePage, page} = props
+    const { shiftList, handleChangePage, page } = props
     // const classes = useStyles();
 
     const shiftData = shiftList?.data?.data.reduce((shiftFor, getData) => {
@@ -54,7 +54,7 @@ const ShiftTable = (props) => {
                 <div className="table-body">
                     <Container maxWidth="lg">
                         {
-                             (shiftData  ? shiftData : "")  &&  Object.entries(shiftData ? shiftData : "").map((list, index) => {
+                            (shiftData ? shiftData : "") && Object.entries(shiftData ? shiftData : "").map((list, index) => {
                                 let dateReverse = list[0].split(" ").reverse().join(" ")
                                 return (
                                     <React.Fragment key={index}>
@@ -77,9 +77,9 @@ const ShiftTable = (props) => {
                                                         </div>
                                                         <div className="table-inner-cloumn shift-time d-flex xy-center">
                                                             <div className="table-cell">
-                                                                <span>{result.start_time}</span>
+                                                                <span>{result.start_time ? (result.start_time = result.start_time.slice(0, 5)) : ""}</span>
                                                                 <Divider />
-                                                                <span>{result.end_time}</span>
+                                                                <span>{result.end_time ? (result.endttime = result.end_time.slice(0, 5)) : ""}</span>
                                                             </div>
                                                         </div>
                                                         <div className="table-inner-cloumn job-role d-flex xy-center">

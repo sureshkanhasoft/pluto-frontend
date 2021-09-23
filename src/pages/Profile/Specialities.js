@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {
     Container,
-    Grid, Card, FormControl, Checkbox, FormControlLabel,
+    Grid, FormControl, Checkbox, FormControlLabel,
     makeStyles, Box, Button, Backdrop, CircularProgress
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,7 +39,6 @@ const Specialities = () => {
     const classes = useStyle()
     const dispatch = useDispatch();
     const { getFilterSpeciality, filterLoader } = useSelector(state => state.browseShift)
-    console.log('loading: ', filterLoader);
     const [data, setData] = useState({
         specialities1: []
     })
@@ -60,7 +59,6 @@ const Specialities = () => {
     const handleSubmit = () => {
         console.log('data', data)
     }
-    console.log('data', data)
 
     useEffect(() => {
         dispatch(getfilterSpeciality())

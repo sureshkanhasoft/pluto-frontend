@@ -92,7 +92,6 @@ export const getHospital = () => {
         dispatch(getHospitalRequest())
         await apiClient(true).get(`api/signee/show-all-hospital`)
         .then(response => {
-            console.log('response: ', response.data);
             const dataItem = response.data;
             dispatch(getHospitalSuccess(dataItem))
         }).catch(error => {

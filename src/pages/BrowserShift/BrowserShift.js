@@ -150,6 +150,7 @@ const BrowserShift = () => {
     const handleChangePage = (event, value) => {
         setPage(value);
         setTimeout(getShiftList1(value), 2000);
+        window.scrollTo(0, 0)
     };
 
     const getShiftList1 = (pageNo = 1) => {
