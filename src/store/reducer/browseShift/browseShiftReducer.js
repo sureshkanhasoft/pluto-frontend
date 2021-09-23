@@ -15,7 +15,10 @@ const initialState = {
     getHospitalError:[],
 
     getFilterSpeciality:[],
-    getFilterSpecialityError:[]
+    getFilterSpecialityError:[],
+
+    shiftFilter:[],
+    shiftFilterError:[],
 
 }
 
@@ -103,6 +106,30 @@ const browseShiftReducer = (state = initialState, action) => {
                 filterLoader: false,
                 getFilterSpecialityError: true
             })
+
+
+        // --------------------------------------
+
+
+        case actionTypes.FILTER_SHIFT_REQUEST:
+            return updateObject(state, {
+                filterLoader: true,
+                shiftFilter:"",
+                shiftFilterError:""
+            })
+
+        case actionTypes.FILTER_SHIFT_SUCCESS:
+            return updateObject(state, {
+                filterLoader: false,
+                shiftFilter: action.payload
+            })
+
+        case actionTypes.FILTER_SHIFT_ERROR:
+            return updateObject(state, {
+                filterLoader: false,
+                shiftFilterError: true
+            })
+
 
         default:
             return state

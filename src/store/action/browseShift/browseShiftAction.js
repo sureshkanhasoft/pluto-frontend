@@ -1,5 +1,8 @@
 import { apiClient } from "../../../config/apiClient";
 import { 
+    FILTER_SHIFT_ERROR,
+    FILTER_SHIFT_REQUEST,
+    FILTER_SHIFT_SUCCESS,
     GET_FILTER_SPECIALITY_ERROR,
     GET_FILTER_SPECIALITY_REQUEST,
     GET_FILTER_SPECIALITY_SUCCESS,
@@ -154,6 +157,46 @@ export const getfilterSpecialitySuccess = data => {
 export const getfilterSpecialityFailure = error => {
     return {
         type: GET_FILTER_SPECIALITY_ERROR,
+        payload: error
+    }
+}
+
+
+
+// ----------------------------------------------------
+
+
+export const filterShiftList = (data) => {
+    return async (dispatch) => {
+        dispatch(filterShiftListRequest())
+        await apiClient(true).put(`api/signee/filter-shift`, data)
+        .then(response => {
+            const dataItem = response.data;
+            dispatch(filterShiftListSuccess(dataItem))
+        }).catch(error => {
+            dispatch(filterShiftListSuccess(""))
+            dispatch(filterShiftListFailure(error))
+        });
+    }
+
+}
+
+export const filterShiftListRequest = () => {
+    return {
+        type: FILTER_SHIFT_REQUEST
+    }
+}
+
+export const filterShiftListSuccess = data => {
+    return {
+        type: FILTER_SHIFT_SUCCESS,
+        payload: data
+    }
+}
+
+export const filterShiftListFailure = error => {
+    return {
+        type: FILTER_SHIFT_ERROR,
         payload: error
     }
 }

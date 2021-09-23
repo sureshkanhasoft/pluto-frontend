@@ -24,5 +24,6 @@ export {
     getShift,
     getShiftDetail,
     getHospital,
-    getfilterSpeciality
+    getfilterSpeciality,
+    filterShiftList
 } from "./browseShift/browseShiftAction"

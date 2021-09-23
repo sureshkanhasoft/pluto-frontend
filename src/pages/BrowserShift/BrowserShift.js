@@ -14,7 +14,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
 import ShiftTable from '../ShiftTable/ShiftTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { getfilterSpeciality, getHospital, getShift } from '../../store/action';
+import { filterShiftList, getfilterSpeciality, getHospital, getShift } from '../../store/action';
 
 const dayofWeek = [
     {
@@ -147,6 +147,11 @@ const BrowserShift = () => {
         dispatch(getfilterSpeciality())
     },[])
 
+    const submitFilterData = () => {
+        console.log('sdfds', data)
+        dispatch(filterShiftList())
+    }
+
     return (
         <>
             {
@@ -177,7 +182,7 @@ const BrowserShift = () => {
                                     {
                                         dayofWeek.map((item, index) => (
                                             <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox onChange={handleWeekdayChangeCheckbox} value={item.name} name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
+                                                <FormControlLabel control={<Checkbox onChange={handleWeekdayChangeCheckbox} value={item.id} name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
                                             </MenuItem>
                                         ))
                                     }
@@ -197,9 +202,9 @@ const BrowserShift = () => {
                                     className="filter-menuItem-container"
                                 >
                                     {
-                                         getFilterSpeciality?.data && getFilterSpeciality?.data.map((item, index) => (
+                                         getHospitalList?.data && getHospitalList?.data.map((item, index) => (
                                             <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox onChange={handleHospitalChangeCheckbox} value={item.speciality_name}  color="primary" className="menu-item-checkbox" />} label={item.speciality_name} />
+                                                <FormControlLabel control={<Checkbox onChange={handleHospitalChangeCheckbox} value={item.id}  color="primary" className="menu-item-checkbox" />} label={item.hospital_name} />
                                             </MenuItem>
                                         ))
                                     }
@@ -221,7 +226,7 @@ const BrowserShift = () => {
                                     {
                                         getFilterSpeciality?.data && getFilterSpeciality?.data.map((item, index) => (
                                             <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox onChange={handleChangeCheckbox} value={item.speciality_name} color="primary" className="menu-item-checkbox" />} label={item.speciality_name} />
+                                                <FormControlLabel control={<Checkbox onChange={handleChangeCheckbox} value={item.id} color="primary" className="menu-item-checkbox" />} label={item.speciality_name} />
                                             </MenuItem>
                                         ))
                                     }
@@ -231,7 +236,7 @@ const BrowserShift = () => {
                             </div>
                             
                             <div className="">
-                                <Button variant="outlined">Filter</Button>
+                                <Button variant="outlined" onClick={submitFilterData}>Filter</Button>
                             </div>
                         </div>
                     </div>
