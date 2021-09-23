@@ -27,3 +27,7 @@ export {
     getfilterSpeciality,
     filterShiftList
 } from "./browseShift/browseShiftAction"
+
+export {
+    addDocuments,
+} from './compliance/complianceAction'
