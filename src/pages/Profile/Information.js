@@ -43,8 +43,15 @@ const useStyle = makeStyles(() => ({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-end",
-        paddingBottom: 16,
-        fontSize: 12
+        fontSize: 12,
+        position: 'relative',
+        height: 296,
+        '& img': {
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            border:"4px solid #fff"
+        }
     },
     textFiled: {
         // marginBottom: 24,
@@ -126,8 +133,8 @@ const Information = () => {
         address_line_2: "",
         city: "",
         postcode: "",
-        // nationality:"",
-        // date_of_birth:"",
+        nationality:"",
+        date_of_birth:"",
     })
 
     const [pass, setPass] = useState({
@@ -197,6 +204,11 @@ const Information = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={4}>
                                 <Card className={classes.userImage}>
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU" alt="profile img" />
+                                    <div className="choose_file">
+                                        <span>Upload Photo</span>
+                                        <input name="filename" type="file" />
+                                    </div>
                                     {/* <Typography variant="caption">PLUTO USER NUMBER</Typography>
                                     <Typography variant="body1">{data?.candidate_id}</Typography> */}
                                 </Card>
@@ -373,7 +385,7 @@ const Information = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            {/* <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={4}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContainer}>
                                         <div className="form-field">
@@ -418,9 +430,30 @@ const Information = () => {
                                                 required
                                             />
                                         </div>
+                                        {/* <div className="form-field">
+                                            <TextField
+                                                label="NMC DMC pin"
+                                                id="date_of_birth"
+                                                name="date_of_birth"
+                                                type="date"
+                                                value={data?.date_of_birth ? data?.date_of_birth : ""}
+                                                placeholder="-"
+                                                onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                inputProps = {{
+                                                    max:disFutureDate
+                                                }}
+                                                error={updateProfileErrors?.message?.date_of_birth ? true : false}
+                                                required
+                                            />
+                                        </div> */}
                                     </CardContent>
                                 </Card>
-                            </Grid> */}
+                            </Grid>
                         </Grid>
                         <Box display="flex" justifyContent="flex-end" className="mt-24">
                             <Button variant="contained" className={classes.btnSecondary} type="submit" formNoValidate>Update</Button>

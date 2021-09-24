@@ -118,12 +118,13 @@ const ShiftsDetail = ({match}) => {
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">SHIFT TIMES</span>
-                                    <p>{getShiftDetails?.data?.start_time} - {getShiftDetails?.data?.end_time}</p>
+                                    {/* <p>{getShiftDetails?.data?.start_time} - {getShiftDetails?.data?.end_time}</p> */}
+                                    <p>{getShiftDetails?.data?.start_time.slice(0, 5)} - {getShiftDetails?.data?.end_time.slice(0, 5)}</p>
                                 </div>
                                 <div className="">
                                     <span className="title-text-sm">DURATION</span>
                                     {/* <p>12:30:00</p> */}
-                                    <p>{getShiftDetails?.data?.duration}</p>
+                                    <p>{getShiftDetails?.data?.duration.slice(0, 5)}</p>
                                 </div>
                             </Grid>
                             <Grid item xs={12} md={4} className={classes.leftBorder}>

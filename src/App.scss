@@ -733,3 +733,25 @@ footer{
         }
     }
 }
+
+.choose_file{
+    position: absolute;
+    display: inline-block;
+    border-radius: 6px;
+    width: 116px;
+    padding: 8px;
+    color: #ffffff;
+    background: #356ca2;
+    bottom: 7px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    input[type="file"]{
+        -webkit-appearance:none; 
+        position:absolute;
+        top:0; left:0;
+        opacity:0; 
+        text-indent: -9999px;
+        cursor: pointer;
+    }
+}

@@ -404,7 +404,7 @@ const Register = () => {
                                 >
                                     <InputLabel>Select Organization</InputLabel>
                                     <Select
-                                        value={data.organization_id}
+                                        value={data?.organization_id || ""}
                                         label="Select Organization"
                                         onChange={handleOrgChange}
                                         name="organization_id"
