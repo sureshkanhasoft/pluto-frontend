@@ -456,7 +456,7 @@ const Register = () => {
                                                 speciality && speciality.map((items, index) => {
                                                     // console.log('items: ', items);
                                                     return (
-                                                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                                        <Grid item key={index}>
                                                             <FormControlLabel
                                                                 control={<Checkbox color="primary" value={items.id} onChange={handleChangeCheck} name="speciality" />}
                                                                 label={items.speciality_name}
