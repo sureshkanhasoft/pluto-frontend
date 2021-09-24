@@ -112,7 +112,7 @@ const Login = () => {
         <>
             {loginNotify && (loginErrors?.message || loginErrors) && 
                 <Notify
-                    data= {loginErrors}
+                    data= {loginErrors?.message}
                     status="error"
                 />
             }
