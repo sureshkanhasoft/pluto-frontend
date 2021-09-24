@@ -423,20 +423,14 @@ const Information = () => {
                                                     shrink: true,
                                                 }}
                                                 className={classes.textFiled}
-                                                inputProps = {{
-                                                    max:disFutureDate
-                                                }}
-                                                error={updateProfileErrors?.message?.date_of_birth ? true : false}
-                                                required
                                             />
                                         </div>
-                                        {/* <div className="form-field">
+                                        <div className="form-field">
                                             <TextField
                                                 label="NMC DMC pin"
-                                                id="date_of_birth"
-                                                name="date_of_birth"
-                                                type="date"
-                                                value={data?.date_of_birth ? data?.date_of_birth : ""}
+                                                id="nmc_dmc_pin"
+                                                name="nmc_dmc_pin"
+                                                value={data?.nmc_dmc_pin ? data?.nmc_dmc_pin : ""}
                                                 placeholder="-"
                                                 onChange={handleChange}
                                                 fullWidth
@@ -444,13 +438,11 @@ const Information = () => {
                                                     shrink: true,
                                                 }}
                                                 className={classes.textFiled}
-                                                inputProps = {{
-                                                    max:disFutureDate
+                                                InputProps={{
+                                                    endAdornment: <EditIcon />
                                                 }}
-                                                error={updateProfileErrors?.message?.date_of_birth ? true : false}
-                                                required
                                             />
-                                        </div> */}
+                                        </div>
                                     </CardContent>
                                 </Card>
                             </Grid>
