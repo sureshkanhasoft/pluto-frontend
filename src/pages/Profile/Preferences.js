@@ -58,8 +58,8 @@ const Preferences = () => {
     const {getPreferenceList, loading, createPreferenceSuccess} = useSelector(state => state.preference)
     const [preferencetMsg, setPreferencetMsg]=useState(false)
     const [data, setData] = useState({
-        monday_day:false,
-        monday_night:false,
+        monday_day:0,
+        monday_night:0,
         tuesday_day:0,
         tuesday_night:0,
         wednesday_day:0,
@@ -73,7 +73,7 @@ const Preferences = () => {
         sunday_day:0,
         sunday_night:0,
         is_travel:0,
-        no_of_shift:""
+        no_of_shift:0
     })
     const handleChangeCheckbox = (event) => {
         const isChecked = event.target.checked
@@ -96,7 +96,9 @@ const Preferences = () => {
     }
 
     useEffect(() => {
-        setData(getPreferenceList?.data)
+        if(getPreferenceList?.data){
+            setData(getPreferenceList?.data)
+        }
         // console.log('getPreferenceList: ', getPreferenceList);
     },[getPreferenceList])
 
