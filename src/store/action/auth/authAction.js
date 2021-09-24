@@ -19,7 +19,7 @@ export const login = (data) => {
                 localStorage.setItem('signeeInfo', JSON.stringify(data.data));
                 localStorage.setItem('token', JSON.stringify(data.data.token));
                 setTimeout(() => {
-                    history.push('/shift')
+                    history.push('/profile/documents')
                 }, 2000);
             } else {
                 dispatch(getLoginSuccess(""))
