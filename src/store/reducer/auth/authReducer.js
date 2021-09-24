@@ -7,7 +7,7 @@ const initialState = {
     loginErrors: [],
 
     registerSuccess:[],
-    errors:"",
+    registerErrors:"",
 
     forgotsuccess: [],
     forgoterrors: [],
@@ -41,7 +41,7 @@ const authReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: true,
                 registerSuccess:"",
-                errors:"",
+                registerErrors:"",
             })
         case actionTypes.REGISTER_SUCCESS:
             return updateObject(state, {
@@ -51,7 +51,7 @@ const authReducer = (state = initialState, action) => {
         case actionTypes.REGISTER_ERROR:
             return updateObject(state, {
                 loading: false,
-                errors: action.payload
+                registerErrors: action.payload
             })
 
         // --------
