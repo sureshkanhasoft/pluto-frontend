@@ -118,6 +118,10 @@ const useStyle = makeStyles({
         border: "1px solid #2b68a4",
         color: "#2b68a4"
     },
+    registerBox:{
+        paddingTop:"0 !important",
+        paddingBottom:"0 !important"
+    }
     // menuuuu:{
     //     height:200
     // }
@@ -285,7 +289,7 @@ const Register = () => {
                         count === 0 &&
                         <form className={classes.form} onSubmit={handleSubmit(handleSubmit1)}>
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} className={classes.registerBox}>
                                     <TextField
                                         autoFocus
                                         required
@@ -300,7 +304,7 @@ const Register = () => {
                                         className={classes.textField}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} className={classes.registerBox}>
                                     <TextField
                                         name="last_name"
                                         label="Last Name"
@@ -314,7 +318,7 @@ const Register = () => {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} className={classes.registerBox}>
                                     <TextField
                                         name="email"
                                         label="Email"
@@ -332,7 +336,7 @@ const Register = () => {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} className={classes.registerBox}>
                                     <TextField
                                         name="contact_number"
                                         label="Contact Number"
@@ -346,7 +350,7 @@ const Register = () => {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.registerBox}>
                                     <TextField
                                         name="address_line_1"
                                         label="Address line 1"
@@ -360,7 +364,7 @@ const Register = () => {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.registerBox}>
                                     <TextField
                                         name="address_line_2"
                                         label="Address line 2"
@@ -370,7 +374,7 @@ const Register = () => {
                                         onChange={handleChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} className={classes.registerBox}>
                                     <TextField
                                         name="city"
                                         label="City"
@@ -384,7 +388,7 @@ const Register = () => {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} className={classes.registerBox}>
                                     <TextField
                                         name="postcode"
                                         label="Postcode"
@@ -398,7 +402,7 @@ const Register = () => {
                                         required
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} className={classes.registerBox}>
                                     <TextField
                                         id="nationality"
                                         name="nationality"
@@ -410,7 +414,7 @@ const Register = () => {
                                         onChange={handleChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} className={classes.registerBox}>
                                     <TextField
                                         id="date_of_birth"
                                         label="Date of birth"
@@ -446,7 +450,7 @@ const Register = () => {
                         count === 1 &&
                         <form className={classes.form} onSubmit={handleSubmit2(handleSubmit4)}>
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={12}>
+                                <Grid item xs={12} sm={12} className={classes.registerBox}>
                                     <FormControl variant="outlined" className={classes.formControl} required
                                         error={(errors2.organization_id ? true : false)}
                                         {...register2("organization_id", {
@@ -504,7 +508,7 @@ const Register = () => {
                                     (!!speciality && orgId) &&
 
 
-                                    <Grid item xs={12}>
+                                    <Grid item xs={12} >
                                         <FormControl variant="outlined" className={classes.formControl} {...register2("speciality")} >
                                             <InputLabel>Specialities</InputLabel>
                                             <Select
