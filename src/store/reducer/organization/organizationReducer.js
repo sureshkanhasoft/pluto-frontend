@@ -7,7 +7,10 @@ const initialState = {
     getOrgError: "",
 
     addOrgSuccess: [],
-    addOrgError: []
+    addOrgError: [],
+
+    updateSpeSuccess:[],
+    updateSpeError:[]
 }
 
 const organizationReducer = (state = initialState, action) => {
@@ -51,6 +54,29 @@ const organizationReducer = (state = initialState, action) => {
                 addOrgError: true
             })
 
+
+        // ---------------------------------
+
+
+        // ---------------------------------
+        case actionTypes.UPDATE_SPECIALITY_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                updateSpeSuccess: "",
+                updateSpeError: ""
+            })
+
+        case actionTypes.UPDATE_SPECIALITY_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                updateSpeSuccess: action.payload
+            })
+
+        case actionTypes.UPDATE_SPECIALITY_ERROR:
+            return updateObject(state, {
+                loading: false,
+                updateSpeError: true
+            })
         default:
             return state
     }

@@ -7,7 +7,8 @@ export {
 
 export {
     getOrganization,
-    addAnotherOrganization
+    addAnotherOrganization,
+    updateSpeciality
 } from "./organization/organizationAction"
 
 export {

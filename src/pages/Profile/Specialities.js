@@ -6,7 +6,8 @@ import {
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
-import { getfilterSpeciality } from '../../store/action';
+import { getfilterSpeciality, updateSpeciality } from '../../store/action';
+import Notify from '../../components/Notify/Notify';
 
 
 const useStyle = makeStyles((theme) => ({
@@ -38,26 +39,33 @@ const useStyle = makeStyles((theme) => ({
 const Specialities = () => {
     const classes = useStyle()
     const dispatch = useDispatch();
+    const getId = JSON.parse(window.localStorage.getItem('signeeInfo'));
+    const getOrg = JSON.parse(window.localStorage.getItem('signeeInfo'));
     const { getFilterSpeciality, filterLoader } = useSelector(state => state.browseShift)
+    const { updateSpeSuccess, updateSpeError, loading } = useSelector(state => state.organization)
+    const [msgNotify, setMsgNotify] = useState(false)
     const [data, setData] = useState({
-        specialities1: []
+        speciality_id: []
     })
 
     const handleChangeCheckbox = (event) => {
         const specialData = JSON.parse(JSON.stringify(data))
         const isChecked = event.target.checked
         if (isChecked) {
-            specialData.specialities1.push(event.target.value)
+            specialData.speciality_id.push(event.target.value)
             setData(specialData)
         } else {
-            const newData = (specialData.specialities1).filter(item => item !== event.target.value);
-            specialData.specialities1 = newData;
+            const newData = (specialData.speciality_id).filter(item => item !== event.target.value);
+            specialData.speciality_id = newData;
             setData(specialData)
         }
     };
 
-    const handleSubmit = () => {
-        console.log('data', data)
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // console.log('data', data)
+        dispatch(updateSpeciality(data, getId.id))
+        setMsgNotify(true)
     }
 
     useEffect(() => {
@@ -73,6 +81,18 @@ const Specialities = () => {
                     </Backdrop>
                     : ""
             }
+            {msgNotify && (updateSpeError?.message || updateSpeError) &&
+                <Notify
+                    data={updateSpeError?.message ? updateSpeError?.message : updateSpeError}
+                    status="error"
+                />
+            }
+            {msgNotify && (updateSpeSuccess?.message || updateSpeSuccess) &&
+                <Notify
+                    data={updateSpeSuccess?.message ? updateSpeSuccess?.message : updateSpeSuccess}
+                    status="success"
+                />
+            }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
@@ -81,7 +101,7 @@ const Specialities = () => {
                         <Grid container spacing={2} className={classes.mainBox}>
                             <Grid item xs={12} sm={4}>
                                 <h5 className="f-400 mb-8">Organization name</h5>
-                                <h3 className="f-900 mb-8">Sam trust1</h3>
+                                <h3 className="f-900 mb-8">{getOrg.organization_name}</h3>
                             </Grid>
                             <Grid item xs={12} sm={8}>
                                 <Grid container spacing={2}>
@@ -91,7 +111,7 @@ const Specialities = () => {
                                                 <Grid item xs={12} sm={3} key={index}>
                                                     <FormControl component="fieldset" className={classes.formControl}>
                                                         <FormControlLabel
-                                                            control={<Checkbox onChange={handleChangeCheckbox} value={list?.speciality_name} color="primary" name="specialities1" />}
+                                                            control={<Checkbox onChange={handleChangeCheckbox} value={list?.speciality_name} color="primary" name="speciality_id" />}
                                                             label={list?.speciality_name}
                                                         />
                                                     </FormControl>
