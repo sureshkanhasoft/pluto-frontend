@@ -14,36 +14,37 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
 import ShiftTable from '../ShiftTable/ShiftTable';
 import { useDispatch, useSelector } from 'react-redux';
+import CloseIcon from '@material-ui/icons/Close';
 import { filterShiftList, getfilterSpeciality, getHospital, getShift } from '../../store/action';
 
 const dayofWeek = [
     {
         id: 1,
-        name: "Monday"
+        name: "Sunday"
     },
     {
         id: 2,
-        name: "Tuesday"
+        name: "Monday"
     },
     {
         id: 3,
-        name: "Wednesday"
+        name: "Tuesday"
     },
     {
         id: 4,
-        name: "Thursday"
+        name: "Wednesday"
     },
     {
         id: 5,
-        name: "Friday"
+        name: "Thursday"
     },
     {
         id: 6,
-        name: "Saturday"
+        name: "Friday"
     },
     {
         id: 7,
-        name: "Sunday"
+        name: "Saturday"
     },
 ]
 
@@ -54,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
+    removefilterIcon:{
+        marginRight:10,
+        cursor:"pointer"
+    }
 }))
 
 
@@ -64,14 +69,15 @@ const BrowserShift = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [specialist, setSpecialist] = React.useState(null);
     const [hospital, setHospital] = React.useState(null);
-    const {getShiftList, loading, getHospitalList, getFilterSpeciality} = useSelector(state => state.browseShift)
+    const { getShiftList, loading, getHospitalList, getFilterSpeciality, shiftFilter } = useSelector(state => state.browseShift)
+    const [getList, setGetList] = useState([])
 
     const [data, setData] = useState({
-        speciality:[],
-        hospital:[],
-        weekday:[]
+        speciality_id: [],
+        hospital_id: [],
+        day: []
     })
-    
+
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -97,13 +103,12 @@ const BrowserShift = () => {
     const handleChangeCheckbox = (event) => {
         const specialityData = JSON.parse(JSON.stringify(data));
         const isChecked = (event.target.checked);
-        console.log('isChecked: ', isChecked);
         if (isChecked) {
-            specialityData.speciality.push(event.target.value);
+            specialityData.speciality_id.push(event.target.value);
             setData(specialityData)
         } else {
-            const newData = (specialityData.speciality).filter(item => item !== event.target.value);
-            specialityData.speciality = newData;
+            const newData = specialityData.speciality_id.filter(item => item !== event.target.value);
+            specialityData.speciality_id = newData;
             setData(specialityData)
         }
     };
@@ -111,41 +116,39 @@ const BrowserShift = () => {
     const handleHospitalChangeCheckbox = (event) => {
         const hospitalData = JSON.parse(JSON.stringify(data));
         const isChecked = (event.target.checked);
-        console.log('isChecked: ', isChecked);
         if (isChecked) {
-            hospitalData.hospital.push(event.target.value);
+            hospitalData.hospital_id.push(event.target.value);
             setData(hospitalData)
         } else {
-            const newData = (hospitalData.hospital).filter(item => item !== event.target.value);
-            hospitalData.hospital = newData;
+            const newData = (hospitalData.hospital_id).filter(item => item !== event.target.value);
+            hospitalData.hospital_id = newData;
             setData(hospitalData)
         }
     };
     const handleWeekdayChangeCheckbox = (event) => {
         const weekdayData = JSON.parse(JSON.stringify(data));
         const isChecked = (event.target.checked);
-        console.log('isChecked: ', isChecked);
         if (isChecked) {
-            weekdayData.weekday.push(event.target.value);
+            weekdayData.day.push(event.target.value);
             setData(weekdayData)
         } else {
-            const newData = (weekdayData.weekday).filter(item => item !== event.target.value);
-            weekdayData.weekday = newData;
+            const newData = (weekdayData.day).filter(item => item !== event.target.value);
+            weekdayData.day = newData;
             setData(weekdayData)
         }
     };
 
     useEffect(() => {
         dispatch(getShift())
-    },[])
+    }, [])
 
     useEffect(() => {
         dispatch(getHospital())
-    },[])
+    }, [])
 
     useEffect(() => {
         dispatch(getfilterSpeciality())
-    },[])
+    }, [])
 
     const handleChangePage = (event, value) => {
         setPage(value);
@@ -158,17 +161,28 @@ const BrowserShift = () => {
     }
 
     const submitFilterData = () => {
-        console.log('sdfds', data)
-        dispatch(filterShiftList())
+        dispatch(filterShiftList(data));
+        // const specialityData = JSON.parse(JSON.stringify(data));
+    }
+
+    useEffect(() => {
+        if (shiftFilter && shiftFilter?.data?.data.length > 0) {
+            setGetList(shiftFilter)
+        }
+    }, [shiftFilter])
+
+    const removeFilter = () => {
+        setGetList("")
+        setData("")
     }
 
     return (
         <>
             {
                 loading ?
-                <Backdrop className={classes.backdrop} open={loading}>
-                    <CircularProgress color="inherit" />
-                </Backdrop> : ""
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
             }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-16">
@@ -212,9 +226,9 @@ const BrowserShift = () => {
                                     className="filter-menuItem-container"
                                 >
                                     {
-                                         getHospitalList?.data && getHospitalList?.data.map((item, index) => (
+                                        getHospitalList?.data && getHospitalList?.data.map((item, index) => (
                                             <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox onChange={handleHospitalChangeCheckbox} value={item.id}  color="primary" className="menu-item-checkbox" />} label={item.hospital_name} />
+                                                <FormControlLabel control={<Checkbox onChange={handleHospitalChangeCheckbox} value={item.id} color="primary" className="menu-item-checkbox" />} label={item.hospital_name} />
                                             </MenuItem>
                                         ))
                                     }
@@ -244,8 +258,12 @@ const BrowserShift = () => {
                                     <MenuItem className="menu-item-clear">Clear</MenuItem>
                                 </Menu>
                             </div>
-                            
+
                             <div className="">
+                                {
+                                    (getList && getList?.data?.data.length > 0) &&
+                                    <CloseIcon className={classes.removefilterIcon} onClick={removeFilter} />
+                                }
                                 <Button variant="outlined" onClick={submitFilterData}>Filter</Button>
                             </div>
                         </div>
@@ -254,7 +272,14 @@ const BrowserShift = () => {
             </section>
 
             <section className="pb-32">
-                <ShiftTable shiftList={getShiftList ? getShiftList : loading}  handleChangePage={handleChangePage} page={page} />
+                <ShiftTable
+                    shiftList=
+                    {
+                        getList && getList?.data?.data.length > 0 ?
+                            getList : (getShiftList ? getShiftList : loading)
+                    }
+                    handleChangePage={handleChangePage}
+                    page={page} />
             </section>
 
         </>
