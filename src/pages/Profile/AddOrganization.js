@@ -14,9 +14,10 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo';
-import { getOrganization } from '../../store/action';
+import { addAnotherOrganization, getOrganization } from '../../store/action';
 import { useForm } from 'react-hook-form';
 import { apiClient } from '../../config/apiClient';
+import Notify from '../../components/Notify/Notify';
 
 
 const useStyle = makeStyles(() => ({
@@ -81,7 +82,8 @@ const AddOrganization = () => {
     })
     const [orgId, setOrgId] = useState()
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { getOrglist } = useSelector(state => state.organization)
+    const { getOrglist, addOrgSuccess, addOrgError } = useSelector(state => state.organization)
+    const [addOrgNotify, setAddOrgNotify] = useState(false)
 
     const [data, setData] = useState({
         organization: [
@@ -143,7 +145,9 @@ const AddOrganization = () => {
     }, [orgId])
 
     const handleSubmit1 = () => {
-        console.log('data', data)
+        // console.log('data', data)
+        dispatch(addAnotherOrganization(data))
+        setAddOrgNotify(true)
     }
 
     const handleChangeCheck = (event, index, speIndex) => {
@@ -174,6 +178,18 @@ const AddOrganization = () => {
 
     return (
         <>
+            {addOrgNotify && (addOrgError?.message || addOrgError) &&
+                <Notify
+                    data={addOrgError?.message ? addOrgError?.message : addOrgError}
+                    status="error"
+                />
+            }
+            {addOrgNotify && (addOrgSuccess?.message || addOrgSuccess) &&
+                <Notify
+                    data={addOrgSuccess?.message ? addOrgSuccess?.message : addOrgSuccess}
+                    status="success"
+                />
+            }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
@@ -185,10 +201,10 @@ const AddOrganization = () => {
                                     <Grid container spacing={2} key={index} className={classes.orgContainer}>
                                         <Grid item xs={12} sm={12} >
                                             <FormControl variant="outlined" className={classes.formControl} required
-                                                // error={(errors.organization_id ? true : false)}
-                                                // {...register("organization_id", {
-                                                //     required: true,
-                                                // })}
+                                            // error={(errors.organization_id ? true : false)}
+                                            // {...register("organization_id", {
+                                            //     required: true,
+                                            // })}
                                             >
                                                 <InputLabel>Select Organization</InputLabel>
                                                 <Select

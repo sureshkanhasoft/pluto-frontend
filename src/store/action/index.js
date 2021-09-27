@@ -6,7 +6,8 @@ export {
 } from './auth/authAction'
 
 export {
-    getOrganization
+    getOrganization,
+    addAnotherOrganization
 } from "./organization/organizationAction"
 
 export {

@@ -3,8 +3,11 @@ import { updateObject } from '../../shared/utility';
 
 const initialState = {
     loading: false,
-    getOrglist:[],
-    getOrgError:""
+    getOrglist: [],
+    getOrgError: "",
+
+    addOrgSuccess: [],
+    addOrgError: []
 }
 
 const organizationReducer = (state = initialState, action) => {
@@ -12,8 +15,8 @@ const organizationReducer = (state = initialState, action) => {
         case actionTypes.GET_ORGANIZATION_REQUEST:
             return updateObject(state, {
                 loading: true,
-                getOrglist:"",
-                getOrgError:""
+                getOrglist: "",
+                getOrgError: ""
             })
 
         case actionTypes.GET_ORGANIZATION_SUCCESS:
@@ -26,6 +29,26 @@ const organizationReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 getOrgError: true
+            })
+
+        // ---------------------------------
+        case actionTypes.ADD_ANOTHER_ORG_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                addOrgSuccess: "",
+                addOrgError: ""
+            })
+
+        case actionTypes.ADD_ANOTHER_ORG_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                addOrgSuccess: action.payload
+            })
+
+        case actionTypes.ADD_ANOTHER_ORG_ERROR:
+            return updateObject(state, {
+                loading: false,
+                addOrgError: true
             })
 
         default:
