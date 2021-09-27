@@ -112,7 +112,7 @@ const Login = () => {
         <>
             {loginNotify && (loginErrors?.message || loginErrors) && 
                 <Notify
-                    data= {loginErrors?.message}
+                    data= {loginErrors?.message ? loginErrors?.message : loginErrors}
                     status="error"
                 />
             }
@@ -180,7 +180,7 @@ const Login = () => {
                                 name="organization_id"
                             >
                                 <MenuItem value="">
-                                    Select a shift time
+                                    Select Organization
                                 </MenuItem>
                                 {
                                     getOrglist?.data && getOrglist?.data.map((list, index) => {

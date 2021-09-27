@@ -408,7 +408,7 @@ const Register = () => {
                                         fullWidth
                                         {...register("nationality")}
                                         onChange={handleChange}
-                                        />
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
@@ -461,7 +461,7 @@ const Register = () => {
                                             name="organization_id"
                                         >
                                             <MenuItem value="">
-                                                Select a shift time
+                                                Select Organization
                                             </MenuItem>
                                             {
                                                 getOrglist?.data && getOrglist?.data.map((list, index) => {
