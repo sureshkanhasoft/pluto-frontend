@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {
     Grid, Card, TextField, Button, makeStyles,
     FormControl, Select, MenuItem, InputLabel,
-    FormLabel, FormControlLabel, Checkbox
+    FormLabel, FormControlLabel, Checkbox, Box, Chip, OutlinedInput
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -112,23 +112,42 @@ const useStyle = makeStyles({
         fontSize: 15,
         fontWeight: "500",
         color: "#2b68a4"
-    }
+    },
+    specialityChip: {
+        background: "#cae2fa",
+        border: "1px solid #2b68a4",
+        color: "#2b68a4"
+    },
+    // menuuuu:{
+    //     height:200
+    // }
 })
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: 250
+        },
+    },
+};
+
 
 const Register = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const [count, setCount] = useState(0)
     const [speciality, setSpeciality] = useState([])
+    const [personName, setPersonName] = React.useState([]);
     const { getOrglist } = useSelector(state => state.organization)
     const { registerErrors, registerSuccess } = useSelector(state => state.authenticate)
-    console.log('registerErrors: ', registerErrors);
-    const [registerNotify, setRegisterNotify]=useState(false)
+    const [registerNotify, setRegisterNotify] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { register: register2, formState: { errors: errors2 }, handleSubmit: handleSubmit2, } = useForm();
 
     const [orgId, setOrgId] = useState()
-    const [getCandidateReferrredForm, setGetCandidateReferrredForm] = useState([])
+    // const [getCandidateReferrredForm, setGetCandidateReferrredForm] = useState([])
     const disFutureDate = UtilService.disabledPastDate()
 
     const [data, setData] = useState({
@@ -157,6 +176,7 @@ const Register = () => {
     const handleOrgChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
         setOrgId(event.target.value)
+        setPersonName([])
     }
 
     useEffect(() => {
@@ -209,35 +229,44 @@ const Register = () => {
         getCandidateId()
     }, [])
 
-    const getCandidateReferredFrom = async () => {
-        await apiClient(true).get(`api/signee/candidate-referred-from`)
-            .then(response => {
-                const dataItem = response.data
-                if (dataItem.status === true) {
-                    setGetCandidateReferrredForm(dataItem)
-                }
-            }).catch(error => {
-                console.log('error: ', error);
-            })
-    }
-    useEffect(() => {
-        getCandidateReferredFrom()
-    }, [])
+    // const getCandidateReferredFrom = async () => {
+    //     await apiClient(true).get(`api/signee/candidate-referred-from`)
+    //         .then(response => {
+    //             const dataItem = response.data
+    //             if (dataItem.status === true) {
+    //                 setGetCandidateReferrredForm(dataItem)
+    //             }
+    //         }).catch(error => {
+    //             console.log('error: ', error);
+    //         })
+    // }
+    // useEffect(() => {
+    //     getCandidateReferredFrom()
+    // }, [])
 
     const handleSubmit1 = () => {
         setCount(count + 1)
     }
 
     const handleSubmit4 = () => {
+        // console.log('data: ', data);
         dispatch(registerUser(data))
         setRegisterNotify(true)
     }
+
+    const handleChange2 = (event) => {
+        const { target: { value, name }, } = event;
+        setPersonName(
+            typeof value === 'string' ? value.split(',') : value,
+        );
+        setData({ ...data, [event.target.name]: event.target.value });
+    };
 
     return (
         <>
             {registerNotify && (registerErrors?.message || registerErrors) &&
                 <Notify
-                    data={registerErrors?.message}
+                    data={registerErrors?.message ? registerErrors?.message : registerErrors}
                     status="error"
                 />
             }
@@ -371,14 +400,15 @@ const Register = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
+                                        id="nationality"
                                         name="nationality"
                                         label="Nationality"
                                         variant="outlined"
                                         className={classes.textField}
-                                        onChange={handleChange}
                                         fullWidth
                                         {...register("nationality")}
-                                    />
+                                        onChange={handleChange}
+                                        />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
@@ -444,9 +474,9 @@ const Register = () => {
                                         <small className="mt-8 mb-8">Select an organization wherein you want to work</small>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12}>
+                                {/* <Grid item xs={12}>
                                     <FormControl component="fieldset" className={classes.formControl}
-                                     {...register2("speciality")} >
+                                        {...register2("speciality")} >
                                         {
                                             (!!speciality && orgId) && <FormLabel component="legend">Specialities</FormLabel>
                                         }
@@ -467,17 +497,74 @@ const Register = () => {
                                                 })
                                             }
                                         </Grid>
-                                        {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
+                                        <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText>
                                     </FormControl>
-                                </Grid>
+                                </Grid> */}
+                                {
+                                    (!!speciality && orgId) &&
+
+
+                                    <Grid item xs={12}>
+                                        <FormControl variant="outlined" className={classes.formControl} {...register2("speciality")} >
+                                            <InputLabel>Specialities</InputLabel>
+                                            <Select
+                                                label="Specialities"
+                                                multiple
+                                                value={personName}
+                                                onChange={handleChange2}
+                                                name="speciality"
+                                                renderValue={(selected) => {
+                                                    console.log('selected: ', selected);
+                                                    return (
+                                                        <Box style={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                                            {selected.map((value) => {
+                                                                const data1 = speciality.filter(item => item.id === value).map(list => list.speciality_name)
+                                                                if (data1.length > 0) {
+                                                                    return (
+
+                                                                        <Chip key={value} label={data1} style={{ margin: "2px" }} className={classes.specialityChip} />
+                                                                    )
+                                                                }
+                                                            }
+                                                            )}
+                                                        </Box>
+                                                    )
+                                                }}
+                                                MenuProps={{
+                                                    anchorOrigin: {
+                                                        vertical: "bottom",
+                                                        horizontal: "left"
+                                                    },
+                                                    transformOrigin: {
+                                                        vertical: "top",
+                                                        horizontal: "left"
+                                                    },
+                                                    getContentAnchorEl: null,
+
+                                                }}
+                                            >
+                                                {speciality && speciality.map((items, index) => (
+                                                    <MenuItem
+                                                        key={index}
+                                                        value={items.id}
+                                                        className={classes.menuuuu}
+                                                    >
+                                                        {items.speciality_name}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+
+                                        </FormControl>
+                                    </Grid>
+                                }
                                 <Grid item xs={12} sm={12}>
                                     <TextField
                                         name="nmc_dmc_pin"
                                         label="NMC DMC Pin"
                                         variant="outlined"
                                         className={classes.textField}
-                                        onChange={handleChange}
                                         {...register2("nmc_dmc_pin")}
+                                        onChange={handleChange}
                                     />
                                 </Grid>
 
