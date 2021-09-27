@@ -41,11 +41,11 @@ const ShiftTable = (props) => {
                             <div className="table-cloumn left-cloumn d-flex">
                                 <div className="table-inner-cloumn date-column d-flex xy-center"><div className="table-header-lable">Date</div></div>
                                 <div className="table-inner-cloumn shift-time d-flex xy-center"><div className="table-header-lable">Shift Time</div></div>
-                                <div className="table-inner-cloumn job-role d-flex xy-center"><div className="table-header-lable">Speciality</div></div>
+                                <div className="table-inner-cloumn job-role d-flex y-center"><div className="table-header-lable">Speciality</div></div>
                             </div>
                             <div className="table-cloumn center-cloumn d-flex">
                                 <div className="table-inner-cloumn hospital d-flex y-center"><div className="table-header-lable">Hospital</div></div>
-                                <div className="table-inner-cloumn payment d-flex xy-center"><div className="table-header-lable">Payment</div></div>
+                                <div className="table-inner-cloumn payment d-flex y-center"><div className="table-header-lable">Payment</div></div>
                             </div>
                             <div className="table-cloumn right-cloumn d-flex xy-center"></div>
                         </div>
@@ -82,7 +82,7 @@ const ShiftTable = (props) => {
                                                                 <span>{result.end_time ? (result.endttime = result.end_time.slice(0, 5)) : ""}</span>
                                                             </div>
                                                         </div>
-                                                        <div className="table-inner-cloumn job-role d-flex xy-center">
+                                                        <div className="table-inner-cloumn job-role d-flex y-center">
                                                             <div className="table-cell" style={{ width: "100%" }}>
                                                                 <div className="tag-box">
                                                                     {specilaity_list.map((list, index) => <Chip className="tag" label={list} key={index}></Chip>)}
@@ -103,7 +103,7 @@ const ShiftTable = (props) => {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="table-inner-cloumn payment d-flex xy-center">
+                                                        <div className="table-inner-cloumn payment d-flex y-center">
                                                             <div className="table-cell">
                                                                 <span className="payment-text">Rate: £ {result.rate}/h</span>
                                                             </div>

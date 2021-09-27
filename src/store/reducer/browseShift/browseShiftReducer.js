@@ -113,20 +113,20 @@ const browseShiftReducer = (state = initialState, action) => {
 
         case actionTypes.FILTER_SHIFT_REQUEST:
             return updateObject(state, {
-                filterLoader: true,
+                loading: true,
                 shiftFilter:"",
                 shiftFilterError:""
             })
 
         case actionTypes.FILTER_SHIFT_SUCCESS:
             return updateObject(state, {
-                filterLoader: false,
+                loading: false,
                 shiftFilter: action.payload
             })
 
         case actionTypes.FILTER_SHIFT_ERROR:
             return updateObject(state, {
-                filterLoader: false,
+                loading: false,
                 shiftFilterError: true
             })
 
