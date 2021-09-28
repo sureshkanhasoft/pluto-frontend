@@ -55,9 +55,9 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
-    removefilterIcon:{
-        marginRight:10,
-        cursor:"pointer"
+    removefilterIcon: {
+        marginRight: 10,
+        cursor: "pointer"
     }
 }))
 
@@ -160,20 +160,20 @@ const BrowserShift = () => {
         dispatch(getShift(pageNo))
     }
 
-    const submitFilterData = () => {
+    const submitFilterData = (e) => {
+        e.preventDefault()
         dispatch(filterShiftList(data));
         // const specialityData = JSON.parse(JSON.stringify(data));
     }
 
     useEffect(() => {
-        if (shiftFilter && shiftFilter?.data?.data.length > 0) {
+        if (shiftFilter && shiftFilter?.data?.data.length >= 0) {
             setGetList(shiftFilter)
         }
     }, [shiftFilter])
 
     const removeFilter = () => {
-        setGetList("")
-        setData("")
+        window.location.reload();
     }
 
     return (
@@ -191,92 +191,98 @@ const BrowserShift = () => {
                     <p className="f-300">You can browse all shifts available on Pluto. Once you are fully compliant, you will be able to book shifts.</p>
                     <div className="filter-container pt-16">
                         <h2 className="filter-header-text">Filters</h2>
-                        <div className="filter-box mb-16">
-                            <div className="">
-                                <h4 onClick={handleClick}>Day of the week <KeyboardArrowDownIcon /></h4>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    // keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleClose}
-                                    getContentAnchorEl={null}
-                                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                                    className="filter-menuItem-container"
-                                >
-                                    {
-                                        dayofWeek.map((item, index) => (
-                                            <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox onChange={handleWeekdayChangeCheckbox} value={item.id} name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
-                                            </MenuItem>
-                                        ))
-                                    }
-                                    <Divider />
-                                    <MenuItem className="menu-item-clear">Clear</MenuItem>
-                                </Menu>
-                            </div>
-                            <div className="">
-                                <h4 onClick={hospitalClick}>Hospital <KeyboardArrowDownIcon /></h4>
-                                <Menu
-                                    anchorEl={hospital}
-                                    keepMounted
-                                    open={Boolean(hospital)}
-                                    onClose={hospitalClose}
-                                    getContentAnchorEl={null}
-                                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                                    className="filter-menuItem-container"
-                                >
-                                    {
-                                        getHospitalList?.data && getHospitalList?.data.map((item, index) => (
-                                            <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox onChange={handleHospitalChangeCheckbox} value={item.id} color="primary" className="menu-item-checkbox" />} label={item.hospital_name} />
-                                            </MenuItem>
-                                        ))
-                                    }
-                                    <Divider />
-                                    <MenuItem className="menu-item-clear">Clear</MenuItem>
-                                </Menu>
-                            </div>
-                            <div className="">
-                                <h4 onClick={specialistClick}>Speciality <KeyboardArrowDownIcon /></h4>
-                                <Menu
-                                    anchorEl={specialist}
-                                    keepMounted
-                                    open={Boolean(specialist)}
-                                    onClose={specialistClose}
-                                    getContentAnchorEl={null}
-                                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                                    className="filter-menuItem-container"
-                                >
-                                    {
-                                        getFilterSpeciality?.data && getFilterSpeciality?.data.map((item, index) => (
-                                            <MenuItem key={index}>
-                                                <FormControlLabel control={<Checkbox onChange={handleChangeCheckbox} value={item.id} color="primary" className="menu-item-checkbox" />} label={item.speciality_name} />
-                                            </MenuItem>
-                                        ))
-                                    }
-                                    <Divider />
-                                    <MenuItem className="menu-item-clear">Clear</MenuItem>
-                                </Menu>
-                            </div>
+                        <form onSubmit={(e) => submitFilterData(e)}>
+                            <div className="filter-box mb-16">
+                                <div className="">
+                                    <h4 onClick={handleClick}>Day of the week <KeyboardArrowDownIcon /></h4>
+                                    <Menu
+                                        anchorEl={anchorEl}
+                                        // keepMounted
+                                        open={Boolean(anchorEl)}
+                                        onClose={handleClose}
+                                        getContentAnchorEl={null}
+                                        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                                        className="filter-menuItem-container"
+                                    >
+                                        {
+                                            dayofWeek.map((item, index) => (
+                                                <MenuItem key={index}>
+                                                    <FormControlLabel control={<Checkbox onChange={handleWeekdayChangeCheckbox} value={item.id} name="checkedC" color="primary" className="menu-item-checkbox" />} label={item.name} />
+                                                </MenuItem>
+                                            ))
+                                        }
+                                        <Divider />
+                                        {/* <MenuItem className="menu-item-clear">Clear</MenuItem> */}
+                                    </Menu>
+                                </div>
+                                <div className="">
+                                    <h4 onClick={hospitalClick}>Hospital <KeyboardArrowDownIcon /></h4>
+                                    <Menu
+                                        anchorEl={hospital}
+                                        keepMounted
+                                        open={Boolean(hospital)}
+                                        onClose={hospitalClose}
+                                        getContentAnchorEl={null}
+                                        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                                        className="filter-menuItem-container"
+                                    >
+                                        {
+                                            getHospitalList?.data && getHospitalList?.data.map((item, index) => (
+                                                <MenuItem key={index}>
+                                                    <FormControlLabel control={<Checkbox onChange={handleHospitalChangeCheckbox} value={item.id} color="primary" className="menu-item-checkbox" />} label={item.hospital_name} />
+                                                </MenuItem>
+                                            ))
+                                        }
+                                        <Divider />
+                                        {/* <MenuItem className="menu-item-clear">Clear</MenuItem> */}
+                                    </Menu>
+                                </div>
+                                <div className="">
+                                    <h4 onClick={specialistClick}>Speciality <KeyboardArrowDownIcon /></h4>
+                                    <Menu
+                                        anchorEl={specialist}
+                                        keepMounted
+                                        open={Boolean(specialist)}
+                                        onClose={specialistClose}
+                                        getContentAnchorEl={null}
+                                        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                                        className="filter-menuItem-container"
+                                    >
+                                        {
+                                            getFilterSpeciality?.data && getFilterSpeciality?.data.map((item, index) => {
+                                                // console.log('item: ', item);
+                                                return (
+                                                    <MenuItem key={index}>
+                                                        <FormControlLabel control={<Checkbox onChange={handleChangeCheckbox} value={item.id} color="primary" className="menu-item-checkbox" />} label={item.speciality_name} />
+                                                    </MenuItem>
+                                                )
+                                            })
+                                        }
+                                        <Divider />
+                                        {/* <MenuItem className="menu-item-clear">Clear</MenuItem> */}
+                                    </Menu>
+                                </div>
 
-                            <div className="">
-                                {
-                                    (getList && getList?.data?.data.length > 0) &&
-                                    <CloseIcon className={classes.removefilterIcon} onClick={removeFilter} />
-                                }
-                                <Button variant="outlined" onClick={submitFilterData}>Filter</Button>
+                                <div className="">
+                                    {/* {
+                                        <p>{getList?.data?.data.length}</p>
+                                    } */}
+                                    {
+                                        (getList && getList?.data?.data.length >= 0) &&
+                                        <CloseIcon className={classes.removefilterIcon} onClick={removeFilter} />
+                                    }
+                                    <Button variant="outlined" type="submit" formNoValidate>Filter</Button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </Container>
             </section>
 
             <section className="pb-32">
                 <ShiftTable
-                    shiftList=
-                    {
-                        getList && getList?.data?.data.length > 0 ?
-                            getList : (getShiftList ? getShiftList : loading)
+                    shiftList={
+                        getList && getList?.data?.data.length >= 0 ? getList : (getShiftList ? getShiftList : loading)
                     }
                     handleChangePage={handleChangePage}
                     page={page} />
