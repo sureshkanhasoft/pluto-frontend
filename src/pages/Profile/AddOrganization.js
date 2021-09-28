@@ -8,7 +8,7 @@ import {
     Button,
     Box,
     MenuItem,
-    InputLabel, FormControlLabel, Checkbox,
+    InputLabel, FormControlLabel, Checkbox, FormLabel
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
@@ -64,6 +64,11 @@ const useStyle = makeStyles(() => ({
             background: "#d76f2d",
         }
     },
+    formControlBox: {
+        display: "flex",
+        flexWrap: "wrap",
+        flexDirection: "row"
+    }
 
 }))
 
@@ -201,10 +206,10 @@ const AddOrganization = () => {
                                     <Grid container spacing={2} key={index} className={classes.orgContainer}>
                                         <Grid item xs={12} sm={12} >
                                             <FormControl variant="outlined" className={classes.formControl} required
-                                            error={(errors.organization_id ? true : false)}
-                                            {...register("organization_id", {
-                                                required: true,
-                                            })}
+                                                error={(errors.organization_id ? true : false)}
+                                                {...register("organization_id", {
+                                                    required: true,
+                                                })}
                                             >
                                                 <InputLabel>Select Organization</InputLabel>
                                                 <Select
@@ -227,24 +232,35 @@ const AddOrganization = () => {
                                             </FormControl>
                                         </Grid>
                                         <Grid item xs={12} >
-                                            {
-                                                anotherSpe?.list && anotherSpe?.list.map((list, index1) => {
-                                                    if (list.id22 === index) {
+                                            <FormControl required
+                                                {...register('speciality', {
+                                                    required: "The speciality field is required.",
+                                                })}
+                                                error={(errors.speciality ? true : false)}  >
+                                                {
+                                                    anotherSpe?.list && <FormLabel component="legend">Specialities</FormLabel>
+                                                }
+                                                <div className={classes.formControlBox}>
+                                                    {
+                                                        anotherSpe?.list && anotherSpe?.list.map((list, index1) => {
+                                                            if (list.id22 === index) {
 
-                                                        return (
-                                                            list?.listing && list?.listing.map((i1, speIndex) =>
-                                                                // <span>{i1.speciality_name}</span>
-                                                                // <div key={ii} className={classes.checkboxList}>
-                                                                <FormControlLabel key={speIndex}
-                                                                    control={<Checkbox color="primary" value={i1.id} onChange={e => handleChangeCheck(e, index, speIndex)} name="speciality" />}
-                                                                    label={i1.speciality_name}
-                                                                />
-                                                                // </div>
-                                                            )
-                                                        )
+                                                                return (
+                                                                    list?.listing && list?.listing.map((i1, speIndex) =>
+                                                                        // <span>{i1.speciality_name}</span>
+                                                                        // <div key={ii} className={classes.checkboxList}>
+                                                                        <FormControlLabel key={speIndex}
+                                                                            control={<Checkbox color="primary" value={i1.id} onChange={e => handleChangeCheck(e, index, speIndex)} name="speciality" />}
+                                                                            label={i1.speciality_name}
+                                                                        />
+                                                                        // </div>
+                                                                    )
+                                                                )
+                                                            }
+                                                        })
                                                     }
-                                                })
-                                            }
+                                                </div>
+                                            </FormControl>
                                         </Grid>
 
                                         {/* <Grid item xs={12} sm={12} style={{ display: "flex", flexWrap: 'wrap' }}>
