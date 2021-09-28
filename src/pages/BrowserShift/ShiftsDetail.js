@@ -137,7 +137,7 @@ const ShiftsDetail = ({match}) => {
                                     <p>{getShiftDetails?.data?.hospital_name}</p>
                                 </div>
                                 <div className="">
-                                    <span className="title-text-sm">NAME OF WARD</span>
+                                    <span className="title-text-sm">WARD NAME</span>
                                     <p>{getShiftDetails?.data?.ward_name}</p>
                                 </div>
                                 <div className="">
