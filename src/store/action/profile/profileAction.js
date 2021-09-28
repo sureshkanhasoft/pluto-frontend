@@ -2,6 +2,9 @@ import { apiClient } from "../../../config/apiClient";
 import { 
     CHANGE_PASSWORD_ERROR, CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS,
     GET_PROFILE_ERROR, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, 
+    GET_SIGNEE_SPE_ERROR, 
+    GET_SIGNEE_SPE_REQUEST, 
+    GET_SIGNEE_SPE_SUCCESS, 
     UPDATE_PROFILE_ERROR, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS 
 } from "../actiontypes";
 
@@ -112,6 +115,46 @@ export const changePasswordSuccess = (data) => {
 export const changePasswordError = (error) => {
     return {
         type: CHANGE_PASSWORD_ERROR,
+        payload:error
+    }
+}
+
+
+
+// -----------------------------
+
+export const getSigneeSpeciality = () => {
+    return async(dispatch) =>{
+        dispatch(getSigneeSpeRequest())
+        await apiClient(true).get(`api/signee/get-signee-speciality`)
+        .then(response => {
+            const data = response.data
+            if (data.status === true) {
+                dispatch(getSigneeSpeSuccess(data))
+            } else {
+                dispatch(getSigneeSpeError(data))
+            }
+        }).catch(error => {
+            dispatch(getSigneeSpeError(error))
+
+        })
+    }
+}
+
+export const getSigneeSpeRequest = () => {
+    return {
+        type: GET_SIGNEE_SPE_REQUEST
+    }
+}
+export const getSigneeSpeSuccess = (data) => {
+    return {
+        type: GET_SIGNEE_SPE_SUCCESS,
+        payload:data
+    }
+}
+export const getSigneeSpeError = (error) => {
+    return {
+        type: GET_SIGNEE_SPE_ERROR,
         payload:error
     }
 }

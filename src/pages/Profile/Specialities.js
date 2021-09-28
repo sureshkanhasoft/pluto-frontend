@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
-import { getfilterSpeciality, updateSpeciality } from '../../store/action';
+import { getfilterSpeciality, getSigneeSpeciality, updateSpeciality } from '../../store/action';
 import Notify from '../../components/Notify/Notify';
 
 
@@ -43,6 +43,7 @@ const Specialities = () => {
     const getOrg = JSON.parse(window.localStorage.getItem('signeeInfo'));
     const { getFilterSpeciality, filterLoader } = useSelector(state => state.browseShift)
     const { updateSpeSuccess, updateSpeError, loading } = useSelector(state => state.organization)
+    const { getsigneeSuccess, getsigneeError } = useSelector(state => state.profile)
     const [msgNotify, setMsgNotify] = useState(false)
     const [data, setData] = useState({
         speciality_id: []
@@ -52,10 +53,10 @@ const Specialities = () => {
         const specialData = JSON.parse(JSON.stringify(data))
         const isChecked = event.target.checked
         if (isChecked) {
-            specialData.speciality_id.push(event.target.value)
+            specialData.speciality_id.push(parseFloat(event.target.value))
             setData(specialData)
         } else {
-            const newData = (specialData.speciality_id).filter(item => item !== event.target.value);
+            const newData = (specialData.speciality_id).filter(item => item !== parseFloat(event.target.value));
             specialData.speciality_id = newData;
             setData(specialData)
         }
@@ -63,20 +64,57 @@ const Specialities = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log('data', data)
         dispatch(updateSpeciality(data, getId.id))
         setMsgNotify(true)
+        // setTimeout(() => {
+        //     getData()
+        // }, 2000);
     }
 
     useEffect(() => {
         dispatch(getfilterSpeciality())
     }, [])
 
+    useEffect(() => {
+        dispatch(getSigneeSpeciality())
+    }, [])
+
+    // const getData = () => {
+    //     console.log('sdfsdf')
+    //     if (getsigneeSuccess && getsigneeSuccess.data) {
+    //         console.log('getsigneeSuccess.data: ', getsigneeSuccess.data);
+    //         // let spesciality = [];
+    //         getsigneeSuccess.data.map(val => {
+    //             console.log('val: ', val);
+    //             return (
+
+    //                 data?.speciality_id.push(val.speciality_id)
+    //             )
+    //         })
+    //         console.log('data', data)
+    //         // setData(getsigneeSuccess?.data)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     if(getsigneeSuccess && getsigneeSuccess.data) {
+    //         getsigneeSuccess.data.map(val => {
+    //             console.log('val: ', val);
+    //             return (
+
+    //                 data?.speciality_id.push(val.speciality_id)
+    //             )
+    //         })
+    //     }
+    //     console.log('data', data)
+    // }, [getsigneeSuccess])
+
+
     return (
         <>
             {
-                filterLoader ?
-                    <Backdrop className={classes.backdrop} open={filterLoader}>
+                filterLoader || loading ?
+                    <Backdrop className={classes.backdrop} open={filterLoader || loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop>
                     : ""
@@ -107,11 +145,12 @@ const Specialities = () => {
                                 <Grid container spacing={2}>
                                     {
                                         getFilterSpeciality?.data && getFilterSpeciality?.data.map((list, index) => {
+                                            // console.log('list: ', list);
                                             return (
                                                 <Grid item xs={12} sm={3} key={index}>
                                                     <FormControl component="fieldset" className={classes.formControl}>
                                                         <FormControlLabel
-                                                            control={<Checkbox onChange={handleChangeCheckbox} value={list?.id} color="primary" name="speciality_id" />}
+                                                            control={<Checkbox onChange={handleChangeCheckbox} checked={data.speciality_id.includes(list.id)} value={list?.id} color="primary" name="speciality_id" />}
                                                             label={list?.speciality_name}
                                                         />
                                                     </FormControl>

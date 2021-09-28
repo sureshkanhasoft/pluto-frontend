@@ -14,7 +14,8 @@ export {
 export {
     getProfile,
     updateProfile,
-    changePassword
+    changePassword,
+    getSigneeSpeciality,
 } from "./profile/profileAction"
 
 export {

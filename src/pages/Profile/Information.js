@@ -205,10 +205,10 @@ const Information = () => {
                             <Grid item xs={12} md={4}>
                                 <Card className={classes.userImage}>
                                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU" alt="profile img" />
-                                    <div className="choose_file">
+                                    {/* <div className="choose_file">
                                         <span>Upload Photo</span>
                                         <input name="filename" type="file" />
-                                    </div>
+                                    </div> */}
                                     {/* <Typography variant="caption">PLUTO USER NUMBER</Typography>
                                     <Typography variant="body1">{data?.candidate_id}</Typography> */}
                                 </Card>

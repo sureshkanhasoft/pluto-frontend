@@ -11,6 +11,10 @@ const initialState = {
     
     passChange: [],
     passErrors: [],
+
+    getsigneeError:[],
+    getsigneeSuccess:[],
+
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -73,6 +77,27 @@ const profileReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 passErrors: action.payload
+            })
+
+
+        // ----------------------------------
+        case actionTypes.GET_SIGNEE_SPE_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                getsigneeSuccess:"",
+                getsigneeError:""
+            })
+
+        case actionTypes.GET_SIGNEE_SPE_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                getsigneeSuccess: action.payload
+            })
+
+        case actionTypes.GET_SIGNEE_SPE_ERROR:
+            return updateObject(state, {
+                loading: false,
+                getsigneeError: action.payload
             })
 
         default:
