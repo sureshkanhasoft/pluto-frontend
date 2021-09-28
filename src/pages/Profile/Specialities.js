@@ -111,7 +111,7 @@ const Specialities = () => {
                                                 <Grid item xs={12} sm={3} key={index}>
                                                     <FormControl component="fieldset" className={classes.formControl}>
                                                         <FormControlLabel
-                                                            control={<Checkbox onChange={handleChangeCheckbox} value={list?.speciality_name} color="primary" name="speciality_id" />}
+                                                            control={<Checkbox onChange={handleChangeCheckbox} value={list?.id} color="primary" name="speciality_id" />}
                                                             label={list?.speciality_name}
                                                         />
                                                     </FormControl>

@@ -81,12 +81,16 @@ export const addAnotherOrganizationFailure = error => {
 export const updateSpeciality = (data, id) => {
     return async (dispatch) => {
         dispatch(updateSpecialityRequest())
-        await apiClient(true).post(`api/signee/update-signee-speciality/${id}`,data)
+        await apiClient(true).put(`api/signee/update-signee-speciality/${id}`,data)
         .then(response => {
             const dataItem = response.data;
-            dispatch(updateSpecialitySuccess(dataItem))
+            if(dataItem && dataItem.status === true) {
+                dispatch(updateSpecialitySuccess(dataItem))
+            } else {
+                dispatch(updateSpecialityFailure(data))
+            }
         }).catch(error => {
-            dispatch(updateSpecialitySuccess([]))
+            dispatch(updateSpecialitySuccess(""))
             dispatch(updateSpecialityFailure(error))
         });
     }
