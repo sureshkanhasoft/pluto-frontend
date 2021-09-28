@@ -201,10 +201,10 @@ const AddOrganization = () => {
                                     <Grid container spacing={2} key={index} className={classes.orgContainer}>
                                         <Grid item xs={12} sm={12} >
                                             <FormControl variant="outlined" className={classes.formControl} required
-                                            // error={(errors.organization_id ? true : false)}
-                                            // {...register("organization_id", {
-                                            //     required: true,
-                                            // })}
+                                            error={(errors.organization_id ? true : false)}
+                                            {...register("organization_id", {
+                                                required: true,
+                                            })}
                                             >
                                                 <InputLabel>Select Organization</InputLabel>
                                                 <Select
