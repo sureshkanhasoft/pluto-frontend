@@ -86,6 +86,9 @@ export const updateSpeciality = (data, id) => {
             const dataItem = response.data;
             if(dataItem && dataItem.status === true) {
                 dispatch(updateSpecialitySuccess(dataItem))
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else {
                 dispatch(updateSpecialityFailure(data))
             }

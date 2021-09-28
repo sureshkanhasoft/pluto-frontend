@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
 import { getfilterSpeciality, getSigneeSpeciality, updateSpeciality } from '../../store/action';
 import Notify from '../../components/Notify/Notify';
+import { apiClient } from '../../config/apiClient';
 
 
 const useStyle = makeStyles((theme) => ({
@@ -43,7 +44,6 @@ const Specialities = () => {
     const getOrg = JSON.parse(window.localStorage.getItem('signeeInfo'));
     const { getFilterSpeciality, filterLoader } = useSelector(state => state.browseShift)
     const { updateSpeSuccess, updateSpeError, loading } = useSelector(state => state.organization)
-    const { getsigneeSuccess, getsigneeError } = useSelector(state => state.profile)
     const [msgNotify, setMsgNotify] = useState(false)
     const [data, setData] = useState({
         speciality_id: []
@@ -66,55 +66,34 @@ const Specialities = () => {
         e.preventDefault();
         dispatch(updateSpeciality(data, getId.id))
         setMsgNotify(true)
-        // setTimeout(() => {
-        //     getData()
-        // }, 2000);
+    }
+
+    const getSigneeSpeciality = async () => {
+        await apiClient(true).get(`api/signee/get-signee-speciality`)
+            .then(response => {
+                let speciality = [];
+                response.data.data.map(val => {
+                    speciality.push(val.speciality_id);
+                })
+                console.log(speciality)
+                data.speciality_id = speciality
+                dispatch(getfilterSpeciality())
+            }).catch(error => {
+                console.log('error: ', error);
+
+            })
     }
 
     useEffect(() => {
-        dispatch(getfilterSpeciality())
+        getSigneeSpeciality()
     }, [])
-
-    useEffect(() => {
-        dispatch(getSigneeSpeciality())
-    }, [])
-
-    // const getData = () => {
-    //     console.log('sdfsdf')
-    //     if (getsigneeSuccess && getsigneeSuccess.data) {
-    //         console.log('getsigneeSuccess.data: ', getsigneeSuccess.data);
-    //         // let spesciality = [];
-    //         getsigneeSuccess.data.map(val => {
-    //             console.log('val: ', val);
-    //             return (
-
-    //                 data?.speciality_id.push(val.speciality_id)
-    //             )
-    //         })
-    //         console.log('data', data)
-    //         // setData(getsigneeSuccess?.data)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     if(getsigneeSuccess && getsigneeSuccess.data) {
-    //         getsigneeSuccess.data.map(val => {
-    //             console.log('val: ', val);
-    //             return (
-
-    //                 data?.speciality_id.push(val.speciality_id)
-    //             )
-    //         })
-    //     }
-    //     console.log('data', data)
-    // }, [getsigneeSuccess])
 
 
     return (
         <>
             {
-                filterLoader || loading ?
-                    <Backdrop className={classes.backdrop} open={filterLoader || loading}>
+                filterLoader ?
+                    <Backdrop className={classes.backdrop} open={filterLoader}>
                         <CircularProgress color="inherit" />
                     </Backdrop>
                     : ""
