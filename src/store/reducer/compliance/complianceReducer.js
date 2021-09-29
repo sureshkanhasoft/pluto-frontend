@@ -9,7 +9,7 @@ const initialState = {
     documentDetail: [],
     documentDetailError: [],
 
-    deleteDocument: [],
+    deleteDocumentSuccess: [],
     deleteDocumentError: []
 }
 
@@ -62,14 +62,14 @@ const complianceReducer = (state = initialState, action) => {
         case actionTypes.DELETE_DOCUMENT_REQUEST:
             return updateObject(state, {
                 loading: true,
-                deleteDocument: "",
+                deleteDocumentSuccess: "",
                 deleteDocumentError: ""
             })
 
         case actionTypes.DELETE_DOCUMENT_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                deleteDocument: action.payload
+                deleteDocumentSuccess: action.payload
             })
 
         case actionTypes.DELETE_DOCUMENT_ERROR:

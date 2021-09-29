@@ -86,6 +86,9 @@ export const deleteDocument = (id) => {
             .then(response => {
                 const dataItem = response.data;
                 dispatch(deleteDocumentSuccess(dataItem))
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
             }).catch(error => {
                 dispatch(deleteDocumentSuccess(""))
                 dispatch(deleteDocumentFailure(error))

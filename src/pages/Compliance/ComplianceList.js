@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Container,
-    Chip,
-    LinearProgress,
-    Box,
-    makeStyles
+    makeStyles, Button, Backdrop, CircularProgress
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo';
 import './compliance.scss';
-import InfoIcon from '@material-ui/icons/Info';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import PublishIcon from '@material-ui/icons/Publish';
-import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import UploadFile from './UploadFile';
+import { documentDetails } from '../../store/action';
+import Notify from '../../components/Notify/Notify';
 
 const useStyles = makeStyles((theme) => ({
     progressbar: {
@@ -22,108 +19,205 @@ const useStyles = makeStyles((theme) => ({
         "& .MuiLinearProgress-barColorPrimary": {
             backgroundColor: "#21d5ac",
         },
-    }
+    },
+    btnSecondary: {
+        background: "#f78b46",
+        width: 140,
+        height: 36,
+        color: "#fff",
+        boxShadow: "none",
+        "&:hover": {
+            boxShadow: "none",
+            background: "#d76f2d",
+        }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }))
+
+
 
 const ComplianceList = () => {
     const classes = useStyles();
-    const [selectedFile, setSelectedFile] = useState();
-    const handleClick = (e) => {
-        setSelectedFile(e.target.files[0]);
+    const dispatch = useDispatch();
+    const getToken = localStorage.getItem("token") ? localStorage.getItem("token").replace(/['"]+/g, '') : "";
+    const [selectedFile, setSelectedFile] = useState([]);
+    const [uploadPercentage, setUploadPercentage] = useState(0);
+    const [key2, setKey] = useState("")
+    const { documentDetail, documentDetailError, loading } = useSelector(state => state.addCompliance);
+    const [addDocMsg, setAddDocMsg] = useState("")
+    const [notifyMsg, setNotifyMsg] = useState(false)
+
+    const handleClick = (e, keyData) => {
+        setKey(keyData)
+        setSelectedFile(e.target.files);
     }
 
-    const [progress, setProgress] = React.useState(0);
+    useEffect(() => {
+        if (selectedFile && selectedFile.length > 0) {
+            onSubmit();
+        }
+    }, [selectedFile])
 
-    React.useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((oldProgress) => {
-                if (oldProgress === 100) {
-                    return 0;
+    const onSubmit = (e) => {
+        let formData = new FormData();
+
+        for (const key of Object.keys(selectedFile)) {
+            formData.append('files[]', selectedFile[key])
+            formData.append('key', key2)
+        }
+        setAddDocMsg("")
+
+        axios.post('http://backendbooking.kanhasoftdev.com/public/api/signee/upload-document', formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                'Authorization': getToken ? `Bearer ${getToken}` : ""
+            },
+            onUploadProgress: progressEvent => {
+                setUploadPercentage(
+                    parseInt(
+                        Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                    )
+                );
+            }
+        })
+            .then(function (response) {
+                const dataItem = response.data
+                if (dataItem && dataItem.status === true) {
+                    dispatch(documentDetails(""))
+                    setNotifyMsg(true)
+                    setAddDocMsg("Document Uploaded Successfully")
                 }
-                const diff = Math.random() * 10;
-                return Math.min(oldProgress + diff, 100);
+            })
+            .catch(function (error) {
+                setAddDocMsg(error.message)
             });
-        }, 500);
+    }
 
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+    useEffect(() => {
+        dispatch(documentDetails(""))
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
+            {notifyMsg && addDocMsg &&
+                <Notify
+                    data={addDocMsg}
+                    status="success"
+                />
+            }
             <ProfileUpdateInfo />
+
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
                     <h1 className="mt-16">Compliance</h1>
-                    <div className="">
-                        {
-                            [1, 2].map((index) => (
-                                <div className="document-upload-container" key={index}>
-                                    <div className="document-header">
-                                        <div className="f-grow">
-                                            <div className="d-flex mb-8">
-                                                <InfoIcon className="header-left-icon" />
-                                                <h1 className="title-text mb-0 f-700">PASSPORT (INCLUDING COVER)</h1>
-                                            </div>
-                                            <Chip label="REQUIRED" className="required"></Chip>
-                                        </div>
-                                        <div className="d-flex">
-                                            <button className="btn">
-                                                <PublishIcon className='mr-8' />
-                                                <input type="file" onChange={handleClick} />
-                                                <span>Upload files</span>
-                                            </button>
-                                            <Link to="/profile/documents/1" className="btn view-btn"><ListAltIcon className='mr-8' />View Details</Link>
-                                            <Link to="#" className="btn show-more">Show More <KeyboardArrowDownIcon /></Link>
-                                        </div>
-                                    </div>
-                                    <div className="document-status-container">
-                                        <div className="document-upload-status d-flex y-center">
-                                            <span className="f-700 mr-4">NURSE </span> document status:
-                                            <div className="document-status ml-8">
-                                                <span className="spinner mr-8 "></span>
-                                                <span className="">Pending</span>
-                                            </div>
-                                        </div>
+                    <form onSubmit={(e) => onSubmit(e)}>
+                        <UploadFile
+                            title="Copy of Passport in Colour including front cover. (Right to work)"
+                            key1="passport"
+                            handleClick={(e) => handleClick(e, 'passport')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="Immunisation records - Proof of immunity for (Varicella, Tuberculosis, Rubella, Measles, Hep B Level 100). Blood results needs to be traceable to exact Clinic/ source. For EPP clearance ( HIV 1 & 2) Hep C and Hep B surface antigen ( IVS)"
+                            key1="immunisation_records"
+                            handleClick={(e) => handleClick(e, 'immunisation_records')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="Mandatory training certificates- Fire safety, BLS,MH, Infection control, safeguarding child/Adult etc"
+                            key1="training_certificates"
+                            handleClick={(e) => handleClick(e, 'training_certificates')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="Nursing Certificates/ Diploma/NVQ"
+                            key1="nursing_certificates"
+                            handleClick={(e) => handleClick(e, 'nursing_certificates')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="Proof of Current Professional Indemnity Insurance"
+                            key1="professional_indemnity_insurance"
+                            handleClick={(e) => handleClick(e, 'professional_indemnity_insurance')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="NMC statement of entry"
+                            key1="nmc_statement"
+                            handleClick={(e) => handleClick(e, 'nmc_statement')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="DBS disclosure certificate- Front and back"
+                            key1="dbs_disclosure_certificate"
+                            handleClick={(e) => handleClick(e, 'dbs_disclosure_certificate')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="CV- Work history from school leaving age with no gaps. Please ensure that all dates are in (DD/MM/YY) format"
+                            key1="cv"
+                            handleClick={(e) => handleClick(e, 'cv')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="TWO references covering the last 3 years of employment (must include hospital/company stamp or company/hospital logo letter head)"
+                            key1="employment"
+                            handleClick={(e) => handleClick(e, 'employment')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="TWO proofs of address dated within last 3 months (bank statement, utility bill, official government letter etc."
+                            key1="address_proof"
+                            handleClick={(e) => handleClick(e, 'address_proof')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile title="X1 passport Photo for ID badge"
+                            key1="passport_photo"
+                            handleClick={(e) => handleClick(e, 'passport_photo')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        <UploadFile
+                            title="Proof of NI- Any letter from HMRC showing NI number or Copy of NI card ( front & back Copy ) -We don’t accept payslips"
+                            key1="proof_of_ni"
+                            handleClick={(e) => handleClick(e, 'proof_of_ni')}
+                            uploadPercentage={uploadPercentage}
+                            selectedFile={selectedFile}
+                            documentDetail={documentDetail}
+                        />
+                        {/* <Button variant="contained" className={classes.btnSecondary} type="submit" formNoValidate>Upload</Button> */}
+                    </form>
 
-                                    </div>
-                                    <div className="upload-listing-content">
-                                        <div to="/profile/documents/1" className="file-listing uploading-file-container">
-                                            <Box className="file-listing-inner d-flex flex-grow">
-                                                <Box className="upload-icon">
-                                                    <ArrowUpwardIcon />
-                                                </Box>
-                                                <Box flexGrow={1}>
-                                                    <Box display="flex">
-                                                        <Box component="p" flexGrow={1}>Uploading: file-name.png</Box>
-                                                        <p variant="body2">{`${Math.round(progress,)}%`}</p>
-                                                    </Box>
-
-                                                    <LinearProgress variant="determinate" value={progress} className={classes.progressbar} />
-                                                </Box>
-                                            </Box>
-                                        </div>
-                                        <Link to="/profile/documents/1" className="file-listing">
-                                            <div className="file-listing-inner d-flex flex-grow">
-                                                <div className="image-icon">
-                                                    <InsertPhotoOutlinedIcon />
-                                                </div>
-                                                <div>
-                                                    <span className="file-list-lable">FILE NAME</span>
-                                                    <p className="mb-0">screenshot-from-2021-07-05-17-14-19.png</p>
-                                                </div>
-                                            </div>
-                                            <div className="file-listing-inner">
-                                                <span className="file-list-lable">DATE ADDED</span>
-                                                <p className="mb-0">05-07-2021</p>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))
-                        }
-
-                    </div>
                 </Container>
             </section>
         </>
