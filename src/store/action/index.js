@@ -33,4 +33,6 @@ export {
 
 export {
     addDocuments,
+    documentDetails,
+    deleteDocument,
 } from './compliance/complianceAction'
