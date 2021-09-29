@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import {
     Grid, Card, TextField, Button, makeStyles,
     FormControl, Select, MenuItem, InputLabel,
-    FormLabel, FormControlLabel, Checkbox, Box, Chip, OutlinedInput
+    // FormLabel, FormControlLabel, Checkbox, 
+    Box, Chip, 
+    // OutlinedInput
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -127,15 +129,15 @@ const useStyle = makeStyles({
     // }
 })
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: 250
-        },
-    },
-};
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//     PaperProps: {
+//         style: {
+//             maxHeight: 250
+//         },
+//     },
+// };
 
 
 const Register = () => {
@@ -185,28 +187,28 @@ const Register = () => {
 
     useEffect(() => {
         dispatch(getOrganization())
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const handleChangeCheck = (event) => {
-        const specialityData = JSON.parse(JSON.stringify(data));
-        const isChecked = (event.target.checked);
-        if (isChecked) {
-            specialityData.speciality.push(parseFloat(event.target.value));
-            setData(specialityData)
-        } else {
-            const newData = (specialityData.speciality).filter(item => item !== parseFloat(event.target.value));
-            specialityData.speciality = newData;
-            setData(specialityData)
-        }
+    // const handleChangeCheck = (event) => {
+    //     const specialityData = JSON.parse(JSON.stringify(data));
+    //     const isChecked = (event.target.checked);
+    //     if (isChecked) {
+    //         specialityData.speciality.push(parseFloat(event.target.value));
+    //         setData(specialityData)
+    //     } else {
+    //         const newData = (specialityData.speciality).filter(item => item !== parseFloat(event.target.value));
+    //         specialityData.speciality = newData;
+    //         setData(specialityData)
+    //     }
 
-    };
+    // };
 
-    const uploadImage = (e) => {
-        const formData = new FormData();
-        const logoFile = e.target.files[0];
-        // console.log('logoFile: ', logoFile);
-        formData.append('file', logoFile)
-    }
+    // const uploadImage = (e) => {
+    //     const formData = new FormData();
+    //     const logoFile = e.target.files[0];
+    //     // console.log('logoFile: ', logoFile);
+    //     formData.append('file', logoFile)
+    // }
 
     const getSpecialities = async () => {
         await apiClient(true).get(`api/signee/get-org-specialities/${orgId}`)
@@ -219,7 +221,7 @@ const Register = () => {
 
     useEffect(() => {
         getSpecialities()
-    }, [orgId])
+    }, [orgId]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const getCandidateId = async () => {
         await apiClient(true).get(`api/signee/generate-candidateId`)
@@ -231,7 +233,7 @@ const Register = () => {
     }
     useEffect(() => {
         getCandidateId()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     // const getCandidateReferredFrom = async () => {
     //     await apiClient(true).get(`api/signee/candidate-referred-from`)
@@ -259,7 +261,7 @@ const Register = () => {
     }
 
     const handleChange2 = (event) => {
-        const { target: { value, name }, } = event;
+        const { target: { value }, } = event;
         setPersonName(
             typeof value === 'string' ? value.split(',') : value,
         );
