@@ -122,7 +122,7 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
                                         </div>
                                         <div className="file-listing-inner">
                                             <span className="file-list-lable">DATE ADDED</span>
-                                            {/* <p className="mb-0">{list.lastModifiedDate}</p> */}
+                                            <p className="mb-0">{list.date_added}</p>
                                         </div>
                                     </Link>
                                 )

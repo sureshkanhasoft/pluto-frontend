@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
         color: '#fff',
     },
     fileName: {
-        wordBreak: "break-all"
+        wordBreak: "break-all",
+        cursor:"pointer"
     },
     actionBtnBox: {
         display: "flex",
@@ -30,9 +31,15 @@ const useStyles = makeStyles((theme) => ({
 const ComplianceDetail = ({ match }) => {
     const paramsId = match.params.id;
     const classes = useStyles();
+    const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/"
     const dispatch = useDispatch();
     const [deleteNotify, setDeleteNotify] = useState(false)
     const [imgView, setImgView] = useState("")
+    const [pdfView, setPdfView] = useState("")
+
+    const pdfData = `${baseUrl}${pdfView}`
+    const imgData = `${baseUrl}${imgView}`
+
 
     const { documentDetail, loading, deleteDocumentSuccess, deleteDocumentError } = useSelector(state => state.addCompliance);
 
@@ -46,9 +53,16 @@ const ComplianceDetail = ({ match }) => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const viewFile = (e, filename) => {
-        setImgView(filename)
-
+        const extension = filename.split('.').pop()
+        if(extension === "pdf") {
+            setImgView("")
+            setPdfView(filename)
+        } else {
+            setImgView(filename)
+            setPdfView("")
+        }
     }
+    
 
     return (
         <>
@@ -74,7 +88,15 @@ const ComplianceDetail = ({ match }) => {
             <Box display="flex">
                 <Box flexGrow={1} className="image-preview-container">
                     <span className="image-text-center">Click on a document name to preview it.</span>
-                    <img src={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${imgView}`} alt="details" />
+                    {
+                        imgView && <img src={imgData} alt="details"  />
+                    }
+                    {
+                        pdfView &&
+                        <object data={pdfData} type="application/pdf" width="100%" height="100%" style={{position:"relative"}}>
+                            {/* <p>Alternative text - include a link <a href="http://africau.edu/images/default/sample.pdf">to the PDF!</a></p> */}
+                        </object>
+                    }
                 </Box>
                 <Box className="right-box-inner">
                     <Box >
