@@ -55,9 +55,11 @@ const ComplianceList = () => {
     const handleClick = (e, keyData) => {
         setKey(keyData)
         setSelectedFile(e.target.files);
+        setFileSize("")
     }
 
     useEffect(() => {
+        
         if (selectedFile && selectedFile.length > 0) {
             let totalLength = null
             if (selectedFile.length <= 5) {
