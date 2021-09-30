@@ -219,7 +219,7 @@ const AddOrganization = () => {
                                                     value={list?.organization_id || ""}
                                                 >
                                                     <MenuItem value="">
-                                                        Select a shift time
+                                                        Select Organization
                                                     </MenuItem>
                                                     {
                                                         getOrglist?.data && getOrglist?.data.map((list, index) => {

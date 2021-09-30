@@ -58,7 +58,7 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
                                 <InfoIcon className="header-left-icon" />
                                 <h1 className="title-text mb-0 f-700">{title}</h1>
                             </div>
-                            <Chip label="REQUIRED" className="required"></Chip>
+                            {/* <Chip label="REQUIRED" className="required"></Chip> */}
                         </div>
                         <div className="d-flex">
                             <button className="btn">
@@ -78,7 +78,7 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
                             {/* <span className="f-700 mr-4">NURSE </span> document status: */}
                             <span className="f-700 mr-4"></span> document status:
                             <div className="document-status ml-8">
-                                <span className="spinner mr-8 "></span>
+                                {/* <span className="spinner mr-8 "></span> */}
                                 <span className="">Pending</span>
                             </div>
                         </div>

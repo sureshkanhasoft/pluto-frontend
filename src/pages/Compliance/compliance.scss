@@ -210,11 +210,14 @@
         top:50%;
         transform: translate(-50%, -50%);
         font-weight: 300;
+        z-index: 0;
     }
     img{
         max-height: 100%;
         max-width: 100%;
         padding: 24px;
+        z-index: 1;
+        position: relative;
     }
 }
 .right-box-inner{

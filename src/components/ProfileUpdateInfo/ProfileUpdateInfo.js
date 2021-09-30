@@ -11,7 +11,7 @@ const ProfileUpdateInfo = () => {
     return (
         <section className="update-section">
             <Container maxWidth="lg">
-                <Link to="" className="onboarding-banner">
+                <Link to="/profile/documents" className="onboarding-banner">
                     <Grid container justify="space-between" alignItems="center">
                         <Grid className="inner-container">
                             <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon"/>

@@ -74,7 +74,7 @@ const ComplianceDetail = ({ match }) => {
             }
             {deleteNotify && (deleteDocumentSuccess?.message || deleteDocumentSuccess) &&
                 <Notify
-                    data={deleteDocumentSuccess?.message ? deleteDocumentSuccess?.message : deleteDocumentSuccess}
+                    data="Doc deleted successfully"
                     status="success"
                 />
             }
@@ -87,9 +87,12 @@ const ComplianceDetail = ({ match }) => {
             <ProfileUpdateInfo />
             <Box display="flex">
                 <Box flexGrow={1} className="image-preview-container">
-                    <span className="image-text-center">Click on a document name to preview it.</span>
                     {
-                        imgView && <img src={imgData} alt="details"  />
+                       !imgView &&  !pdfView && <span className="image-text-center">Click on a document name to preview it.</span>
+                    }
+                    
+                    {
+                        imgView && <img src={imgData} alt="details" />
                     }
                     {
                         pdfView &&
@@ -117,7 +120,7 @@ const ComplianceDetail = ({ match }) => {
                                                         <span className={classes.fileName} onClick={e => viewFile(e, list.file_name)}>{list.file_name}</span>
                                                     </Box>
                                                     <Box className={classes.actionBtnBox}>
-                                                        <a target="_blank" href={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`} download className="file-icons">
+                                                        <a href={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`} download={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`} className="file-icons">
                                                             <ArrowDownwardIcon />
                                                         </a>
                                                         <Link to="#" className="file-icons" onClick={(e) => deleteData(list.id)}>
@@ -137,7 +140,7 @@ const ComplianceDetail = ({ match }) => {
                                 {/* <span className="f-700 mr-4">NURSE </span> document status: */}
                                 <span className="f-700 mr-4"></span> document status:
                                 <div className="document-status mt-8">
-                                    <span className="spinner mr-8"></span>
+                                    {/* <span className="spinner mr-8"></span> */}
                                     <span className="">Pending Review</span>
                                 </div>
                             </div>

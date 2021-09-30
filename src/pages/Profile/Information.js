@@ -50,7 +50,7 @@ const useStyle = makeStyles(() => ({
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            border:"4px solid #fff"
+            border: "4px solid #fff"
         }
     },
     textFiled: {
@@ -133,8 +133,8 @@ const Information = () => {
         address_line_2: "",
         city: "",
         postcode: "",
-        nationality:"",
-        date_of_birth:"",
+        nationality: "",
+        date_of_birth: "",
     })
 
     const [pass, setPass] = useState({
@@ -390,6 +390,27 @@ const Information = () => {
                                     <CardContent className={classes.cardContainer}>
                                         <div className="form-field">
                                             <TextField
+                                                label="Organization name"
+                                                id="organization_name"
+                                                name="organization_name"
+                                                value={data?.organization_name ? data?.organization_name : ""}
+                                                placeholder="-"
+                                                // onChange={handleChange}
+                                                fullWidth
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                className={classes.textFiled}
+                                                // InputProps={{
+                                                //     endAdornment: <EditIcon />
+                                                // }}
+                                                disabled
+                                                // error={updateProfileErrors?.message?.nationality ? true : false}
+                                                // required
+                                            />
+                                        </div>
+                                        <div className="form-field">
+                                            <TextField
                                                 label="Nationality"
                                                 id="nationality"
                                                 name="nationality"
@@ -408,7 +429,7 @@ const Information = () => {
                                                 required
                                             />
                                         </div>
-                                        
+
                                         <div className="form-field">
                                             <TextField
                                                 label="Date of birth"
