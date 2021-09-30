@@ -83,6 +83,7 @@ const Navbar = () => {
                 localStorage.clear();
                 setTimeout(() => {
                     history.push('/login')
+                    window.location.reload()
 
                 }, 2000);
             }
