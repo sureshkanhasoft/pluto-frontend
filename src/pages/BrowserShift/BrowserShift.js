@@ -197,7 +197,7 @@ const BrowserShift = () => {
                                     <h4 onClick={handleClick}>Day of the week <KeyboardArrowDownIcon /></h4>
                                     <Menu
                                         anchorEl={anchorEl}
-                                        // keepMounted
+                                        keepMounted
                                         open={Boolean(anchorEl)}
                                         onClose={handleClose}
                                         getContentAnchorEl={null}

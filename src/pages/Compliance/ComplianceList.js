@@ -48,6 +48,7 @@ const ComplianceList = () => {
     const [key2, setKey] = useState("")
     const { documentDetail, documentDetailError, loading } = useSelector(state => state.addCompliance);
     const [addDocMsg, setAddDocMsg] = useState("")
+    const [fileSizeMsg, setFileSize] = useState("")
     const [notifyMsg, setNotifyMsg] = useState(false)
 
     const handleClick = (e, keyData) => {
@@ -57,7 +58,23 @@ const ComplianceList = () => {
 
     useEffect(() => {
         if (selectedFile && selectedFile.length > 0) {
-            onSubmit();
+            let totalLength = null
+            if (selectedFile.length <= 5) {
+                for (const key of Object.keys(selectedFile)) {
+                    const fsize = selectedFile.item(key).size;
+                    const file2 = Math.round((fsize / 1024));
+                    totalLength += file2
+
+                }
+                if (totalLength <= 20480) {
+                    onSubmit();
+                } else {
+                    setFileSize("File size should be less than 20MB")
+                }
+            } else {
+                setFileSize("File length should be less than 5")
+            }
+
         }
     }, [selectedFile])
 
@@ -112,6 +129,13 @@ const ComplianceList = () => {
                 <Notify
                     data={addDocMsg}
                     status="success"
+                />
+            }
+
+            {fileSizeMsg &&
+                <Notify
+                    data={fileSizeMsg}
+                    status="error"
                 />
             }
             <ProfileUpdateInfo />
