@@ -204,6 +204,9 @@
     position: relative;
     height: calc(100vh - 80px);
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .image-text-center{
         position: absolute;
         left: 50%;
