@@ -50,6 +50,7 @@ const ComplianceList = () => {
     const [addDocMsg, setAddDocMsg] = useState("")
     const [fileSizeMsg, setFileSize] = useState("")
     const [notifyMsg, setNotifyMsg] = useState(false)
+    const [loader, setLoader] = useState(false)
 
     const handleClick = (e, keyData) => {
         setKey(keyData)
@@ -93,22 +94,25 @@ const ComplianceList = () => {
                 'Authorization': getToken ? `Bearer ${getToken}` : ""
             },
             onUploadProgress: progressEvent => {
-                setUploadPercentage(
-                    parseInt(
-                        Math.round((progressEvent.loaded * 100) / progressEvent.total)
-                    )
-                );
+                setLoader(true)
+                // setUploadPercentage(
+                //     parseInt(
+                //         Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                //     )
+                // );
             }
         })
             .then(function (response) {
                 const dataItem = response.data
                 if (dataItem && dataItem.status === true) {
                     dispatch(documentDetails(""))
+                    setLoader(false)
                     setNotifyMsg(true)
                     setAddDocMsg("Document Uploaded Successfully")
                 }
             })
             .catch(function (error) {
+                setLoader(false)
                 setAddDocMsg(error.message)
             });
     }
@@ -120,8 +124,8 @@ const ComplianceList = () => {
     return (
         <>
             {
-                loading ?
-                    <Backdrop className={classes.backdrop} open={loading}>
+                loading || loader ?
+                    <Backdrop className={classes.backdrop} open={loading || loader}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
             }
