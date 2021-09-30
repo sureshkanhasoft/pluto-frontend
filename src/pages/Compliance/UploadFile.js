@@ -109,7 +109,11 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
                         {
                             documentDetail && documentDetail?.data?.data && documentDetail?.data?.data.filter(item => item.key === key1).map((list, index) => {
                                 return (
-                                    <Link to={`/profile/documents/${key1}`} className="file-listing" key={index}>
+                                    // <Link to={`/profile/documents/${key1}`} className="file-listing" key={index}>
+                                    <Link to={{
+                                        pathname: `/profile/documents/${key1}`,
+                                        state: list.file_name
+                                    }} className="file-listing" key={index}>
                                         <div className="file-listing-inner d-flex flex-grow">
                                             <div className="image-icon">
                                                 <InsertPhotoOutlinedIcon />

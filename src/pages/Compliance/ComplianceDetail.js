@@ -28,12 +28,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ComplianceDetail = ({ match }) => {
+const ComplianceDetail = (props) => {
+    const {match} = props
     const paramsId = match.params.id;
     const classes = useStyles();
     const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/"
     const dispatch = useDispatch();
     const [deleteNotify, setDeleteNotify] = useState(false)
+    const [dirImgName, setDirImgName] = useState(props.location.state)
+    console.log('dirImgName: ', dirImgName);
     const [imgView, setImgView] = useState("")
     const [pdfView, setPdfView] = useState("")
 
@@ -52,7 +55,24 @@ const ComplianceDetail = ({ match }) => {
         dispatch(documentDetails(`${paramsId}`))
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+        if(dirImgName) {
+
+            const extension = dirImgName.split('.').pop()
+            if (extension === "pdf") {
+                setImgView("")
+                setPdfView(dirImgName)
+            } else {
+                setPdfView("")
+                setImgView(dirImgName)
+            }
+        }
+        
+    }, [])
+    
+
     const viewFile = (e, filename) => {
+        setDirImgName("")
         const extension = filename.split('.').pop()
         if (extension === "pdf") {
             setImgView("")
