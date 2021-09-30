@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, documentDetail }) => {
-    console.log('documentDetail: ', documentDetail);
     const classes = useStyles();
     const dispatch = useDispatch()
     const [more, setMore] = useState(true)

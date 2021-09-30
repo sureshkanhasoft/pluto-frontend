@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
     fileName: {
         wordBreak: "break-all",
-        cursor:"pointer"
+        cursor: "pointer"
     },
     actionBtnBox: {
         display: "flex",
@@ -54,7 +54,7 @@ const ComplianceDetail = ({ match }) => {
 
     const viewFile = (e, filename) => {
         const extension = filename.split('.').pop()
-        if(extension === "pdf") {
+        if (extension === "pdf") {
             setImgView("")
             setPdfView(filename)
         } else {
@@ -62,7 +62,7 @@ const ComplianceDetail = ({ match }) => {
             setPdfView("")
         }
     }
-    
+
 
     return (
         <>
@@ -88,15 +88,15 @@ const ComplianceDetail = ({ match }) => {
             <Box display="flex">
                 <Box flexGrow={1} className="image-preview-container">
                     {
-                       !imgView &&  !pdfView && <span className="image-text-center">Click on a document name to preview it.</span>
+                        !imgView && !pdfView && <span className="image-text-center">Click on a document name to preview it.</span>
                     }
-                    
+
                     {
                         imgView && <img src={imgData} alt="details" />
                     }
                     {
                         pdfView &&
-                        <object data={pdfData} type="application/pdf" width="100%" height="100%" style={{position:"relative"}}>
+                        <object data={pdfData} type="application/pdf" width="100%" height="100%" style={{ position: "relative" }}>
                             {/* <p>Alternative text - include a link <a href="http://africau.edu/images/default/sample.pdf">to the PDF!</a></p> */}
                         </object>
                     }
@@ -104,7 +104,20 @@ const ComplianceDetail = ({ match }) => {
                 <Box className="right-box-inner">
                     <Box >
                         <Link to="/profile/documents" className="back-button mb-24"><KeyboardArrowLeftIcon /> Back to all documents </Link>
-                        <h1 className="mb-24 f-400">{paramsId}</h1>
+                        <h1 className="mb-24 f-400">
+                            {paramsId === 'passport' ? "Copy of Passport in Colour including front cover. (Right to work)" : ""}
+                            {paramsId === "immunisation_records" ? "Immunisation records - Proof of immunity for (Varicella, Tuberculosis, Rubella, Measles, Hep B Level 100). Blood results needs to be traceable to exact Clinic/ source. For EPP clearance ( HIV 1 & 2) Hep C and Hep B surface antigen ( IVS)" : ""}
+                            {paramsId === "training_certificates" ? "Mandatory training certificates- Fire safety, BLS,MH, Infection control, safeguarding child/Adult etc" : ""}
+                            {paramsId === "nursing_certificates" ? "Nursing Certificates/ Diploma/NVQ" : ""}
+                            {paramsId === "professional_indemnity_insurance" ? "Proof of Current Professional Indemnity Insurance" : ""}
+                            {paramsId === "nmc_statement" ? "NMC statement of entry" : ""}
+                            {paramsId === "dbs_disclosure_certificate" ? "DBS disclosure certificate- Front and back" : ""}
+                            {paramsId === "cv" ? "CV- Work history from school leaving age with no gaps. Please ensure that all dates are in (DD/MM/YY) format" : ""}
+                            {paramsId === "employment" ? "TWO references covering the last 3 years of employment (must include hospital/company stamp or company/hospital logo letter head)" : ""}
+                            {paramsId === "address_proof" ? "TWO proofs of address dated within last 3 months (bank statement, utility bill, official government letter etc.)" : ""}
+                            {paramsId === "passport_photo" ? "X1 passport Photo for ID badge" : ""}
+                            {paramsId === 'proof_of_ni' ? "Proof of NI- Any letter from HMRC showing NI number or Copy of NI card ( front & back Copy ) -We don’t accept payslips" : ""}
+                        </h1>
 
                         <Box className="mb-24">
                             <h2 className="title-label">UPLOADED FILES</h2>
