@@ -1,6 +1,9 @@
 import { apiClient } from "../../../config/apiClient";
 import { 
     CHANGE_PASSWORD_ERROR, CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS,
+    GET_ORGANIZATION_ERROR,
+    GET_ORGANIZATION_REQUEST,
+    GET_ORGANIZATION_SUCCESS,
     GET_PROFILE_ERROR, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, 
     GET_SIGNEE_SPE_ERROR, 
     GET_SIGNEE_SPE_REQUEST, 
@@ -119,6 +122,43 @@ export const changePasswordError = (error) => {
     }
 }
 
+
+// -----------------------------
+
+export const getOrganizationList = () => {
+    return async (dispatch) => {
+        dispatch(getOrganizationListRequest())
+        await apiClient(true).get(`api/signee/get-organisation-add-org`)
+        .then(response => {
+            const dataItem = response.data;
+            dispatch(getOrganizationListSuccess(dataItem))
+        }).catch(error => {
+            dispatch(getOrganizationListSuccess([]))
+            dispatch(getOrganizationListFailure(error))
+        });
+    }
+
+}
+
+export const getOrganizationListRequest = () => {
+    return {
+        type: GET_ORGANIZATION_REQUEST
+    }
+}
+
+export const getOrganizationListSuccess = data => {
+    return {
+        type: GET_ORGANIZATION_SUCCESS,
+        payload: data
+    }
+}
+
+export const getOrganizationListFailure = error => {
+    return {
+        type: GET_ORGANIZATION_ERROR,
+        payload: error
+    }
+}
 
 
 // -----------------------------

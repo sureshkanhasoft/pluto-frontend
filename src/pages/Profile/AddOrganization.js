@@ -14,10 +14,20 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo';
-import { addAnotherOrganization, getOrganization } from '../../store/action';
+import { addAnotherOrganization, getOrganizationList } from '../../store/action';
 import { useForm } from 'react-hook-form';
 import { apiClient } from '../../config/apiClient';
 import Notify from '../../components/Notify/Notify';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+    },
+  },
+};
 
 
 const useStyle = makeStyles(() => ({
@@ -132,7 +142,7 @@ const AddOrganization = () => {
     }
 
     useEffect(() => {
-        dispatch(getOrganization())
+        dispatch(getOrganizationList())
     }, [])
 
     const getSpecialities = async () => {
@@ -217,6 +227,7 @@ const AddOrganization = () => {
                                                     name="organization_id"
                                                     onChange={(e) => handleChangeHospital(index, e, 'organization')}
                                                     value={list?.organization_id || ""}
+                                                    MenuProps={MenuProps}
                                                 >
                                                     <MenuItem value="">
                                                         Select Organization

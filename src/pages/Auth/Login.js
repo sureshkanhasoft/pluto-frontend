@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
-import { 
+import {
     Grid, Card, TextField, Button, makeStyles,
-    FormControl,Select,MenuItem, InputLabel
- } from '@material-ui/core';
+    FormControl, Select, MenuItem, InputLabel
+} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
 import LockIcon from '@material-ui/icons/Lock';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/action/auth/authAction';
 import logo from '../../assets/images/logo.svg'
-import { getOrganization } from '../../store/action';
-import { useEffect } from 'react';
+// import { getOrganization } from '../../store/action';
+// import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Notify from '../../components/Notify/Notify';
+import { apiClient } from '../../config/apiClient';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -38,65 +39,95 @@ const useStyle = makeStyles({
     },
     textField: {
         marginBottom: 24,
-        color:"#000",
-        "& input":{
-            paddingLeft:12
+        color: "#000",
+        "& input": {
+            paddingLeft: 12
         },
         "& svg": {
             color: "#2b68a4"
         }
     },
-    forgotCont:{
-        display:"flex",
-        justifyContent:"flex-end",
-        marginBottom:24,
-        marginTop:12
+    forgotCont: {
+        display: "flex",
+        justifyContent: "flex-end",
+        marginBottom: 24,
+        marginTop: 12
     },
-    forgotText:{
-        color:"#2b68a4",
-        fontSize:13,
-        borderBottom:"1px dashed #2b68a4"
+    forgotText: {
+        color: "#2b68a4",
+        fontSize: 13,
+        borderBottom: "1px dashed #2b68a4"
     },
-    loginBtn:{
-        width:140,
+    loginBtn: {
+        width: 140,
         borderRadius: "4px",
-        margin:"0 auto",
-        background:"#ff8b46",
-        "&:hover":{
-            background:"#ff8b46"
+        margin: "0 auto",
+        background: "#ff8b46",
+        "&:hover": {
+            background: "#ff8b46"
         }
     },
-    bottomLink:{
-        marginTop:16,
-        display:"flex",
-        alignItems:"center",
-        justifyContent:"center",
-        fontSize:14
+    bottomLink: {
+        marginTop: 16,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 14
     },
-    registerBtn:{
-        marginLeft:12,
-        fontSize:15,
-        fontWeight:"500",
-        color:"#2b68a4"
+    registerBtn: {
+        marginLeft: 12,
+        fontSize: 15,
+        fontWeight: "500",
+        color: "#2b68a4"
     }
 })
 
 const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const {getOrglist} = useSelector(state => state.organization)
-    const {loginErrors , userInfo} = useSelector(state => state.authenticate)
+    // const { getOrglist } = useSelector(state => state.organization)
+    // console.log('getOrglist: ', getOrglist);
+    const { loginErrors, userInfo } = useSelector(state => state.authenticate)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const [loginNotify, setLoginNotify]=useState(false)
+    const [loginNotify, setLoginNotify] = useState(false)
+
+    const [orgList, setOrgList] = useState([])
+    const [emailNotify, setEmailNotify] = useState("")
+
+
+    const [getEmail, setGetEmail] = useState({
+
+        email: ""
+    })
 
     const [data, setData] = useState({
         email: "",
         password: "",
-        organization_id:""
+        organization_id: ""
     })
+
+    const handleBlurEmail = async () => {
+        if (getEmail.email !== "") {
+            setEmailNotify("")
+            await apiClient(true).post(`api/signee/get-email-organisation`, getEmail)
+                .then(response => {
+                    const dataItem = response.data
+                    if (dataItem && dataItem.status === true) {
+                        setOrgList(dataItem)
+                    } else {
+                        setEmailNotify("Invalid email address111")
+                    }
+                }).catch(error => {
+                    setEmailNotify(error.response.data.message)
+                })
+        }
+
+
+    }
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
+        setGetEmail({ ...getEmail, [event.target.name]: event.target.value });
     }
 
     const loginSubmit = () => {
@@ -104,21 +135,27 @@ const Login = () => {
         dispatch(login(data))
         setLoginNotify(true)
     }
-   
-    useEffect(() => {
-        dispatch(getOrganization())
-    },[])
+
+    // useEffect(() => {
+    //     dispatch(getOrganization())
+    // }, [])
     return (
         <>
-            {loginNotify && (loginErrors?.message || loginErrors) && 
+            {loginNotify && (loginErrors?.message || loginErrors) &&
                 <Notify
-                    data= {loginErrors?.message ? loginErrors?.message : loginErrors}
+                    data={loginErrors?.message ? loginErrors?.message : loginErrors}
+                    status="error"
+                />
+            }
+            {emailNotify &&
+                <Notify
+                    data={emailNotify}
                     status="error"
                 />
             }
             {loginNotify && userInfo?.message &&
                 <Notify
-                    data= {userInfo?.message}
+                    data={userInfo?.message}
                     status="success"
                 />
             }
@@ -140,6 +177,7 @@ const Login = () => {
                                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                     message: "Enter a valid e-mail address",
                                 },
+                                onBlur: handleBlurEmail
                             })}
                             error={(errors.email ? true : false)}
                             onChange={handleChange}
@@ -171,7 +209,7 @@ const Login = () => {
                                 required: "The organization field is required.",
                             })}
                             error={(errors.organization_id ? true : false)}
-                            >
+                        >
                             <InputLabel>Select Organization</InputLabel>
                             <Select
                                 value={data.organization_id}
@@ -183,9 +221,9 @@ const Login = () => {
                                     Select Organization
                                 </MenuItem>
                                 {
-                                    getOrglist?.data && getOrglist?.data.map((list, index) => {
+                                    orgList?.data && orgList?.data.map((list, index) => {
                                         return (
-                                            <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
+                                            <MenuItem value={list.organization_id} key={index}>{list.organization_name}</MenuItem>
                                         )
                                     })
                                 }

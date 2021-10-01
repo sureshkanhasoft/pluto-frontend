@@ -16,6 +16,7 @@ export {
     updateProfile,
     changePassword,
     getSigneeSpeciality,
+    getOrganizationList,
 } from "./profile/profileAction"
 
 export {
