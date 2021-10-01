@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = () => {
     const classes = useStyles();
     const [msg, setMsg] = useState()
+    const getProfilerName = JSON.parse(window.localStorage.getItem('signeeInfo'));
 
     const logout = () => {
         apiClient(true).get(`api/signee/logout`)
@@ -120,7 +121,7 @@ const Navbar = () => {
                             <div className={classes.userProfile}>
                                 <PersonIcon className={classes.userIcon}/>
                             </div>
-                            <Typography variant="subtitle1">User 1</Typography>
+                            <Typography variant="subtitle1">{getProfilerName.first_name}</Typography>
                         </Link>
                         <Button color="inherit" onClick={logout}>
                             <ExitToAppIcon />
