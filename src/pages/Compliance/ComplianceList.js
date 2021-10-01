@@ -75,7 +75,7 @@ const ComplianceList = () => {
                     setFileSize("File size should be less than 20MB")
                 }
             } else {
-                setFileSize("File length should be less than 5")
+                setFileSize("Maximum 5 documents allowed")
             }
 
         }
