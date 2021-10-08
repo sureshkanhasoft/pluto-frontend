@@ -8,7 +8,8 @@ import {
     makeStyles,
     Box,
     Button,
-    Typography
+    Typography,
+    Backdrop, CircularProgress
 } from '@material-ui/core';
 
 import ProfileUpdateInfo from "../../components/ProfileUpdateInfo/ProfileUpdateInfo";
@@ -21,7 +22,7 @@ import Notify from '../../components/Notify/Notify';
 import UtilService from '../../helper/service';
 // import WarningIcon from '@material-ui/icons/Warning';
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles((theme) => ({
 
 
     card: {
@@ -32,6 +33,10 @@ const useStyle = makeStyles(() => ({
     cardContainer: {
         padding: "0 0 0 !important",
 
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
     userImage: {
         height: "100%",
@@ -118,11 +123,10 @@ const Information = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
 
-    const { getProfileList: { data: dataItem }, passChange, passErrors, updateProfileErrors, updateProfileSuccess } = useSelector(state => state.profile)
+    const { getProfileList: { data: dataItem }, passChange, passErrors, updateProfileErrors, updateProfileSuccess, loading } = useSelector(state => state.profile)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [changePassNotify, setChangePassNotify] = useState(false)
     const [updateProfileNotify, setUpdateProfileNotify] = useState(false)
-    const disFutureDate = UtilService.disabledPastDate()
 
     const [data, setData] = useState({
         first_name: "",
@@ -177,6 +181,13 @@ const Information = () => {
 
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
+                    : ""
+            }
             {changePassNotify && passErrors?.message &&
                 <Notify
                     data={passErrors?.message}
@@ -405,8 +416,8 @@ const Information = () => {
                                                 //     endAdornment: <EditIcon />
                                                 // }}
                                                 disabled
-                                                // error={updateProfileErrors?.message?.nationality ? true : false}
-                                                // required
+                                            // error={updateProfileErrors?.message?.nationality ? true : false}
+                                            // required
                                             />
                                         </div>
                                         <div className="form-field">

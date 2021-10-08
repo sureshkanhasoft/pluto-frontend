@@ -37,3 +37,7 @@ export {
     documentDetails,
     deleteDocument,
 } from './compliance/complianceAction'
+
+export {
+    switchAccount
+} from './switchAccount/switchAccAction'
