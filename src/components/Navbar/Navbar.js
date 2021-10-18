@@ -88,8 +88,8 @@ const useStyles = makeStyles((theme) => ({
         '& .active': {
             backgroundColor: '#f78b46',
             color: "#fff",
-            pointerEvent:'none',
-            cursor:"default"
+            pointerEvent: 'none',
+            cursor: "default"
         }
     },
     menuHeading: {
@@ -100,8 +100,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 14,
         color: "rgba(0, 0, 0, 0.6)",
     },
-    tooltipCon:{
-        letterSpacing:'0.8px',
+    tooltipCon: {
+        letterSpacing: '0.8px',
+        fontWeight: "300",
+        fontSize: 12
     },
 }));
 
@@ -115,6 +117,7 @@ const Navbar = () => {
     const open2 = Boolean(switchTrust);
     const [emailAccount, setEmailAccount] = useState()
     const getProfilerName = JSON.parse(window.localStorage.getItem('signeeInfo'));
+    const getToken = JSON.parse(window.localStorage.getItem('token'));
     const { swtichAccSuccess } = useSelector(state => state.switchAccount)
     const [data, setData] = useState({
         email: getProfilerName.email
@@ -166,10 +169,25 @@ const Navbar = () => {
     }
 
     const handleSwitchAccount = (id) => {
-        if(getProfilerName.parent_id !== id) {
+        if (getProfilerName.parent_id !== id) {
             dispatch(switchAccount(id))
+            // if (getProfilerName.token !== getToken) {
+            //     console.log('sdfsdf');
+            //     // window.open("about:blank", "_self");
+            //     // window.close();
+            // }
         }
     }
+
+    // window.onbeforeunload = (event) => {
+    //     const e = event || window.event;
+    //     // Cancel the event
+    //     e.preventDefault();
+    //     if (e) {
+    //         e.returnValue = ''; // Legacy method for cross browser support
+    //     }
+    //     return ''; // Legacy method for cross browser support
+    // };
 
     return (
         <>
@@ -195,7 +213,7 @@ const Navbar = () => {
                         <NavLink to="/shifts" color="inherit" className="menu-link">BROWSE SHIFTS</NavLink>
                         <NavLink to="/my-shifts/upcoming" color="inherit" className="menu-link">MY SHIFTS</NavLink>
                         <NavLink to="/profile/documents" color="inherit" className="menu-link">COMPLIANCE</NavLink>
-                        <Tooltip title="Notification">
+                        <Tooltip title={<span className={classes.tooltipCon}>Notification</span>}>
                             <Button color="inherit" onClick={handleClickNotification}>
                                 <Badge badgeContent={1} color="primary" >
                                     <NotificationsIcon />
@@ -239,7 +257,7 @@ const Navbar = () => {
                             </div>
                             <Typography variant="subtitle1">{getProfilerName.first_name}</Typography>
                         </Link>
-                        <Tooltip title={<span className={classes.tooltipCon}>Switch Organization</span>} style={{backgroundColor: "transparent"}}>
+                        <Tooltip title={<span className={classes.tooltipCon}>Switch Organization</span>} style={{ backgroundColor: "transparent" }}>
                             <Button color="inherit" onClick={handleClickAccount}>
                                 <span className="material-icons">
                                     switch_account

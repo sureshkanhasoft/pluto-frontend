@@ -10,6 +10,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import PublishIcon from '@material-ui/icons/Publish';
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,19 +34,18 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, documentDetail }) => {
-    const classes = useStyles();
-    const dispatch = useDispatch()
+    // const classes = useStyles();
+    // const dispatch = useDispatch()
     const [more, setMore] = useState(true)
 
-    const [data, setData] = useState({
-        key: "files",
-        files: []
-    })
+    // const [data, setData] = useState({
+    //     key: "files",
+    //     files: []
+    // })
 
     const showMore = () => {
         setMore((item) => !item)
     }
-    const sdfsd = documentDetail?.data?.data.filter(item => item.key === "passport")
     return (
         <>
 
@@ -107,7 +107,8 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
                         }
 
                         {
-                            documentDetail && documentDetail?.data?.data && documentDetail?.data?.data.filter(item => item.key === key1).map((list, index) => {
+                            documentDetail && documentDetail?.data && documentDetail?.data?.filter(item => item.key === key1).map((list, index) => {
+                                const extension = list.file_name.split('.').pop()
                                 return (
                                     // <Link to={`/profile/documents/${key1}`} className="file-listing" key={index}>
                                     <Link to={{
@@ -116,7 +117,7 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
                                     }} className="file-listing" key={index}>
                                         <div className="file-listing-inner d-flex flex-grow">
                                             <div className="image-icon">
-                                                <InsertPhotoOutlinedIcon />
+                                                {extension === "pdf" ? <PictureAsPdfIcon /> : <InsertPhotoOutlinedIcon />}
                                             </div>
                                             <div>
                                                 <span className="file-list-lable">FILE NAME</span>

@@ -29,19 +29,20 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ComplianceDetail = (props) => {
-    const {match} = props
+    const { match } = props
     const paramsId = match.params.id;
     const classes = useStyles();
     const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/"
     const dispatch = useDispatch();
     const [deleteNotify, setDeleteNotify] = useState(false)
     const [dirImgName, setDirImgName] = useState(props.location.state)
-    console.log('dirImgName: ', dirImgName);
     const [imgView, setImgView] = useState("")
     const [pdfView, setPdfView] = useState("")
 
     const pdfData = `${baseUrl}${pdfView}`
     const imgData = `${baseUrl}${imgView}`
+
+    const pdfView1 = `${baseUrl}${pdfView}`
 
 
     const { documentDetail, loading, deleteDocumentSuccess, deleteDocumentError } = useSelector(state => state.addCompliance);
@@ -56,7 +57,7 @@ const ComplianceDetail = (props) => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        if(dirImgName) {
+        if (dirImgName) {
 
             const extension = dirImgName.split('.').pop()
             if (extension === "pdf") {
@@ -67,9 +68,9 @@ const ComplianceDetail = (props) => {
                 setImgView(dirImgName)
             }
         }
-        
+
     }, [])
-    
+
 
     const viewFile = (e, filename) => {
         setDirImgName("")
@@ -82,6 +83,23 @@ const ComplianceDetail = (props) => {
             setPdfView("")
         }
     }
+
+    // const download = (e) => {
+    //     var element = document.createElement("a");
+    //     var file = new Blob(
+    //         [
+    //             "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/Image44_1633943022.jpg"
+    //         ],
+    //         { type: "image/*" }
+    //     );
+    //     console.log('file: ', file);
+    //     element.href = URL.createObjectURL(file);
+    //     element.download = "image.jpg";
+    //     element.click();
+    //     console.log('element: ', element);
+
+        
+    // };
 
 
     return (
@@ -124,7 +142,8 @@ const ComplianceDetail = (props) => {
                 <Box className="right-box-inner">
                     <Box >
                         <Link to="/profile/documents" className="back-button mb-24"><KeyboardArrowLeftIcon /> Back to all documents </Link>
-                        <h1 className="mb-24 f-400">
+                        {/* <Link to="http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/Image44_1633943022.jpg" className="back-button mb-24" download onClick={(e) => download(e)}><KeyboardArrowLeftIcon /> asdasds </Link> */}
+                        <h1 className="mb-24 f-400" >
                             {paramsId === 'passport' ? "Copy of Passport in Colour including front cover. (Right to work)" : ""}
                             {paramsId === "immunisation_records" ? "Immunisation records - Proof of immunity for (Varicella, Tuberculosis, Rubella, Measles, Hep B Level 100). Blood results needs to be traceable to exact Clinic/ source. For EPP clearance ( HIV 1 & 2) Hep C and Hep B surface antigen ( IVS)" : ""}
                             {paramsId === "training_certificates" ? "Mandatory training certificates- Fire safety, BLS,MH, Infection control, safeguarding child/Adult etc" : ""}
@@ -143,7 +162,7 @@ const ComplianceDetail = (props) => {
                             <h2 className="title-label">UPLOADED FILES</h2>
                             <div className="uploaded-files">
                                 {
-                                    documentDetail && documentDetail?.data?.data && documentDetail?.data?.data.map((list, index) => {
+                                    documentDetail && documentDetail?.data && documentDetail?.data?.map((list, index) => {
 
                                         return (
                                             <Box className="upload-link" display="block" key={index}>

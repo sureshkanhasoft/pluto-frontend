@@ -115,7 +115,7 @@ const Login = () => {
                     if (dataItem && dataItem.status === true) {
                         setOrgList(dataItem)
                     } else {
-                        setEmailNotify("Invalid email address111")
+                        setEmailNotify("Invalid email address")
                     }
                 }).catch(error => {
                     setEmailNotify(error.response.data.message)
