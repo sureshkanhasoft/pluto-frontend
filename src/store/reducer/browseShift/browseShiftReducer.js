@@ -117,14 +117,14 @@ const browseShiftReducer = (state = initialState, action) => {
         case actionTypes.FILTER_SHIFT_REQUEST:
             return updateObject(state, {
                 loading: true,
-                applyShiftSuccess: "",
+                shiftFilter: "",
                 shiftFilterError: ""
             })
 
         case actionTypes.FILTER_SHIFT_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                applyShiftSuccess: action.payload
+                shiftFilter: action.payload
             })
 
         case actionTypes.FILTER_SHIFT_ERROR:
@@ -139,14 +139,14 @@ const browseShiftReducer = (state = initialState, action) => {
         case actionTypes.APPLY_SHIFT_REQUEST:
             return updateObject(state, {
                 loading: true,
-                getShiftDetails: "",
+                applyShiftSuccess: "",
                 applyShiftError: ""
             })
 
         case actionTypes.APPLY_SHIFT_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                getShiftDetails: action.payload
+                applyShiftSuccess: action.payload
             })
 
         case actionTypes.APPLY_SHIFT_ERROR:

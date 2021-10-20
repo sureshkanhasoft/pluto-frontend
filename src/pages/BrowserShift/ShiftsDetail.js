@@ -16,6 +16,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { useDispatch, useSelector } from 'react-redux';
 import { getShiftDetail, shiftApply } from '../../store/action';
+import Notify from '../../components/Notify/Notify';
 
 const useStyles = makeStyles((theme) => ({
     leftBorder: {
@@ -44,7 +45,8 @@ const ShiftsDetail = ({ match }) => {
     const dispatch = useDispatch();
     const signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
     const shift_id = match.params.id;
-    const { getShiftDetails, loading } = useSelector(state => state.browseShift)
+    const { getShiftDetails, loading, applyShiftSuccess } = useSelector(state => state.browseShift)
+    const [applyNotify, setApplyNotify] = useState(false)
     const [data, setData] = useState({
         booking_id: shift_id,
         signee_status: ""
@@ -62,6 +64,10 @@ const ShiftsDetail = ({ match }) => {
     const applyShift = () => {
         data.signee_status = "Interested"
         dispatch(shiftApply(data))
+        setApplyNotify(true)
+        setTimeout(() => {
+            dispatch(getShiftDetail(shift_id))
+        }, 4000);
     }
 
     return (
@@ -71,6 +77,12 @@ const ShiftsDetail = ({ match }) => {
                     <Backdrop className={classes.backdrop} open={loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
+            }
+            {applyNotify && applyShiftSuccess?.message &&
+                <Notify
+                    data={applyShiftSuccess?.message}
+                    status="success"
+                />
             }
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
