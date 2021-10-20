@@ -12,6 +12,7 @@ import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Notify from '../../components/Notify/Notify';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -84,22 +85,21 @@ const ComplianceDetail = (props) => {
         }
     }
 
-    // const download = (e) => {
-    //     var element = document.createElement("a");
-    //     var file = new Blob(
-    //         [
-    //             "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/Image44_1633943022.jpg"
-    //         ],
-    //         { type: "image/*" }
-    //     );
-    //     console.log('file: ', file);
-    //     element.href = URL.createObjectURL(file);
-    //     element.download = "image.jpg";
-    //     element.click();
-    //     console.log('element: ', element);
+    const download = (e) => {
+        var element = document.createElement("a");
+        var file = new Blob(
+            [
+                "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/sample-pdf_9359_1633007406.pdf"
+            ],
+            { type: 'application/pdf' }
+        );
+        element.href = URL.createObjectURL(file);
+        element.download = "image.pdf";
+        document.body.appendChild(element);
+        element.click();
 
         
-    // };
+    };
 
 
     return (
@@ -142,7 +142,7 @@ const ComplianceDetail = (props) => {
                 <Box className="right-box-inner">
                     <Box >
                         <Link to="/profile/documents" className="back-button mb-24"><KeyboardArrowLeftIcon /> Back to all documents </Link>
-                        {/* <Link to="http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/Image44_1633943022.jpg" className="back-button mb-24" download onClick={(e) => download(e)}><KeyboardArrowLeftIcon /> asdasds </Link> */}
+                        {/* <span className="back-button mb-24" download onClick={(e) => download(e)}><KeyboardArrowLeftIcon /> asdasds </span> */}
                         <h1 className="mb-24 f-400" >
                             {paramsId === 'passport' ? "Copy of Passport in Colour including front cover. (Right to work)" : ""}
                             {paramsId === "immunisation_records" ? "Immunisation records - Proof of immunity for (Varicella, Tuberculosis, Rubella, Measles, Hep B Level 100). Blood results needs to be traceable to exact Clinic/ source. For EPP clearance ( HIV 1 & 2) Hep C and Hep B surface antigen ( IVS)" : ""}
@@ -163,16 +163,16 @@ const ComplianceDetail = (props) => {
                             <div className="uploaded-files">
                                 {
                                     documentDetail && documentDetail?.data && documentDetail?.data?.map((list, index) => {
-
+                                        const extension = list.file_name.split('.').pop()
                                         return (
                                             <Box className="upload-link" display="block" key={index}>
                                                 <Box display="flex" alignItems="center" flexGrow={1}>
                                                     <Box flexGrow={1} display="flex" alignItems="center">
-                                                        <InsertPhotoOutlinedIcon />
+                                                    {extension === "pdf" ? <PictureAsPdfIcon /> : <InsertPhotoOutlinedIcon />}
                                                         <span className={classes.fileName} onClick={e => viewFile(e, list.file_name)}>{list.file_name}</span>
                                                     </Box>
                                                     <Box className={classes.actionBtnBox}>
-                                                        <a href={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`} download={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`} className="file-icons">
+                                                        <a href={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`} target="_blank" download={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`} className="file-icons">
                                                             <ArrowDownwardIcon />
                                                         </a>
                                                         <Link to="#" className="file-icons" onClick={(e) => deleteData(list.id)}>

@@ -1,4 +1,5 @@
 import { apiClient } from "../../../config/apiClient"
+import history from "../../../utils/HistoryUtils"
 import {
     SWITCH_ACCOUNT_ERROR, SWITCH_ACCOUNT_REQUEST, SWITCH_ACCOUNT_SUCCESS
 } from "../actiontypes"
@@ -14,9 +15,17 @@ export const switchAccount = (id) => {
                     dispatch(switchAccountSuccess(data))
                     localStorage.setItem('signeeInfo', JSON.stringify(data.data));
                     localStorage.setItem('token', JSON.stringify(data.data.token));
-                    setTimeout(() => {
-                        window.location.reload()
-                    }, 2000);
+                    if (data.data.status === "COMPLIANT") {
+                        setTimeout(() => {
+                            history.push('/shifts')
+                            window.location.reload()
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            history.push('/profile/documents')
+                            window.location.reload()
+                        }, 2000);
+                    }
                 } else {
                     dispatch(switchAccountError(data))
                 }
