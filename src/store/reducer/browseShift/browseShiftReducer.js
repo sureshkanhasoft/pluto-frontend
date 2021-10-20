@@ -3,22 +3,25 @@ import { updateObject } from '../../shared/utility';
 
 const initialState = {
     loading: false,
-    getShiftList:[],
-    getShiftListError:[],
+    getShiftList: [],
+    getShiftListError: [],
 
-    getShiftDetails:[],
-    getShiftDetailError:[],
+    getShiftDetails: [],
+    getShiftDetailError: [],
 
-    filterLoader:false,
+    filterLoader: false,
 
-    getHospitalList:[],
-    getHospitalError:[],
+    getHospitalList: [],
+    getHospitalError: [],
 
-    getFilterSpeciality:[],
-    getFilterSpecialityError:[],
+    getFilterSpeciality: [],
+    getFilterSpecialityError: [],
 
-    shiftFilter:[],
-    shiftFilterError:[],
+    shiftFilter: [],
+    shiftFilterError: [],
+
+    applyShiftSuccess: [],
+    applyShiftError: []
 
 }
 
@@ -27,8 +30,8 @@ const browseShiftReducer = (state = initialState, action) => {
         case actionTypes.GET_SHIFT_REQUEST:
             return updateObject(state, {
                 loading: true,
-                getShiftList:"",
-                getShiftListError:""
+                getShiftList: "",
+                getShiftListError: ""
             })
 
         case actionTypes.GET_SHIFT_SUCCESS:
@@ -42,14 +45,14 @@ const browseShiftReducer = (state = initialState, action) => {
                 loading: false,
                 getShiftListError: true
             })
-        
+
         // --------------------------------------
 
         case actionTypes.GET_SHIFT_DETAIL_REQUEST:
             return updateObject(state, {
                 loading: true,
-                getShiftDetails:"",
-                getShiftDetailError:""
+                getShiftDetails: "",
+                getShiftDetailError: ""
             })
 
         case actionTypes.GET_SHIFT_DETAIL_SUCCESS:
@@ -70,8 +73,8 @@ const browseShiftReducer = (state = initialState, action) => {
         case actionTypes.GET_HOSPITAL_REQUEST:
             return updateObject(state, {
                 filterLoader: true,
-                getHospitalList:"",
-                getHospitalError:""
+                getHospitalList: "",
+                getHospitalError: ""
             })
 
         case actionTypes.GET_HOSPITAL_SUCCESS:
@@ -91,8 +94,8 @@ const browseShiftReducer = (state = initialState, action) => {
         case actionTypes.GET_FILTER_SPECIALITY_REQUEST:
             return updateObject(state, {
                 filterLoader: true,
-                getFilterSpeciality:"",
-                getFilterSpecialityError:""
+                getFilterSpeciality: "",
+                getFilterSpecialityError: ""
             })
 
         case actionTypes.GET_FILTER_SPECIALITY_SUCCESS:
@@ -114,20 +117,42 @@ const browseShiftReducer = (state = initialState, action) => {
         case actionTypes.FILTER_SHIFT_REQUEST:
             return updateObject(state, {
                 loading: true,
-                shiftFilter:"",
-                shiftFilterError:""
+                applyShiftSuccess: "",
+                shiftFilterError: ""
             })
 
         case actionTypes.FILTER_SHIFT_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                shiftFilter: action.payload
+                applyShiftSuccess: action.payload
             })
 
         case actionTypes.FILTER_SHIFT_ERROR:
             return updateObject(state, {
                 loading: false,
                 shiftFilterError: true
+            })
+
+
+        // --------------------------------------
+
+        case actionTypes.APPLY_SHIFT_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                getShiftDetails: "",
+                applyShiftError: ""
+            })
+
+        case actionTypes.APPLY_SHIFT_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                getShiftDetails: action.payload
+            })
+
+        case actionTypes.APPLY_SHIFT_ERROR:
+            return updateObject(state, {
+                loading: false,
+                applyShiftError: true
             })
 
 

@@ -1,33 +1,39 @@
 import { apiClient } from '../../../config/apiClient';
 import history from '../../../utils/HistoryUtils';
-import { 
-    LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR, 
-    REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_ERROR, 
-    FORGOT_SUCCESS, FORGOT_ERROR, FORGOT_REQUEST, 
-    RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_ERROR ,
-    
+import {
+    LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR,
+    REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_ERROR,
+    FORGOT_SUCCESS, FORGOT_ERROR, FORGOT_REQUEST,
+    RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_ERROR,
+
 } from '../actiontypes';
 
 export const login = (data) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
         dispatch(getLoginRequest())
-        await apiClient(true).post(`api/signee/signin`,data)
-        .then(response => {
-            const data = response.data
-            if (data && data.status === true) {
-                dispatch(getLoginSuccess(data))
-                localStorage.setItem('signeeInfo', JSON.stringify(data.data));
-                localStorage.setItem('token', JSON.stringify(data.data.token));
-                setTimeout(() => {
-                    history.push('/profile/documents')
-                }, 2000);
-            } else {
-                dispatch(getLoginSuccess(""))
-                dispatch(getLoginFailure(data))
-            }
-        }).catch(error => {
-            dispatch(getLoginFailure(error.response.data.message))
-        })
+        await apiClient(true).post(`api/signee/signin`, data)
+            .then(response => {
+                const data = response.data
+                if (data && data.status === true) {
+                    dispatch(getLoginSuccess(data))
+                    localStorage.setItem('signeeInfo', JSON.stringify(data.data));
+                    localStorage.setItem('token', JSON.stringify(data.data.token));
+                    if (data.data.status === "COMPLIANT") {
+                        setTimeout(() => {
+                            history.push('/shifts')
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            history.push('/profile/documents')
+                        }, 2000);
+                    }
+                } else {
+                    dispatch(getLoginSuccess(""))
+                    dispatch(getLoginFailure(data))
+                }
+            }).catch(error => {
+                dispatch(getLoginFailure(error.response.data.message))
+            })
     }
 }
 
@@ -55,22 +61,22 @@ const getLoginFailure = error => {
 // ---------------------------
 
 export const registerUser = (data) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
         dispatch(registerRequest())
-        await apiClient(true).post(`api/signee/signup`,data)
-        .then(response => {
-            const data = response.data
-            if (data && data.status === true) {
-                dispatch(registerSuccess(data))
-                setTimeout(() => {
-                    history.push('/login')
-                }, 2000);
-            } else {
-                dispatch(registerFailure(data))
-            }
-        }).catch(error => {
-            dispatch(registerFailure(error.response.data.message))
-        })
+        await apiClient(true).post(`api/signee/signup`, data)
+            .then(response => {
+                const data = response.data
+                if (data && data.status === true) {
+                    dispatch(registerSuccess(data))
+                    setTimeout(() => {
+                        history.push('/login')
+                    }, 2000);
+                } else {
+                    dispatch(registerFailure(data))
+                }
+            }).catch(error => {
+                dispatch(registerFailure(error.response.data.message))
+            })
     }
 }
 
@@ -95,19 +101,19 @@ const registerFailure = error => {
 }
 
 export const forgotPassword = (data) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
         dispatch(getForgotRequest());
-        await apiClient(true).post(`api/signee/forgot-signee`,data)
-        .then(response => {
-            const data = response.data
-            if (data && data.status === true) {
-                dispatch(getForgotSuccess(data));
-            } else {
-                dispatch(getForgotFailure(data));
-            }
-        }).catch(error => {
-            dispatch(getForgotFailure(error.response.data.message));
-        })
+        await apiClient(true).post(`api/signee/forgot-signee`, data)
+            .then(response => {
+                const data = response.data
+                if (data && data.status === true) {
+                    dispatch(getForgotSuccess(data));
+                } else {
+                    dispatch(getForgotFailure(data));
+                }
+            }).catch(error => {
+                dispatch(getForgotFailure(error.response.data.message));
+            })
     }
 }
 
@@ -134,22 +140,22 @@ const getForgotFailure = error => {
 // // ------------------------------------
 
 export const resetPassword = (data) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
         dispatch(resetPasswordRequest());
         await apiClient(true).post(`api/signee/reset-password`, data)
-        .then(response => {
-            const data = response.data
-            if (data && data.status === true) {
-                dispatch(resetPasswordSuccess(data));
-                setTimeout(() => {
-                    history.push('/login')
-                }, 3000);
-            } else {
-                dispatch(resetPasswordFailure(data));
-            }
-        }).catch(error => {
-            dispatch(resetPasswordFailure(error.response.data.message));
-        })
+            .then(response => {
+                const data = response.data
+                if (data && data.status === true) {
+                    dispatch(resetPasswordSuccess(data));
+                    setTimeout(() => {
+                        history.push('/login')
+                    }, 3000);
+                } else {
+                    dispatch(resetPasswordFailure(data));
+                }
+            }).catch(error => {
+                dispatch(resetPasswordFailure(error.response.data.message));
+            })
     }
 }
 
