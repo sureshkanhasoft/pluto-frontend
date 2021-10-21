@@ -188,12 +188,16 @@ const ComplianceDetail = (props) => {
                         </Box>
                         <Box>
                             <h2 className="title-label">DOCUMENT STATUS</h2>
-                            <div className="document-upload-status">
+                            <div className="document-upload-status d-flex y-center">
                                 {/* <span className="f-700 mr-4">NURSE </span> document status: */}
                                 <span className="f-700 mr-4"></span> document status:
-                                <div className="document-status mt-8">
+                                <div className="document-status ml-8">
                                     {/* <span className="spinner mr-8"></span> */}
-                                    <span className="">Pending Review</span>
+                                    {
+                                        documentDetail && documentDetail?.data && documentDetail?.data[0].document_status &&
+                                        <span className="" style={{textTransform:"capitalize"}}>{(documentDetail && documentDetail?.data[0].document_status).toLowerCase()}</span>
+                                    }
+                                    
                                 </div>
                             </div>
                         </Box>

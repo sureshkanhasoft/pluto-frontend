@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Chip,
     makeStyles, Box, LinearProgress
@@ -37,6 +37,7 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
     // const classes = useStyles();
     // const dispatch = useDispatch()
     const [more, setMore] = useState(true)
+    // const [docStatustext, setDocStatustext] = useState("")
 
     // const [data, setData] = useState({
     //     key: "files",
@@ -46,6 +47,14 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
     const showMore = () => {
         setMore((item) => !item)
     }
+
+    // useEffect(() => {
+    //     documentDetail && documentDetail?.data && documentDetail?.data?.filter(item => item.key === key1).map((list, index) => {
+    //         const docStatus1 = index === 0 ? (list.document_status.toLowerCase()) : ""
+    //         setDocStatustext(docStatus1)
+    //     })
+    // }, [documentDetail])
+    // console.log('text: ', docStatustext);
     return (
         <>
 
@@ -78,8 +87,18 @@ const UploadFile = ({ title, uploadPercentage, handleClick, fileList1, key1, doc
                             <span className="f-700 mr-4"></span> document status:
                             <div className="document-status ml-8">
                                 {/* <span className="spinner mr-8 "></span> */}
-                                <span className="">Pending</span>
+                                {/* <span style={{textTransform:"capitalize"}}>{docStatustext.length > 0 ? docStatustext :"Not Uploaded"}</span> */}
+                                {
+                                    documentDetail && documentDetail?.data && documentDetail?.data?.filter(item => item.key === key1).map((list, index) => {
+                                        const docStatus = index === 0 ? (list.document_status.toLowerCase()) : ""
+                                        return (
+                                            <span key={index} style={{textTransform:"capitalize"}}>{docStatus}</span>
+                                        )
+                                    })
+                                }
+                                    
                             </div>
+
                         </div>
 
                     </div>
