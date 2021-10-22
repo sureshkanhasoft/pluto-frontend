@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const ShiftsDetail = ({ match }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
+    // const signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
     const shift_id = match.params.id;
     const { getShiftDetails, loading, applyShiftSuccess } = useSelector(state => state.browseShift)
     const [applyNotify, setApplyNotify] = useState(false)
@@ -119,7 +119,7 @@ const ShiftsDetail = ({ match }) => {
                             </Grid>
                             <div className="compliance-alert mt-16 mb-24">
                                 {
-                                    signeeInfo.status !== "COMPLIANT" ?
+                                    getShiftDetails?.data?.compliance_status !== "COMPLIANT" ?
                                         <>
                                             <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon" />
                                             <Typography variant="body1">This Job role has additional compliance requirements. Please update your compliance to book this shift.</Typography>
@@ -128,7 +128,7 @@ const ShiftsDetail = ({ match }) => {
                                         </> : 
                                         getShiftDetails?.data?.signee_status === "Interested" ?
                                         <span className="compliance-btn apply-btn disabled-btn">Applied</span>
-                                        : <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>
+                                        : <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>     
                                 }
 
                             </div>
