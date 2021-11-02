@@ -130,7 +130,16 @@ const ShiftsDetail = ({ match }) => {
                                         <span className="compliance-btn apply-btn disabled-btn">Applied</span>
                                         : <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>     
                                 }
-
+                                {/* {getShiftDetails?.data?.compliance_status && getShiftDetails?.data?.profile_status === "Active" && getShiftDetails?.data?.compliance_status !== "COMPLIANT" &&
+                                    <>
+                                        <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon" />
+                                        <Typography variant="body1">This Job role has additional compliance requirements. Please update your compliance to book this shift.</Typography>
+                                        <Link to="/profile/documents" className="compliance-btn">Check compliance</Link>
+                                    </>
+                                }
+                                {getShiftDetails?.data?.compliance_status && getShiftDetails?.data?.profile_status === "Active" && getShiftDetails?.data?.compliance_status === "COMPLIANT" &&
+                                    <span className="compliance-btn apply-btn disabled-btn">Applied</span>
+                                } */}
                             </div>
 
                             <Grid container>

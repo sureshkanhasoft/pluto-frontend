@@ -112,7 +112,12 @@ const ShiftTable = (props) => {
                                                     <div className="table-cloumn right-cloumn d-flex xy-center">
                                                         <div className="table-inner-cloumn">
                                                             <div className="table-cell">
+                                                            {result?.compliance_status && result?.profile_status === "Active" && (result?.compliance_status === "COMPLIANT" || result?.compliance_status=== "NOT COMPLIANT") && 
                                                                 <Link to={`shifts/${result.id}`} className="detail-btn">Details</Link>
+                                                            }
+                                                            {result?.compliance_status && result?.profile_status !== "Active" && result?.compliance_status !== "ON HOLD" && 
+                                                                <Link to={`shifts/${result.id}`} className="detail-btn">Details</Link>
+                                                            }
                                                             </div>
                                                         </div>
                                                     </div>
