@@ -6,7 +6,7 @@ import organizationReducer from "./reducer/organization/organizationReducer";
 import preferenceReducer from "./reducer/preference/preferenceReducer";
 import profileReducer from "./reducer/profile/profileReducer";
 import switchAccReducer from "./reducer/switchAccount/switchAccReducer";
-
+import notificationReducer from "./reducer/notification/notification";
 const rootReducer = combineReducers(
     {
         authenticate: authReducer,
@@ -15,7 +15,8 @@ const rootReducer = combineReducers(
         preference: preferenceReducer,
         browseShift: browseShiftReducer,
         addCompliance: complianceReducer,
-        switchAccount: switchAccReducer
+        switchAccount: switchAccReducer,
+        notification:notificationReducer,
     }
 )
 

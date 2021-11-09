@@ -42,3 +42,8 @@ export {
 export {
     switchAccount
 } from './switchAccount/switchAccAction'
+
+export {
+    getNotification,
+    readNotification
+} from './notification/notification'

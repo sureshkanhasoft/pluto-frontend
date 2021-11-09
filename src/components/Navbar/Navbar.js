@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { switchAccount } from '../../store/action';
 // import SwitchAccountIcon from '@material-ui/icons/SwitchAccount';
 // import SwitchAccountRoundedIcon from '@material-ui/icons/SwitchAccountRounded';
+import * as actions from "../../store/action";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -77,10 +78,12 @@ const useStyles = makeStyles((theme) => ({
     menuBox: {
         '& .MuiMenu-list': {
             padding: 0,
+            minWidth: 175,
+            minHeight:"100px"
         },
         '& .MuiListItem-root': {
             borderBottom: '1px solid #dcdcdc',
-            width: 250,
+            width: 356,
             '&:last-child': {
                 borderBottom: 'none'
             }
@@ -97,7 +100,8 @@ const useStyles = makeStyles((theme) => ({
 
     },
     menuDesc: {
-        fontSize: 14,
+        fontSize: 13,
+        whiteSpace:'normal',
         color: "rgba(0, 0, 0, 0.6)",
     },
     tooltipCon: {
@@ -119,6 +123,7 @@ const Navbar = () => {
     const getProfilerName = JSON.parse(window.localStorage.getItem('signeeInfo'));
     const getToken = JSON.parse(window.localStorage.getItem('token'));
     const { swtichAccSuccess } = useSelector(state => state.switchAccount)
+    const { notificationList} = useSelector((state)=>state.notification)
     const [data, setData] = useState({
         email: getProfilerName.email
     })
@@ -129,7 +134,13 @@ const Navbar = () => {
     const handleClickAccount = (event) => {
         setSwitchTrust(event.currentTarget);
     };
-
+    useEffect(() => {
+        let signee=localStorage.getItem("signeeInfo") ? JSON.parse(localStorage.getItem("signeeInfo") || "{}") : "";
+        const requestData={
+            signee_id : signee.id
+        }
+        dispatch(actions.getNotification(requestData))
+    },[])
     const handleClose = () => {
         setAnchorEl(null);
         setSwitchTrust(null)
@@ -188,7 +199,19 @@ const Navbar = () => {
     //     }
     //     return ''; // Legacy method for cross browser support
     // };
+    const unReadNotification=notificationList.filter(val => val.is_read == 0).length;
+    
+    
+    const readNotification = (e,val) => {
+        e.preventDefault();
+        const requestData={
+            notification_id:val.id,
+            is_read:true,
+            signee_id:val.signee_id
+        }
+        dispatch(actions.readNotification(requestData))
 
+    }
     return (
         <>
             {msg && msg !== "" &&
@@ -215,7 +238,7 @@ const Navbar = () => {
                         <NavLink to="/profile/documents" color="inherit" className="menu-link">COMPLIANCE</NavLink>
                         <Tooltip title={<span className={classes.tooltipCon}>Notification</span>}>
                             <Button color="inherit" onClick={handleClickNotification}>
-                                <Badge badgeContent={1} color="primary" >
+                                <Badge badgeContent={unReadNotification} color="primary" >
                                     <NotificationsIcon />
                                 </Badge>
                             </Button>
@@ -225,30 +248,41 @@ const Navbar = () => {
                             anchorEl={anchorEl}
                             open={open}
                             onClose={handleClose}
-                            onClick={handleClose}
+                            // onClick={handleClose}
                             getContentAnchorEl={null}
                             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                             transformOrigin={{ vertical: "top", horizontal: "right" }}
                             className={classes.menuBox}
                         >
                             {
-                                [1, 2, 3, 4].map((index) => {
-                                    return (
-                                        <MenuItem key={index}>
-                                            <div>
-                                                <Typography variant="h6" className={classes.menuHeading}>Heading {index}</Typography>
-                                                <Typography variant="body2" className={classes.menuDesc}>Notification demo item {index}</Typography>
-                                            </div>
-                                        </MenuItem>
-                                    )
-                                })
+                                notificationList.length > 0  ? 
+                                
+                                 notificationList.map((val,index) => {
+                                    if(index < 5 ){
+                                        return (
+                                            <MenuItem onClick={((e) =>readNotification(e,val))} style={{background:val.is_read==0?'#e7f2ff':'white'}}>
+                                                <div>
+                                                    {/* <Typography variant="h6" className={classes.menuHeading}>{val.message} </Typography> */}
+                                                    <Typography variant="body2" className={classes.menuDesc}>{val.message} </Typography>
+                                                </div>
+                                            </MenuItem>
+                                        )
+                                    }
+                                }) :  
+                                <MenuItem >
+                                    <div> 
+                                        <Typography variant="h6" className={classes.menuHeading}>No Data Found </Typography>
+                                    </div>
+                                </MenuItem>
                             }
+                            { notificationList.length > 0  ? 
                             <MenuItem>
                                 <Link to="/notification">
                                     <Typography variant="caption">Show all notification</Typography>
                                 </Link>
 
-                            </MenuItem>
+                            </MenuItem> :""
+                            }
                         </Menu>
 
                         <Link to="/profile/information" color="inherit" className={classes.userIconCont}>
