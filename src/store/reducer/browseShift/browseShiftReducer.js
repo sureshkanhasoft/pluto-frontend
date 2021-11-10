@@ -21,7 +21,10 @@ const initialState = {
     shiftFilterError: [],
 
     applyShiftSuccess: [],
-    applyShiftError: []
+    applyShiftError: [],
+    
+    getUpcomingShiftList: [],
+    getPassShiftList: [],
 
 }
 

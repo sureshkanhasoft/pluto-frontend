@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { Container, makeStyles, Backdrop, CircularProgress } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ShiftTable from '../ShiftTable/ShiftTable'
-import { getShift } from '../../store/action';
+import PastShiftTable from '../ShiftTable/PastShiftTable'
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -14,11 +13,9 @@ const useStyles = makeStyles((theme) => ({
 
 const PastShift = () => {
     const classes = useStyles();
-    const dispatch = useDispatch()
-    const { getShiftList, loading } = useSelector(state => state.browseShift)
-    useEffect(() => {
-        dispatch(getShift())
-    }, [])
+    const { getMyShiftList, loading } = useSelector(state => state.myShift)
+    const getPastShiftList = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.past : [] 
+
     return (
         <>
             {
@@ -28,14 +25,15 @@ const PastShift = () => {
                     </Backdrop> : ""
             }
 
-            <ShiftTable
-                shiftList={getShiftList}
+            <PastShiftTable
+                shiftList={getPastShiftList}
             />
-
-            <Container maxWidth="lg">
-                <p className="mb-36">You don't have any past shifts.</p>
-                <Link to="/shifts" className="btn primary-btn">Browser Shift</Link>
-            </Container>
+            {getPastShiftList && getPastShiftList.data && getPastShiftList.data.length == 0 &&
+                <Container maxWidth="lg">
+                    <p className="mb-36">You don't have any past shifts.</p>
+                    <Link to="/shifts" className="btn primary-btn">Browser Shift</Link>
+                </Container>
+            }
         </>
     )
 }

@@ -16,11 +16,11 @@ import UtilService from '../../helper/service';
 //     },
 // }))
 
-const ShiftTable = (props) => {
+const PastShiftTable = (props) => {
     const { shiftList, handleChangePage, page } = props
     // const classes = useStyles();
 
-    const shiftData = shiftList?.data?.data.reduce((shiftFor, getData) => {
+    const shiftData = shiftList.data && shiftList.data.reduce((shiftFor, getData) => {
         let date2 = new Date(getData.date)
         const fullyear = date2.getFullYear()
         const getMon = date2.toLocaleString("en", { month: "short" })
@@ -112,15 +112,7 @@ const ShiftTable = (props) => {
                                                     <div className="table-cloumn right-cloumn d-flex xy-center">
                                                         <div className="table-inner-cloumn">
                                                             <div className="table-cell">
-                                                            {result?.booking_record_perm_for_signees && result?.booking_record_perm_for_signees?.review_shifts &&
-                                                                <Link to={`shifts/${result.id}`} className="detail-btn">Details</Link>
-                                                            } 
-                                                            {/* {result?.compliance_status && result?.profile_status === "Active" && (result?.compliance_status === "COMPLIANT" || result?.compliance_status=== "NOT COMPLIANT") && 
-                                                                <Link to={`shifts/${result.id}`} className="detail-btn">Details</Link>
-                                                            }
-                                                            {result?.compliance_status && result?.profile_status !== "Active" && result?.compliance_status !== "ON HOLD" && 
-                                                                <Link to={`shifts/${result.id}`} className="detail-btn">Details</Link>
-                                                            } */}
+                                                                <Link to={`my-shifts/upcoming/${result.id}`} className="detail-btn">Details</Link>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -137,7 +129,7 @@ const ShiftTable = (props) => {
                 <div className="pagination-container">
                     <Container>
                         <div className="inner-pagination">
-                            <Pagination onChange={handleChangePage} page={page} count={shiftList?.data?.last_page} boundaryCount={2} />
+                            {/* <Pagination onChange={handleChangePage} page={page} count={shiftList?.data?.last_page} boundaryCount={2} /> */}
                         </div>
                     </Container>
                 </div>
@@ -148,4 +140,4 @@ const ShiftTable = (props) => {
     )
 }
 
-export default ShiftTable
+export default PastShiftTable

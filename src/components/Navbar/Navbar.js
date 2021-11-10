@@ -18,6 +18,8 @@ import { apiClient } from '../../config/apiClient';
 import Notify from '../Notify/Notify';
 import { useDispatch, useSelector } from 'react-redux';
 import { switchAccount } from '../../store/action';
+import { MyShiftAccessInfoComponent, MyShiftAccessCheck } from '../../components/MyShiftAccessInfo/MyShiftAccessInfo'
+
 // import SwitchAccountIcon from '@material-ui/icons/SwitchAccount';
 // import SwitchAccountRoundedIcon from '@material-ui/icons/SwitchAccountRounded';
 
@@ -211,7 +213,9 @@ const Navbar = () => {
                         </Link>
                         <div className={classes.grow}></div>
                         <NavLink to="/shifts" color="inherit" className="menu-link">BROWSE SHIFTS</NavLink>
-                        <NavLink to="/my-shifts/upcoming" color="inherit" className="menu-link">MY SHIFTS</NavLink>
+                        {dispatch(MyShiftAccessCheck) &&
+                            <NavLink to="/my-shifts/upcoming" color="inherit" className="menu-link">MY SHIFTS</NavLink>
+                        }
                         <NavLink to="/profile/documents" color="inherit" className="menu-link">COMPLIANCE</NavLink>
                         <Tooltip title={<span className={classes.tooltipCon}>Notification</span>}>
                             <Button color="inherit" onClick={handleClickNotification}>

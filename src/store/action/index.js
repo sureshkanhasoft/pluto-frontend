@@ -34,6 +34,10 @@ export {
 } from "./browseShift/browseShiftAction"
 
 export {
+    getMyShift
+} from "./myShift/myShiftAction"
+
+export {
     addDocuments,
     documentDetails,
     deleteDocument,

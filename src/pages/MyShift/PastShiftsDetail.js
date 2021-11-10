@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const ShiftsDetail = ({ match }) => {
+const PastShiftsDetail = ({ match }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     // const signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
@@ -83,10 +83,9 @@ const ShiftsDetail = ({ match }) => {
                     status="success"
                 />
             }
-            <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
-                    <Link to="/shifts" className="back-button"><KeyboardArrowLeftIcon /> Back to all shifts </Link>
+                    <Link to="/my-shifts/past" className="back-button"><KeyboardArrowLeftIcon /> Back to all shifts </Link>
                     <h1 className="mt-16">Shift Details</h1>
 
                     <Card className="shift-detail-container">
@@ -116,36 +115,14 @@ const ShiftsDetail = ({ match }) => {
                                     </div>
                                 </Grid>
                             </Grid>
-                            <div className="compliance-alert mt-16 mb-24">
+                            {/* <div className="compliance-alert mt-16 mb-24">
                                 {getShiftDetails?.data?.booking_record_perm_for_signees?.book_shifts &&
                                     <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>
                                 }
                                 {getShiftDetails?.data?.booking_record_perm_for_signees?.cancel_shifts &&
                                     <span className="compliance-btn apply-btn disabled-btn">Applied</span>
                                 }
-                                {/* {
-                                    getShiftDetails?.data?.compliance_status !== "COMPLIANT" ?
-                                        <>
-                                            <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon" />
-                                            <Typography variant="body1">This Job role has additional compliance requirements. Please update your compliance to book this shift.</Typography>
-                                            <Link to="/profile/documents" className="compliance-btn">Check compliance</Link>
-
-                                        </> : 
-                                        getShiftDetails?.data?.signee_status === "Interested" ?
-                                        <span className="compliance-btn apply-btn disabled-btn">Applied</span>
-                                        : <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>     
-                                } */}
-                                {/* {getShiftDetails?.data?.compliance_status && getShiftDetails?.data?.profile_status === "Active" && getShiftDetails?.data?.compliance_status !== "COMPLIANT" &&
-                                    <>
-                                        <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon" />
-                                        <Typography variant="body1">This Job role has additional compliance requirements. Please update your compliance to book this shift.</Typography>
-                                        <Link to="/profile/documents" className="compliance-btn">Check compliance</Link>
-                                    </>
-                                }
-                                {getShiftDetails?.data?.compliance_status && getShiftDetails?.data?.profile_status === "Active" && getShiftDetails?.data?.compliance_status === "COMPLIANT" &&
-                                    <span className="compliance-btn apply-btn disabled-btn">Applied</span>
-                                } */}
-                            </div>
+                            </div> */}
 
                             <Grid container>
                                 <Grid item xs={12} md={4}>
@@ -213,9 +190,8 @@ const ShiftsDetail = ({ match }) => {
                     </Card>
                 </Container>
             </section>
-
         </>
     );
 };
 
-export default ShiftsDetail;
+export default PastShiftsDetail;

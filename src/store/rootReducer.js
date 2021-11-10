@@ -6,6 +6,7 @@ import organizationReducer from "./reducer/organization/organizationReducer";
 import preferenceReducer from "./reducer/preference/preferenceReducer";
 import profileReducer from "./reducer/profile/profileReducer";
 import switchAccReducer from "./reducer/switchAccount/switchAccReducer";
+import myShiftReducer from "./reducer/myShift/myShiftReducer";
 
 const rootReducer = combineReducers(
     {
@@ -15,7 +16,8 @@ const rootReducer = combineReducers(
         preference: preferenceReducer,
         browseShift: browseShiftReducer,
         addCompliance: complianceReducer,
-        switchAccount: switchAccReducer
+        switchAccount: switchAccReducer,
+        myShift: myShiftReducer
     }
 )
 
