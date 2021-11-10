@@ -45,14 +45,14 @@ const MyShift = ({match}) => {
     const pastShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.past.data.length : 0 
 
     useEffect(() => {
-        if(dispatch(MyShiftAccessCheck)){
+        if(MyShiftAccessCheck()){
             dispatch(getMyShift())
         }
     }, [])
     return (
         
         <>
-            {!dispatch(MyShiftAccessCheck) ?
+            {!MyShiftAccessCheck() ?
             (
                 <>
                     <MyShiftAccessInfoComponent/>
