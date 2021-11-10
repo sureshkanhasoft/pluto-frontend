@@ -13,6 +13,9 @@ import UpcomingShift from './UpcomingShift';
 import PastShift from './PastShift';
 import { getMyShift } from '../../store/action';
 import UpcomingShiftsDetail from './UpcomingShiftsDetail';
+import PastShiftsDetail from './PastShiftsDetail';
+import ApplyShiftsDetail from './ApplyShiftsDetail';
+import ApplyShift from './ApplyShift';
 
 const useStyle = makeStyles(() => ({
     shiftLink: {
@@ -68,12 +71,16 @@ const MyShift = ({match}) => {
                             <Box display="flex" className="mb-36">
                                 <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/upcoming`} >Upcoming Shift <Chip size="small" label={upComingShiftCount} className={classes.chipText} /></NavLink>
                                 <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/past`} >Past Shift  <Chip size="small" label={pastShiftCount} className={classes.chipText} /></NavLink>
+                                <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/apply`} >Apply Shift  <Chip size="small" label={0} className={classes.chipText} /></NavLink>
                             </Box>
                         </Container>
                         <Switch>
                             <Route exact path={`${path}/upcoming`} component={UpcomingShift} />
                             <Route exact path={`${path}/upcoming/:id`} component={UpcomingShiftsDetail} />
                             <Route path={`${path}/past`} component={PastShift} />
+                            <Route exact path={`${path}/past/:id`} component={PastShiftsDetail} />
+                            <Route path={`${path}/apply`} component={ApplyShift} />
+                            <Route exact path={`${path}/apply/:id`} component={ApplyShiftsDetail} />
                             <Redirect from="" to={`${match.url}`} />
                         </Switch>
                     </section>
