@@ -7,6 +7,7 @@ import preferenceReducer from "./reducer/preference/preferenceReducer";
 import profileReducer from "./reducer/profile/profileReducer";
 import switchAccReducer from "./reducer/switchAccount/switchAccReducer";
 import myShiftReducer from "./reducer/myShift/myShiftReducer";
+import notificationReducer from "./reducer/notification/notification";
 
 const rootReducer = combineReducers(
     {
@@ -17,7 +18,8 @@ const rootReducer = combineReducers(
         browseShift: browseShiftReducer,
         addCompliance: complianceReducer,
         switchAccount: switchAccReducer,
-        myShift: myShiftReducer
+        myShift: myShiftReducer,
+        notification:notificationReducer,
     }
 )
 

@@ -1,11 +1,15 @@
-import React from 'react'
+import React,{ useState,useEffect } from 'react'
 import {
     Container, Box, Paper, makeStyles, Typography
 } from '@material-ui/core';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
+import {useDispatch, useSelector} from 'react-redux';
+import * as actions from "../../store/action";
+import moment from 'moment';
 
 const useStyle = makeStyles(() => ({
     notificationBox: {
+        cursor:'pointer',
         width: "100%",
         padding: "16px 24px",
         display: "flex",
@@ -33,7 +37,30 @@ const useStyle = makeStyles(() => ({
 }))
 
 const Notification = () => {
+    const dispatch = useDispatch();
     const classes = useStyle();
+    // const [notificationList,setNotificationList]=useState([])
+    const { notificationList} = useSelector((state)=>state.notification)
+
+    useEffect(() => {
+        let signeeId=localStorage.getItem("signeeInfo") ? JSON.parse(localStorage.getItem("signeeInfo") || "{}") : "";
+        const requestData={
+            signee_id : signeeId.id
+        }
+        dispatch(actions.getNotification(requestData))
+    },[])
+    const unReadNotification=notificationList.filter(val => val.is_read == 0).length;
+
+    const readNotification = (e,val) => {
+        e.preventDefault();
+        const requestData={
+            notification_id:val.id,
+            is_read:true,
+            signee_id:val.signee_id
+        }
+        dispatch(actions.readNotification(requestData))
+
+    }
     return (
         <>
             <ProfileUpdateInfo />
@@ -42,18 +69,18 @@ const Notification = () => {
                     <h1 className="mt-16">Notifications</h1>
                     <Box className="mb-36">
                         {
-                            [1, 2, 3, 4, 5, 6].map(index => {
+                            (notificationList.length >0) ? notificationList.map(val => {
                                 return (
-                                    <Paper elevation={3} className={classes.notificationBox} key={index}>
+                                    <Paper elevation={3} onClick={((e) =>readNotification(e,val))} className={classes.notificationBox} style={{background:val.is_read==0?'#e7f2ff':'white'}} >
                                         <div>
-                                            <Typography variant="h6" className={classes.menuHeading}>Heading {index}</Typography>
-                                            <Typography variant="body2" className={classes.menuDesc}>Notification demo item {index}</Typography>
+                                            {/* <Typography variant="h6" className={classes.menuHeading}>Heading </Typography> */}
+                                            <Typography variant="body2" className={classes.menuDesc}>{val.message} </Typography>
                                         </div>
-                                        <span>17 jun</span>
+                                        <span>{moment(val.created_at).format('DD MMM')}</span>
 
                                     </Paper>
                                 )
-                            })
+                            }) :"No Data Found"
                         }
 
                     </Box>
