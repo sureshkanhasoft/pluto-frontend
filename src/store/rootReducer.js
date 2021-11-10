@@ -8,6 +8,7 @@ import profileReducer from "./reducer/profile/profileReducer";
 import switchAccReducer from "./reducer/switchAccount/switchAccReducer";
 import myShiftReducer from "./reducer/myShift/myShiftReducer";
 import notificationReducer from "./reducer/notification/notification";
+import notificationMsgReducer from "./reducer/notificationMsg/notificationMsg";
 
 const rootReducer = combineReducers(
     {
@@ -20,6 +21,7 @@ const rootReducer = combineReducers(
         switchAccount: switchAccReducer,
         myShift: myShiftReducer,
         notification:notificationReducer,
+        notificationMsg:notificationMsgReducer,
     }
 )
 

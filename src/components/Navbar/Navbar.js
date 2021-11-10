@@ -19,6 +19,7 @@ import Notify from '../Notify/Notify';
 import { useDispatch, useSelector } from 'react-redux';
 import { switchAccount } from '../../store/action';
 import { MyShiftAccessCheck } from '../../components/MyShiftAccessInfo/MyShiftAccessInfo'
+import { notificationClear } from "../../../src/store/action/notificationMsg";
 
 // import SwitchAccountIcon from '@material-ui/icons/SwitchAccount';
 // import SwitchAccountRoundedIcon from '@material-ui/icons/SwitchAccountRounded';
@@ -126,6 +127,7 @@ const Navbar = () => {
     const getToken = JSON.parse(window.localStorage.getItem('token'));
     const { swtichAccSuccess } = useSelector(state => state.switchAccount)
     const { notificationList} = useSelector((state)=>state.notification)
+    var notificationInfo = useSelector((state)=>state.notificationMsg)
     const [data, setData] = useState({
         email: getProfilerName.email
     })
@@ -214,6 +216,13 @@ const Navbar = () => {
         dispatch(actions.readNotification(requestData))
 
     }
+
+    const clearNotificationMsg = () => {
+        let reqParam = { message: null, status: null, type: null }
+        setTimeout(() => {
+            dispatch(notificationClear(reqParam))
+        }, 4000);
+    }
     return (
         <>
             {msg && msg !== "" &&
@@ -227,6 +236,17 @@ const Navbar = () => {
                     data={swtichAccSuccess?.message}
                     status="success"
                 />
+            }
+            {notificationInfo?.message &&
+                (
+                    <>
+                        <Notify
+                            data={notificationInfo?.message}
+                            status= {notificationInfo?.status ? "success" : "error" }
+                        />
+                        {clearNotificationMsg()}
+                    </>
+                )
             }
             <AppBar position="fixed">
                 <Container maxWidth="lg">

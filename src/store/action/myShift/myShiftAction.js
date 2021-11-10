@@ -7,7 +7,7 @@ export const getMyShift = () => {
     return async (dispatch) => {
         await apiClient(true).get(`api/signee/my-shift`)
             .then(response => {
-                dispatch(notificationSuccess(response.data.message))
+                // dispatch(notificationSuccess(response.data.message))
                 dispatch(getMyShiftSuccess(response.data))
             }).catch(error => {
                 dispatch(notificationFail(error))
