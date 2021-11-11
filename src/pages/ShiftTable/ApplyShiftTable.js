@@ -16,7 +16,7 @@ import UtilService from '../../helper/service';
 //     },
 // }))
 
-const PastShiftTable = (props) => {
+const ApplyShiftTable = (props) => {
     const { shiftList, handleChangePage, page } = props
     // const classes = useStyles();
 
@@ -29,7 +29,6 @@ const PastShiftTable = (props) => {
         shiftFor[monthYear].push(getData);
         return shiftFor;
     }, {});
-
 
     return (
 
@@ -112,7 +111,7 @@ const PastShiftTable = (props) => {
                                                     <div className="table-cloumn right-cloumn d-flex xy-center">
                                                         <div className="table-inner-cloumn">
                                                             <div className="table-cell">
-                                                                <Link to={`past/${result.id}`} className="detail-btn">Details</Link>
+                                                                <Link to={`apply/${result.id}`} className="detail-btn">Details</Link>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -140,4 +139,4 @@ const PastShiftTable = (props) => {
     )
 }
 
-export default PastShiftTable
+export default ApplyShiftTable

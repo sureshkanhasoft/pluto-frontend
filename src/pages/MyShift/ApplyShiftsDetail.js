@@ -85,7 +85,7 @@ const ApplyShiftsDetail = ({ match }) => {
             }
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
-                    <Link to="/my-shifts/past" className="back-button"><KeyboardArrowLeftIcon /> Back to all shifts </Link>
+                    <Link to="/my-shifts/apply" className="back-button"><KeyboardArrowLeftIcon /> Back to all shifts </Link>
                     <h1 className="mt-16">Shift Details</h1>
 
                     <Card className="shift-detail-container">

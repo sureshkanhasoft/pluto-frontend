@@ -77,9 +77,9 @@ const MyShift = ({match}) => {
                         <Switch>
                             <Route exact path={`${path}/upcoming`} component={UpcomingShift} />
                             <Route exact path={`${path}/upcoming/:id`} component={UpcomingShiftsDetail} />
-                            <Route path={`${path}/past`} component={PastShift} />
+                            <Route exact path={`${path}/past`} component={PastShift} />
                             <Route exact path={`${path}/past/:id`} component={PastShiftsDetail} />
-                            <Route path={`${path}/apply`} component={ApplyShift} />
+                            <Route exact path={`${path}/apply`} component={ApplyShift} />
                             <Route exact path={`${path}/apply/:id`} component={ApplyShiftsDetail} />
                             <Redirect from="" to={`${match.url}`} />
                         </Switch>

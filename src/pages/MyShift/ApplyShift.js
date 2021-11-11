@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Container, makeStyles, Backdrop, CircularProgress } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import PastShiftTable from '../ShiftTable/PastShiftTable'
+import ApplyShiftTable from '../ShiftTable/ApplyShiftTable'
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 const ApplyShift = () => {
     const classes = useStyles();
     const { getMyShiftList, loading } = useSelector(state => state.myShift)
-    const getPastShiftList = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.past : [] 
+    const getApplyShiftList = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.past : [] 
 
     return (
         <>
@@ -25,10 +25,10 @@ const ApplyShift = () => {
                     </Backdrop> : ""
             }
 
-            <PastShiftTable
-                shiftList={getPastShiftList}
+            <ApplyShiftTable
+                shiftList={getApplyShiftList}
             />
-            {getPastShiftList && getPastShiftList.data && getPastShiftList.data.length == 0 &&
+            {getApplyShiftList && getApplyShiftList.data && getApplyShiftList.data.length == 0 &&
                 <Container maxWidth="lg">
                     <p className="mb-36">You don't have any apply shifts.</p>
                     <Link to="/shifts" className="btn primary-btn">Browser Shift</Link>
