@@ -179,7 +179,7 @@ const ShiftsDetail = ({ match }) => {
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "APPLY") &&
-                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("DECLINE")}>Cancel</span>
+                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("PENDING")}>Cancel</span>
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "PENDING") &&
