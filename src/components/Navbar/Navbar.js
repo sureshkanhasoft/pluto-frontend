@@ -105,7 +105,11 @@ const useStyles = makeStyles((theme) => ({
     menuDesc: {
         fontSize: 13,
         whiteSpace:'normal',
-        color: "rgba(0, 0, 0, 0.6)",
+        color: "rgba(0, 0, 0, 0.7)",
+        '&.isRead':{
+            fontWeight:"500",
+            color:"#000"
+        }
     },
     tooltipCon: {
         letterSpacing: '0.8px',
@@ -284,10 +288,10 @@ const Navbar = () => {
                                  notificationList.map((val,index) => {
                                     if(index < 5 ){
                                         return (
-                                            <MenuItem onClick={((e) =>readNotification(e,val))} style={{background:val.is_read==0?'#e7f2ff':'white'}}>
+                                            <MenuItem onClick={((e) =>readNotification(e,val))} style={{background:val.is_read==0?'#e7f2ff':'white'}} key={index}>
                                                 <div>
                                                     {/* <Typography variant="h6" className={classes.menuHeading}>{val.message} </Typography> */}
-                                                    <Typography variant="body2" className={classes.menuDesc}>{val.message} </Typography>
+                                                    <Typography variant="body2" className={`${classes.menuDesc} ${val.is_read==0? 'isRead':''}`}>{val.message} </Typography>
                                                 </div>
                                             </MenuItem>
                                         )

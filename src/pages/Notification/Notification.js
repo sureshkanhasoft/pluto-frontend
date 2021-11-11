@@ -33,6 +33,10 @@ const useStyle = makeStyles(() => ({
     menuDesc: {
         fontSize: 14,
         color: "rgba(0, 0, 0, 0.6)",
+        '&.isRead':{
+            fontWeight:"500",
+            color:"#000"
+        }
     }
 }))
 
@@ -74,7 +78,7 @@ const Notification = () => {
                                     <Paper elevation={3} onClick={((e) =>readNotification(e,val))} className={classes.notificationBox} style={{background:val.is_read==0?'#e7f2ff':'white'}} >
                                         <div>
                                             {/* <Typography variant="h6" className={classes.menuHeading}>Heading </Typography> */}
-                                            <Typography variant="body2" className={classes.menuDesc}>{val.message} </Typography>
+                                            <Typography variant="body2" className={`${classes.menuDesc} ${val.is_read==0? 'isRead':''}`} >{val.message} </Typography>
                                         </div>
                                         <span>{moment(val.created_at).format('DD MMM')}</span>
 
