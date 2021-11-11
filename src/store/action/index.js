@@ -30,7 +30,8 @@ export {
     getHospital,
     getfilterSpeciality,
     filterShiftList,
-    shiftApply
+    shiftApply,
+    confirmBook
 } from "./browseShift/browseShiftAction"
 
 export {

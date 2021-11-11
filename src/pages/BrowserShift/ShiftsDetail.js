@@ -15,7 +15,7 @@ import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { useDispatch, useSelector } from 'react-redux';
-import { getShiftDetail, shiftApply } from '../../store/action';
+import { confirmBook, getShiftDetail, shiftApply } from '../../store/action';
 import Notify from '../../components/Notify/Notify';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,11 +45,18 @@ const ShiftsDetail = ({ match }) => {
     const dispatch = useDispatch();
     // const signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
     const shift_id = match.params.id;
-    const { getShiftDetails, loading, applyShiftSuccess } = useSelector(state => state.browseShift)
+    const { getShiftDetails, loading, applyShiftSuccess, confirmBookSuccess, confirmBookError } = useSelector(state => state.browseShift)
     const [applyNotify, setApplyNotify] = useState(false)
+    const [confirmNotify, setConfirmNotify] = useState(false)
     const [data, setData] = useState({
         booking_id: shift_id,
         signee_status: ""
+    })
+
+    const [shiftData, setShiftData] = useState({
+        booking_id: shift_id,
+        signee_id: getShiftDetails?.data?.signeeid,
+        status: ""
     })
 
     let today = new Date(getShiftDetails?.data?.date);
@@ -69,6 +76,16 @@ const ShiftsDetail = ({ match }) => {
         }, 4000);
     }
 
+    const confirmBookApply = (statusData) => {
+        shiftData.signee_id = getShiftDetails?.data?.signeeid;
+        shiftData.status = statusData;
+        dispatch(confirmBook(shiftData));
+        setConfirmNotify(true);
+        setTimeout(() => {
+            dispatch(getShiftDetail(shift_id))
+        }, 4000);
+    }
+
     return (
         <>
             {
@@ -83,6 +100,18 @@ const ShiftsDetail = ({ match }) => {
                     status="success"
                 />
             }
+            {confirmNotify && confirmBookSuccess?.message &&
+                <Notify
+                    data={confirmBookSuccess?.message}
+                    status="success"
+                />
+            }
+            {/* {confirmNotify && confirmBookError?.message &&
+                <Notify
+                    data={confirmBookError?.message}
+                    status="error"
+                />
+            } */}
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
@@ -117,24 +146,55 @@ const ShiftsDetail = ({ match }) => {
                                 </Grid>
                             </Grid>
                             <div className="compliance-alert mt-16 mb-24">
-                                {getShiftDetails?.data?.booking_record_perm_for_signees?.book_shifts &&
+                                {/* {getShiftDetails?.data?.booking_record_perm_for_signees?.book_shifts &&
                                     <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>
                                 }
                                 {getShiftDetails?.data?.booking_record_perm_for_signees?.cancel_shifts &&
                                     <span className="compliance-btn apply-btn disabled-btn">Applied</span>
-                                }
-                                {/* {
-                                    getShiftDetails?.data?.compliance_status !== "COMPLIANT" ?
+                                } */}
+                                {
+                                    getShiftDetails?.data?.compliance_status !== "COMPLIANT"
+                                        ?
                                         <>
                                             <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon" />
                                             <Typography variant="body1">This Job role has additional compliance requirements. Please update your compliance to book this shift.</Typography>
                                             <Link to="/profile/documents" className="compliance-btn">Check compliance</Link>
 
-                                        </> : 
-                                        getShiftDetails?.data?.signee_status === "Interested" ?
-                                        <span className="compliance-btn apply-btn disabled-btn">Applied</span>
-                                        : <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>     
-                                } */}
+                                        </>
+                                        :
+                                        getShiftDetails?.data?.profile_status === "Active" &&
+                                        <>
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "OFFER") &&
+                                                <span className="compliance-btn apply-btn " onClick={() => confirmBookApply("ACCEPT")}>ACCEPT</span>
+                                            }
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "OFFER" || getShiftDetails?.data?.signee_booking_status === "CONFIRMED") &&
+                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("DECLINE")}>DECLINE</span>
+                                            }
+
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "REJECT") &&
+                                                <span className="compliance-btn apply-btn ">REJECT</span>
+                                            }
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "APPLY") &&
+                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("DECLINE")}>Cancel</span>
+                                            }
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "PENDING") &&
+                                                <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>
+                                            }
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "CANCEL") &&
+                                                <span className="compliance-btn apply-btn cursor-none">Rejected</span>
+                                            }
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "DECLINE") &&
+                                                <span className="compliance-btn apply-btn cursor-none">DECLINE</span>
+                                            }
+                                        </>
+                                }
                                 {/* {getShiftDetails?.data?.compliance_status && getShiftDetails?.data?.profile_status === "Active" && getShiftDetails?.data?.compliance_status !== "COMPLIANT" &&
                                     <>
                                         <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon" />

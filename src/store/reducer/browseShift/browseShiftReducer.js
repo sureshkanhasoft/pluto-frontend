@@ -26,6 +26,9 @@ const initialState = {
     getUpcomingShiftList: [],
     getPassShiftList: [],
 
+    confirmBookSuccess:[],
+    confirmBookError:[]
+
 }
 
 const browseShiftReducer = (state = initialState, action) => {
@@ -156,6 +159,28 @@ const browseShiftReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 applyShiftError: true
+            })
+
+
+        // --------------------------------------
+
+        case actionTypes.CONFIRM_BOOK_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                confirmBookSuccess: "",
+                confirmBookError: ""
+            })
+
+        case actionTypes.CONFIRM_BOOK_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                confirmBookSuccess: action.payload
+            })
+
+        case actionTypes.CONFIRM_BOOK_ERROR:
+            return updateObject(state, {
+                loading: false,
+                confirmBookError: true
             })
 
 

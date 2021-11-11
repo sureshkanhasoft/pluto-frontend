@@ -1,6 +1,9 @@
 import { apiClient } from "../../../config/apiClient";
 import {
     APPLY_SHIFT_ERROR, APPLY_SHIFT_REQUEST, APPLY_SHIFT_SUCCESS,
+    CONFIRM_BOOK_ERROR,
+    CONFIRM_BOOK_REQUEST,
+    CONFIRM_BOOK_SUCCESS,
     FILTER_SHIFT_ERROR, FILTER_SHIFT_REQUEST, FILTER_SHIFT_SUCCESS,
     GET_FILTER_SPECIALITY_ERROR, GET_FILTER_SPECIALITY_REQUEST, GET_FILTER_SPECIALITY_SUCCESS,
     GET_HOSPITAL_ERROR, GET_HOSPITAL_REQUEST, GET_HOSPITAL_SUCCESS,
@@ -229,6 +232,43 @@ export const shiftApplySuccess = data => {
 export const shiftApplyFailure = error => {
     return {
         type: APPLY_SHIFT_ERROR,
+        payload: error
+    }
+}
+
+
+// --------------------------------------
+
+
+export const confirmBook = (data) => {
+    return async (dispatch) => {
+        dispatch(confirmBookRequest())
+        await apiClient(true).post(`api/organization/confirm-booking`, data)
+            .then(response => {
+                const dataItem = response.data;
+                dispatch(confirmBookSuccess(dataItem))
+            }).catch(error => {
+                dispatch(confirmBookFailure(error))
+            });
+    }
+}
+
+export const confirmBookRequest = () => {
+    return {
+        type: CONFIRM_BOOK_REQUEST
+    }
+}
+
+export const confirmBookSuccess = data => {
+    return {
+        type: CONFIRM_BOOK_SUCCESS,
+        payload: data
+    }
+}
+
+export const confirmBookFailure = error => {
+    return {
+        type: CONFIRM_BOOK_ERROR,
         payload: error
     }
 }
