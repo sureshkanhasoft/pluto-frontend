@@ -1,4 +1,5 @@
 import { apiClient } from "../../../config/apiClient";
+import history from "../../../utils/HistoryUtils";
 import { ADD_ANOTHER_ORG_ERROR, ADD_ANOTHER_ORG_REQUEST, ADD_ANOTHER_ORG_SUCCESS, GET_ORGANIZATION_ERROR, GET_ORGANIZATION_REQUEST, GET_ORGANIZATION_SUCCESS, UPDATE_SPECIALITY_ERROR, UPDATE_SPECIALITY_REQUEST, UPDATE_SPECIALITY_SUCCESS } from "../actiontypes";
 
 export const getOrganization = () => {
@@ -47,6 +48,10 @@ export const addAnotherOrganization = (data) => {
         .then(response => {
             const dataItem = response.data;
             dispatch(addAnotherOrganizationSuccess(dataItem))
+            setTimeout(() => {
+                history.push('/profile/information')
+                window.location.reload()
+            }, 4000);
         }).catch(error => {
             dispatch(addAnotherOrganizationSuccess([]))
             dispatch(addAnotherOrganizationFailure(error))

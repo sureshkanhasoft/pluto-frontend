@@ -8,7 +8,7 @@ import {
     Button,
     Box,
     MenuItem,
-    InputLabel, FormControlLabel, Checkbox, FormLabel
+    InputLabel, FormControlLabel, Checkbox, FormLabel, Backdrop, CircularProgress
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
@@ -31,7 +31,7 @@ const MenuProps = {
 };
 
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles((theme) => ({
     formControl: {
         width: "100%"
     },
@@ -96,7 +96,11 @@ const useStyle = makeStyles(() => ({
         '& svg':{
             fontSize:16
         }
-    }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 
 }))
 
@@ -115,7 +119,7 @@ const AddOrganization = () => {
     })
     const [orgId, setOrgId] = useState()
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { getOrglist, addOrgSuccess, addOrgError } = useSelector(state => state.organization)
+    const { getOrglist, addOrgSuccess, addOrgError, loading } = useSelector(state => state.organization)
     const [addOrgNotify, setAddOrgNotify] = useState(false)
 
     const [data, setData] = useState({
@@ -219,6 +223,12 @@ const AddOrganization = () => {
 
     return (
         <>
+         {
+                loading  ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
             {addOrgNotify && (addOrgError?.message || addOrgError) &&
                 <Notify
                     data={addOrgError?.message ? addOrgError?.message : addOrgError}

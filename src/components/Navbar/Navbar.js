@@ -82,11 +82,13 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiMenu-list': {
             padding: 0,
             minWidth: 175,
-            minHeight:"100px"
+            minHeight:"28px"
         },
         '& .MuiListItem-root': {
             borderBottom: '1px solid #dcdcdc',
-            width: 356,
+            // width: 300,
+            minWidth:190,
+            maxWidth:350,
             '&:last-child': {
                 borderBottom: 'none'
             }
