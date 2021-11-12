@@ -72,7 +72,8 @@ const ShiftsDetail = ({ match }) => {
         dispatch(shiftApply(data))
         setApplyNotify(true)
         setTimeout(() => {
-            dispatch(getShiftDetail(shift_id))
+            // dispatch(getShiftDetail(shift_id))
+            window.location.reload();
         }, 4000);
     }
 
@@ -82,7 +83,8 @@ const ShiftsDetail = ({ match }) => {
         dispatch(confirmBook(shiftData));
         setConfirmNotify(true);
         setTimeout(() => {
-            dispatch(getShiftDetail(shift_id))
+            // dispatch(getShiftDetail(shift_id))
+            window.location.reload();
         }, 4000);
     }
 
