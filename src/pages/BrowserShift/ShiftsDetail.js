@@ -17,6 +17,7 @@ import ApartmentIcon from '@material-ui/icons/Apartment';
 import { useDispatch, useSelector } from 'react-redux';
 import { confirmBook, getShiftDetail, shiftApply } from '../../store/action';
 import Notify from '../../components/Notify/Notify';
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
 const useStyles = makeStyles((theme) => ({
     leftBorder: {
@@ -194,6 +195,14 @@ const ShiftsDetail = ({ match }) => {
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "DECLINE") &&
                                                 <span className="compliance-btn apply-btn cursor-none">DECLINE</span>
+                                            }
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "ACCEPT") &&
+                                                <>
+                                                    <CheckCircleIcon style={{marginRight:12, color:"green"}} />
+                                                    <Typography variant="body1">You have accepted this offer</Typography>
+                                                    <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("PENDING")} style={{ marginLeft: "auto" }}>Cancel</span>
+                                                </>
                                             }
                                         </>
                                 }
