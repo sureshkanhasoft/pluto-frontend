@@ -18,15 +18,16 @@ import { addAnotherOrganization, getOrganizationList } from '../../store/action'
 import { useForm } from 'react-hook-form';
 import { apiClient } from '../../config/apiClient';
 import Notify from '../../components/Notify/Notify';
+import CloseIcon from '@material-ui/icons/Close';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        },
     },
-  },
 };
 
 
@@ -47,6 +48,7 @@ const useStyle = makeStyles(() => ({
         padding: 12,
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
         margin: '0 0 16px 0',
+        position:"relative",
     },
     addOrg: {
         fontSize: 12,
@@ -78,6 +80,22 @@ const useStyle = makeStyles(() => ({
         display: "flex",
         flexWrap: "wrap",
         flexDirection: "row"
+    },
+    removeOrg:{
+        position: "absolute",
+        top: -9,
+        right: -9,
+        cursor: "pointer",
+        background:"#ff8b46",
+        borderRadius:"50%",
+        width:26,
+        height:26,
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        '& svg':{
+            fontSize:16
+        }
     }
 
 }))
@@ -139,6 +157,14 @@ const AddOrganization = () => {
             }
         )
         setAnotherSpe(sssData)
+    }
+
+    const removeOrg = (index) => {
+        const org = JSON.parse(JSON.stringify(data));
+        if (org.organization.length > 1) {
+            org.organization.splice(index, 1)
+            setData(org)
+        }
     }
 
     useEffect(() => {
@@ -215,6 +241,9 @@ const AddOrganization = () => {
                                 return (
                                     <Grid container spacing={2} key={index} className={classes.orgContainer}>
                                         <Grid item xs={12} sm={12} >
+                                            {
+                                                index !== 0 && <div className={classes.removeOrg}><CloseIcon onClick={() => removeOrg(index)} /></div>
+                                            }
                                             <FormControl variant="outlined" className={classes.formControl} required
                                                 error={(errors.organization_id ? true : false)}
                                                 {...register("organization_id", {
