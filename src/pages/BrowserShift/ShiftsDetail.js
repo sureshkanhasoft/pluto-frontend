@@ -160,7 +160,7 @@ const ShiftsDetail = ({ match }) => {
                                    (getShiftDetails &&  getShiftDetails?.data?.signee_booking_status === "") && 
                                    <>
                                    <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon" />
-                                   <Typography variant="body1">You can not apply for this shift, your specialities not match with this shift</Typography>
+                                   <Typography variant="body1">You can not apply for this shift, your specialities or preferences not match with this shift</Typography>
                                    </>
                                 }
                                 {

@@ -71,6 +71,7 @@ const BrowserShift = () => {
     const [hospital, setHospital] = React.useState(null);
     const { getShiftList, loading, getHospitalList, getFilterSpeciality, shiftFilter } = useSelector(state => state.browseShift)
     const [getList, setGetList] = useState([])
+    const [filterDisable, setFilterDisable] = useState(true)
 
     const [data, setData] = useState({
         speciality_id: [],
@@ -176,6 +177,14 @@ const BrowserShift = () => {
         window.location.reload();
     }
 
+    useEffect(() => {
+        if(data.day.length > 0 || data.hospital_id.length > 0 || data.speciality_id.length > 0){
+            setFilterDisable(false)
+        } else {
+            setFilterDisable(true)
+        }
+    }, [data])
+
     return (
         <>
             {
@@ -271,7 +280,7 @@ const BrowserShift = () => {
                                         (getList && getList?.data?.data.length >= 0) &&
                                         <CloseIcon className={classes.removefilterIcon} onClick={removeFilter} />
                                     }
-                                    <Button variant="outlined" type="submit" formNoValidate>Filter</Button>
+                                    <Button variant="outlined" type="submit" disabled={filterDisable===true} formNoValidate >Filter</Button>
                                 </div>
                             </div>
                         </form>
