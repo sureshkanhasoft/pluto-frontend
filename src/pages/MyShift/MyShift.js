@@ -46,6 +46,7 @@ const MyShift = ({match}) => {
     const { getMyShiftList } = useSelector(state => state.myShift)
     const upComingShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.upcoming.data.length : 0 
     const pastShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.past.data.length : 0 
+    const applyShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.apply.data.length : 0 
 
     useEffect(() => {
         if(MyShiftAccessCheck()){
@@ -71,7 +72,7 @@ const MyShift = ({match}) => {
                             <Box display="flex" className="mb-36">
                                 <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/upcoming`} >Upcoming Shift <Chip size="small" label={upComingShiftCount} className={classes.chipText} /></NavLink>
                                 <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/past`} >Past Shift  <Chip size="small" label={pastShiftCount} className={classes.chipText} /></NavLink>
-                                <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/apply`} >Applied Shift  <Chip size="small" label={0} className={classes.chipText} /></NavLink>
+                                <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/apply`} >Applied Shift  <Chip size="small" label={applyShiftCount} className={classes.chipText} /></NavLink>
                             </Box>
                         </Container>
                         <Switch>
