@@ -155,6 +155,14 @@ const ShiftsDetail = ({ match }) => {
                                 {getShiftDetails?.data?.booking_record_perm_for_signees?.cancel_shifts &&
                                     <span className="compliance-btn apply-btn disabled-btn">Applied</span>
                                 } */}
+
+                                {
+                                   (getShiftDetails &&  getShiftDetails?.data?.signee_booking_status === "") && 
+                                   <>
+                                   <img src="https://app.altrix.co.uk/assets/img/onboarding-icon.png?id=c76a9373d3bdf3f28ccb" alt="warning" className="icon" />
+                                   <Typography variant="body1">You can not apply for this shift, your specialities not match with this shift</Typography>
+                                   </>
+                                }
                                 {
                                     getShiftDetails?.data?.compliance_status !== "COMPLIANT"
                                         ?

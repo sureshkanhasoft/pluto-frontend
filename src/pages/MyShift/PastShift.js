@@ -31,7 +31,7 @@ const PastShift = () => {
             {getPastShiftList && getPastShiftList.data && getPastShiftList.data.length == 0 &&
                 <Container maxWidth="lg">
                     <p className="mb-36">You don't have any past shifts.</p>
-                    <Link to="/shifts" className="btn primary-btn">Browser Shift</Link>
+                    <Link to="/shifts" className="btn primary-btn">Browse Shift</Link>
                 </Container>
             }
         </>

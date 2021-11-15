@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 const ApplyShift = () => {
     const classes = useStyles();
     const { getMyShiftList, loading } = useSelector(state => state.myShift)
-    const getApplyShiftList = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.past : [] 
+    const getApplyShiftList = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.apply : [] 
 
     return (
         <>
@@ -31,7 +31,7 @@ const ApplyShift = () => {
             {getApplyShiftList && getApplyShiftList.data && getApplyShiftList.data.length == 0 &&
                 <Container maxWidth="lg">
                     <p className="mb-36">You don't have any apply shifts.</p>
-                    <Link to="/shifts" className="btn primary-btn">Browser Shift</Link>
+                    <Link to="/shifts" className="btn primary-btn">Browse Shift</Link>
                 </Container>
             }
         </>
