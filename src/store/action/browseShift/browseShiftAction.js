@@ -163,10 +163,10 @@ export const getfilterSpecialityFailure = error => {
 // ----------------------------------------------------
 
 
-export const filterShiftList = (data) => {
+export const filterShiftList = (data, pageNo=1) => {
     return async (dispatch) => {
         dispatch(filterShiftListRequest())
-        await apiClient(true).put(`api/signee/filter-shift`, data)
+        await apiClient(true).put(`api/signee/shift-list?page=${pageNo}`, data)
             .then(response => {
                 const dataItem = response.data;
                 dispatch(filterShiftListSuccess(dataItem))

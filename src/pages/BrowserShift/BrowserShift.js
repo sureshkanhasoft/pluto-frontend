@@ -163,7 +163,7 @@ const BrowserShift = () => {
 
     const submitFilterData = (e) => {
         e.preventDefault()
-        dispatch(filterShiftList(data));
+        dispatch(filterShiftList(data, page));
         // const specialityData = JSON.parse(JSON.stringify(data));
     }
 
