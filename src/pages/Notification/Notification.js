@@ -1,15 +1,16 @@
-import React,{ useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Container, Box, Paper, makeStyles, Typography
 } from '@material-ui/core';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo'
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as actions from "../../store/action";
 import moment from 'moment';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyle = makeStyles(() => ({
     notificationBox: {
-        cursor:'pointer',
+        cursor: 'pointer',
         width: "100%",
         padding: "16px 24px",
         display: "flex",
@@ -33,9 +34,9 @@ const useStyle = makeStyles(() => ({
     menuDesc: {
         fontSize: 14,
         color: "rgba(0, 0, 0, 0.6)",
-        '&.isRead':{
-            fontWeight:"500",
-            color:"#000"
+        '&.isRead': {
+            fontWeight: "500",
+            color: "#000"
         }
     }
 }))
@@ -44,26 +45,38 @@ const Notification = () => {
     const dispatch = useDispatch();
     const classes = useStyle();
     // const [notificationList,setNotificationList]=useState([])
-    const { notificationList} = useSelector((state)=>state.notification)
+    const { notificationList } = useSelector((state) => state.notification)
+    console.log('notificationList: ', notificationList);
+    const [page, setPage] = React.useState(1);
 
     useEffect(() => {
-        let signeeId=localStorage.getItem("signeeInfo") ? JSON.parse(localStorage.getItem("signeeInfo") || "{}") : "";
-        const requestData={
-            signee_id : signeeId.id
+        let signeeId = localStorage.getItem("signeeInfo") ? JSON.parse(localStorage.getItem("signeeInfo") || "{}") : "";
+        const requestData = {
+            signee_id: signeeId.id
         }
         dispatch(actions.getNotification(requestData))
-    },[])
-    const unReadNotification=notificationList.filter(val => val.is_read == 0).length;
+    }, [])
+    // const unReadNotification = notificationList && notificationList?.data && notificationList?.data?.filter(val => val.is_read == 0).length;
 
-    const readNotification = (e,val) => {
+    const readNotification = (e, val) => {
         e.preventDefault();
-        const requestData={
-            notification_id:val.id,
-            is_read:true,
-            signee_id:val.signee_id
+        const requestData = {
+            notification_id: val.id,
+            is_read: true,
+            signee_id: val.signee_id
         }
         dispatch(actions.readNotification(requestData))
 
+    }
+
+    const handleChangePage = (event, value) => {
+        let signeeId = localStorage.getItem("signeeInfo") ? JSON.parse(localStorage.getItem("signeeInfo") || "{}") : "";
+        const requestData = {
+            signee_id: signeeId.id
+        }
+        setPage(value);
+        setTimeout(actions.getNotification(requestData, value), 2000);
+        // console.log('requestData: ', requestData);
     }
     return (
         <>
@@ -73,23 +86,31 @@ const Notification = () => {
                     <h1 className="mt-16">Notifications</h1>
                     <Box className="mb-36">
                         {
-                            (notificationList.length >0) ? notificationList.map(val => {
+                            (notificationList?.data && notificationList?.data.length > 0) ? notificationList?.data.map((val, index) => {
                                 return (
-                                    <Paper elevation={3} onClick={((e) =>readNotification(e,val))} className={classes.notificationBox} style={{background:val.is_read==0?'#e7f2ff':'white'}} >
+                                    <Paper key={index} elevation={3} onClick={((e) => readNotification(e, val))} className={classes.notificationBox} style={{ background: val.is_read == 0 ? '#e7f2ff' : 'white' }} >
                                         <div>
                                             {/* <Typography variant="h6" className={classes.menuHeading}>Heading </Typography> */}
-                                            <Typography variant="body2" className={`${classes.menuDesc} ${val.is_read==0? 'isRead':''}`} >{val.message} </Typography>
+                                            <Typography variant="body2" className={`${classes.menuDesc} ${val.is_read == 0 ? 'isRead' : ''}`} >{val.message} </Typography>
                                         </div>
                                         <span>{moment(val.created_at).format('DD MMM')}</span>
 
                                     </Paper>
                                 )
-                            }) :"No Data Found"
+                            }) : "No Data Found"
                         }
 
                     </Box>
                 </Container>
             </section>
+            <div className="pagination-container">
+                <Container>
+                    <div className="inner-pagination">
+                        <Pagination onChange={handleChangePage} page={page} count={notificationList?.last_page} boundaryCount={2} />
+                        {/* <Pagination onChange={handleChangePage} page={page} count={notificationList?.data?.last_page} boundaryCount={2} /> */}
+                    </div>
+                </Container>
+            </div>
         </>
     )
 }

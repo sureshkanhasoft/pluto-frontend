@@ -209,7 +209,7 @@ const Navbar = () => {
     //     }
     //     return ''; // Legacy method for cross browser support
     // };
-    const unReadNotification=notificationList.filter(val => val.is_read == 0).length;
+    const unReadNotification=notificationList?.data && notificationList?.data.filter(val => val.is_read == 0).length;
     
     
     const readNotification = (e,val) => {
@@ -285,9 +285,9 @@ const Navbar = () => {
                             className={classes.menuBox}
                         >
                             {
-                                notificationList.length > 0  ? 
+                                notificationList?.data && notificationList?.data.length > 0  ? 
                                 
-                                 notificationList.map((val,index) => {
+                                 notificationList?.data.map((val,index) => {
                                     if(index < 5 ){
                                         return (
                                             <MenuItem onClick={((e) =>readNotification(e,val))} style={{background:val.is_read==0?'#e7f2ff':'white'}} key={index}>
@@ -305,7 +305,7 @@ const Navbar = () => {
                                     </div>
                                 </MenuItem>
                             }
-                            { notificationList.length > 0  ? 
+                            { notificationList?.data && notificationList?.data.length > 0  ? 
                             <MenuItem>
                                 <Link to="/notification">
                                     <Typography variant="caption">Show all notification</Typography>

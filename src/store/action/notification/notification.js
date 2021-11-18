@@ -1,20 +1,23 @@
 import { apiClient } from "../../../config/apiClient";
-import * as actionTypes from "../actiontypes";
+import { GET_NOTIFICATION_SUCCESS } from "../actiontypes";
 
-export const getNotificationSuccess = data => {
-    return {
-        type:actionTypes.GET_NOTIFICATION_SUCCESS,
-        payload: data
+export const getNotification = (request, pageNo=1) => {
+    console.log('pageNo: ', pageNo);
+    return async (dispatch) => {
+        await apiClient(true).post(`/api/organization/user/get-all-notification?page=${pageNo}`,request)
+        .then(response => {
+            console.log('response: ', response.data);
+            dispatch(getNotificationSuccess(response.data))
+        }).catch(error => {
+            console.log('error: ', error);
+        });
     }
 }
-export const getNotification = (request) => {
-    return async (dispatch) => {
-        await apiClient(true).post(`/api/organization/user/get-all-notification`,request)
-        .then(response => {
-            dispatch(getNotificationSuccess(response.data.data))
-        }).catch(error => {
 
-        });
+const getNotificationSuccess = data => {
+    return {
+        type: GET_NOTIFICATION_SUCCESS,
+        payload: data
     }
 }
 export const readNotification = (request) => {
