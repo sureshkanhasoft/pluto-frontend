@@ -107,60 +107,61 @@ const useStyle = makeStyles((theme) => ({
 const AddOrganization = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
-    const [id1, setId1] = useState()
-    const [speciality1, setSpeciality] = useState([])
-    const [anotherSpe, setAnotherSpe] = useState({
-        list: [
-            {
-                id22: "",
-                listing: []
-            },
-        ]
-    })
     const [orgId, setOrgId] = useState()
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [orgIndex, setOrgIndex] = useState(0)
     const { getOrglist, addOrgSuccess, addOrgError, loading } = useSelector(state => state.organization)
     const [addOrgNotify, setAddOrgNotify] = useState(false)
 
+    const [formError, setFormError] = useState([]);
     const [data, setData] = useState({
         organization: [
             {
                 organization_id: "",
-                speciality: []
+                speciality: [],
+                other_speciality_list: []
             },
         ]
     })
 
     const handleChangeHospital = (index, event, key) => {
-        data[key][index][event.target.name] = event.target.value
-        anotherSpe['list'][index]['id22'] = index
-        // anotherSpe['list'][index]['listing'] = speciality
-        setData({ ...data });
-        setAnotherSpe({ ...anotherSpe })
-        setOrgId(event.target.value)
-        setId1(index)
+        const organizationData = JSON.parse(JSON.stringify(data));
 
+        organizationData[key][index][event.target.name] = event.target.value
+        organizationData[key][index].speciality = []
+        organizationData[key][index].other_speciality_list = []
+
+        let formErrorList = JSON.parse(JSON.stringify(formError));
+        if(event.target.value){
+            // remove organization id error 
+            const removeIndex = formErrorList.indexOf(`organization_id_error_${index}`);
+            if (removeIndex > -1) {
+                formErrorList.splice(removeIndex, 1);
+            }
+        }else{
+            // create organization id error
+            formErrorList.push(`organization_id_error_${index}`)
+            // remove speciality error
+            const removeIndex = formErrorList.indexOf(`speciality_error_${index}`);
+            if (removeIndex > -1) {
+                formErrorList.splice(removeIndex, 1);
+            }
+        }
+        setOrgIndex(index);
+        setData(organizationData);
+        setOrgId(event.target.value)
+        setFormError(formErrorList)
     };
-    // console.log('anotherSpe: ', anotherSpe);
 
     const addOrganization = () => {
         const organizationData = JSON.parse(JSON.stringify(data));
         organizationData.organization.push(
             {
                 organization_id: "",
-                speciality: []
+                speciality: [],
+                other_speciality_list: []
             }
         )
         setData(organizationData)
-
-        const sssData = JSON.parse(JSON.stringify(anotherSpe));
-        sssData.list.push(
-            {
-                id22: "",
-                listing: []
-            }
-        )
-        setAnotherSpe(sssData)
     }
 
     const removeOrg = (index) => {
@@ -169,6 +170,18 @@ const AddOrganization = () => {
             org.organization.splice(index, 1)
             setData(org)
         }
+
+        const formErrorList = JSON.parse(JSON.stringify(formError));
+
+        const removeIndex1 = formErrorList.indexOf(`organization_id_error_${index}`);
+        if (removeIndex1 > -1) {
+            formErrorList.splice(removeIndex1, 1);
+        }
+        const removeIndex = formErrorList.indexOf(`speciality_error_${index}`);
+        if (removeIndex > -1) {
+            formErrorList.splice(removeIndex, 1);
+        }
+        setFormError(formErrorList);
     }
 
     useEffect(() => {
@@ -178,8 +191,11 @@ const AddOrganization = () => {
     const getSpecialities = async () => {
         await apiClient(true).get(`api/signee/get-org-specialities/${orgId}`)
             .then(response => {
-                anotherSpe['list'][id1]['listing'] = response.data.data
-                setSpeciality(response.data.data)
+            if(response.data.status === true){
+                const specialityData = JSON.parse(JSON.stringify(data));
+                specialityData.organization[orgIndex].other_speciality_list = response.data.data;
+                setData(specialityData)
+            }    
             }).catch(error => {
                 console.log('error: ', error);
             })
@@ -189,36 +205,55 @@ const AddOrganization = () => {
         getSpecialities()
     }, [orgId])
 
-    const handleSubmit1 = () => {
-        // console.log('data', data)
-        dispatch(addAnotherOrganization(data))
-        setAddOrgNotify(true)
+    const formValidate = () => {
+        let allError = []
+
+        data && data.organization.map((list, index) => {
+            if(list.organization_id === ""){
+                allError.push(`organization_id_error_${index}`)
+            }
+            if(list.speciality.length === 0){
+                allError.push(`speciality_error_${index}`)
+            }
+        })
+        return allError;
+    }
+
+    const handleSubmit = () => {
+        let allError = formValidate();
+        if(allError.length === 0){
+            dispatch(addAnotherOrganization(data))
+            setAddOrgNotify(true)
+        }else{
+            setFormError(allError);
+        }
     }
 
     const handleChangeCheck = (event, index, speIndex) => {
         const specialityData = JSON.parse(JSON.stringify(data));
         const isChecked = (event.target.checked);
+        const formErrorList = JSON.parse(JSON.stringify(formError));
+
         if (isChecked) {
-            // specialityData.organization.[index2].speciality.push(parseFloat(event.target.value));
-            // setData(specialityData)
-            specialityData.organization.map((list, indexii) => {
-                if (index == indexii)
-                    return (
-                        list.speciality.push(parseFloat(event.target.value))
-                    )
-            })
-            setData(specialityData)
+            specialityData.organization[index].speciality.push(parseFloat(event.target.value));
         } else {
-            specialityData.organization.map((list, indexii) => {
-                if (index == indexii) {
-                    return (
-                        list.speciality = list.speciality.filter(item => item !== parseFloat(event.target.value))
-                    )
-                }
-            })
-            setData(specialityData)
+            let newSpeData =  specialityData.organization[index].speciality.filter(item => item !== parseFloat(event.target.value))
+            specialityData.organization[index].speciality = newSpeData
         }
 
+        // hide show error msg for speciality
+        if(specialityData.organization[index].speciality.length === 0){
+            // create speciality error
+            formErrorList.push(`speciality_error_${index}`)
+        }else{
+            // remove speciality error
+            const removeIndex = formErrorList.indexOf(`speciality_error_${index}`);
+            if (removeIndex > -1) {
+                formErrorList.splice(removeIndex, 1);
+            }
+        }
+        setData(specialityData)
+        setFormError(formErrorList);
     };
 
     return (
@@ -245,7 +280,7 @@ const AddOrganization = () => {
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
                     <h1 className="mb-16">Add Organization</h1>
-                    <form className={classes.formWidth} onSubmit={handleSubmit(handleSubmit1)}>
+                    <div className={classes.formWidth}>
                         {
                             data.organization.map((list, index) => {
                                 return (
@@ -255,10 +290,7 @@ const AddOrganization = () => {
                                                 index !== 0 && <div className={classes.removeOrg}><CloseIcon onClick={() => removeOrg(index)} /></div>
                                             }
                                             <FormControl variant="outlined" className={classes.formControl} required
-                                                error={(errors.organization_id ? true : false)}
-                                                {...register("organization_id", {
-                                                    required: true,
-                                                })}
+                                                error={(formError.includes(`organization_id_error_${index}`) ? true : false)}
                                             >
                                                 <InputLabel>Select Organization</InputLabel>
                                                 <Select
@@ -274,81 +306,48 @@ const AddOrganization = () => {
                                                     {
                                                         getOrglist?.data && getOrglist?.data.map((list, index) => {
                                                             return (
-                                                                <MenuItem value={list.id} key={index}>{list.organization_name}</MenuItem>
+                                                                <MenuItem value={list.id} disabled={data.organization.filter(val => val.organization_id === list.id).length > 0 ? true : false } key={index}>{list.organization_name}</MenuItem>
                                                             )
                                                         })
                                                     }
                                                 </Select>
                                             </FormControl>
                                         </Grid>
-                                        <Grid item xs={12} >
+                                        <Grid item xs={12} sm={12} >
                                             <FormControl required
-                                                {...register('speciality', {
-                                                    required: "The speciality field is required.",
-                                                })}
-                                                error={(errors.speciality ? true : false)}  >
-                                                {
-                                                    anotherSpe?.list && <FormLabel component="legend">Specialities</FormLabel>
-                                                }
+                                                error={(formError.includes(`speciality_error_${index}`) ? true : false)}
+                                                >
+                                                <FormLabel>Select Speciality</FormLabel>
                                                 <div className={classes.formControlBox}>
                                                     {
-                                                        anotherSpe?.list && anotherSpe?.list.map((list, index1) => {
-                                                            if (list.id22 === index) {
-
-                                                                return (
-                                                                    list?.listing && list?.listing.map((i1, speIndex) =>
-                                                                        // <span>{i1.speciality_name}</span>
-                                                                        // <div key={ii} className={classes.checkboxList}>
-                                                                        <FormControlLabel key={speIndex}
-                                                                            control={<Checkbox color="primary" value={i1.id} onChange={e => handleChangeCheck(e, index, speIndex)} name="speciality" />}
-                                                                            label={i1.speciality_name}
-                                                                        />
-                                                                        // </div>
-                                                                    )
+                                                        list.other_speciality_list && list.other_speciality_list.map((spec, speIndex) => {
+                                                            return (
+                                                                    <FormControlLabel key={speIndex}
+                                                                        control={<Checkbox color="primary" value={spec.id} checked={list.speciality && list.speciality.includes(spec.id)} onChange={e => handleChangeCheck(e, index, speIndex)} name="speciality" />}
+                                                                        label={spec.speciality_name}
+                                                                    />
                                                                 )
-                                                            }
                                                         })
                                                     }
                                                 </div>
                                             </FormControl>
                                         </Grid>
-
-                                        {/* <Grid item xs={12} sm={12} style={{ display: "flex", flexWrap: 'wrap' }}>
-                                                {
-                                                    (speciality && id1 === index) && speciality.map((items, index1) => {
-                                                        // console.log('items: ', items);
-                                                        return (
-                                                            <Grid item xs={3} key={index1} style={{ display: "flex" }}>
-                                                                <FormControlLabel style={{ display: "flex" }}
-                                                                    control={<Checkbox color="primary" value={items.id} onChange={handleChangeCheck} name="speciality" />}
-                                                                    label={items.speciality_name}
-                                                                />
-                                                            </Grid>
-                                                        )
-
-                                                    })
-                                                }
-                                            </Grid> */}
                                     </Grid>
                                 )
                             })
                         }
-
                         <div>
                             <Button onClick={addOrganization} color="secondary" className={classes.addOrg}>
                                 <AddCircleOutlineIcon className="mr-3" />
                                 <span> Add another org</span>
                             </Button>
-                            {/* <Button className={classes.btnSecondary} variant="text" >
-                                Add another org
-                            </Button> */}
                         </div>
                         <Box className="mt-16">
-                            <Button className={classes.btnSecondary} variant="contained" type="submit" formNoValidate>
+                            <Button className={classes.btnSecondary} variant="contained" type="submit" onClick={()=>handleSubmit()}>
                                 Register
                             </Button>
                         </Box>
-                    </form>
+                    </div>
                 </Container>
             </section>
         </>
