@@ -229,6 +229,14 @@ const Navbar = () => {
             dispatch(notificationClear(reqParam))
         }, 4000);
     }
+    const ReadAllNotification = () => {
+        const requestData={
+            notification_id:"All",
+            is_read:true,
+        }
+        dispatch(actions.readNotification(requestData))
+    }
+
     return (
         <>
             {msg && msg !== "" &&
@@ -307,9 +315,14 @@ const Navbar = () => {
                             }
                             { notificationList?.data && notificationList?.data.length > 0  ? 
                             <MenuItem>
+                            <>
                                 <Link to="/notification">
                                     <Typography variant="caption">Show all notification</Typography>
                                 </Link>
+                                <span style={{marginLeft:"auto"}} onClick={ReadAllNotification}>
+                                    <Typography variant="caption">Read all</Typography>
+                                </span>
+                                </>
 
                             </MenuItem> :""
                             }

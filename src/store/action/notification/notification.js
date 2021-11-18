@@ -1,9 +1,9 @@
 import { apiClient } from "../../../config/apiClient";
 import { GET_NOTIFICATION_SUCCESS } from "../actiontypes";
 
-export const getNotification = (request, pageNo=1) => {
+export const getNotification = (pageNo) => {
     return async (dispatch) => {
-        await apiClient(true).post(`/api/organization/user/get-all-notification?page=${pageNo}`,request)
+        await apiClient(true).get(`/api/signee/get-all-notification?page=${pageNo}`)
         .then(response => {
             dispatch(getNotificationSuccess(response.data))
         }).catch(error => {
@@ -18,16 +18,17 @@ const getNotificationSuccess = data => {
         payload: data
     }
 }
-export const readNotification = (request) => {
+export const readNotification = (request, page) => {
     let requestData={
         notification_id:request.notification_id,
         is_read:request.is_read
     }
     return async (dispatch) => {
-        await apiClient(true).post(`/api/organization/user/update-notification`,requestData)
+        await apiClient(true).post(`/api/signee/update-notification`,requestData)
         .then(response => {
-            dispatch(getNotification({signee_id:request.signee_id}))
+            dispatch(getNotification({signee_id:request.signee_id}, page))
         }).catch(error => {
+            console.log('error: ', error);
 
         });
     }
