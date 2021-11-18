@@ -11,7 +11,7 @@ export const getNotification = (request) => {
     return async (dispatch) => {
         await apiClient(true).post(`/api/organization/user/get-all-notification`,request)
         .then(response => {
-            dispatch(getNotificationSuccess(response.data))
+            dispatch(getNotificationSuccess(response.data.data))
         }).catch(error => {
 
         });
