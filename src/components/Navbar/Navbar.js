@@ -145,11 +145,11 @@ const Navbar = () => {
         setSwitchTrust(event.currentTarget);
     };
     useEffect(() => {
-        let signee=localStorage.getItem("signeeInfo") ? JSON.parse(localStorage.getItem("signeeInfo") || "{}") : "";
-        const requestData={
-            signee_id : signee.id
-        }
-        dispatch(actions.getNotification(requestData))
+        // let signee=localStorage.getItem("signeeInfo") ? JSON.parse(localStorage.getItem("signeeInfo") || "{}") : "";
+        // const requestData={
+        //     signee_id : signee.id
+        // }
+        dispatch(actions.getNotification(1))
     },[])
     const handleClose = () => {
         setAnchorEl(null);
@@ -192,25 +192,10 @@ const Navbar = () => {
     const handleSwitchAccount = (id) => {
         if (getProfilerName.parent_id !== id) {
             dispatch(switchAccount(id))
-            // if (getProfilerName.token !== getToken) {
-            //     console.log('sdfsdf');
-            //     // window.open("about:blank", "_self");
-            //     // window.close();
-            // }
         }
     }
 
-    // window.onbeforeunload = (event) => {
-    //     const e = event || window.event;
-    //     // Cancel the event
-    //     e.preventDefault();
-    //     if (e) {
-    //         e.returnValue = ''; // Legacy method for cross browser support
-    //     }
-    //     return ''; // Legacy method for cross browser support
-    // };
     const unReadNotification=notificationList?.data && notificationList?.data.filter(val => val.is_read == 0).length;
-    
     
     const readNotification = (e,val) => {
         e.preventDefault();

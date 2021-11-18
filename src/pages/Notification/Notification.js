@@ -53,7 +53,8 @@ const Notification = () => {
         // const requestData = {
         //     signee_id: signeeId.id
         // }
-        getNotificationAction(1)
+
+        getNotificationAction(page)
     }, [])
     // const unReadNotification = notificationList && notificationList?.data && notificationList?.data?.filter(val => val.is_read == 0).length;
 
