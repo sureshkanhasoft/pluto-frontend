@@ -46,7 +46,6 @@ const Notification = () => {
     const classes = useStyle();
     // const [notificationList,setNotificationList]=useState([])
     const { notificationList } = useSelector((state) => state.notification)
-    console.log('notificationList: ', notificationList);
     const [page, setPage] = React.useState(1);
 
     useEffect(() => {
@@ -54,7 +53,7 @@ const Notification = () => {
         const requestData = {
             signee_id: signeeId.id
         }
-        dispatch(actions.getNotification(requestData))
+        getNotificationAction(requestData)
     }, [])
     // const unReadNotification = notificationList && notificationList?.data && notificationList?.data?.filter(val => val.is_read == 0).length;
 
@@ -69,14 +68,17 @@ const Notification = () => {
 
     }
 
+    const getNotificationAction = (requestData,value = 1) => {
+        dispatch(actions.getNotification(requestData,value))
+    }
+
     const handleChangePage = (event, value) => {
         let signeeId = localStorage.getItem("signeeInfo") ? JSON.parse(localStorage.getItem("signeeInfo") || "{}") : "";
         const requestData = {
             signee_id: signeeId.id
         }
         setPage(value);
-        setTimeout(actions.getNotification(requestData, value), 2000);
-        // console.log('requestData: ', requestData);
+        setTimeout(getNotificationAction(requestData, value), 2000);
     }
     return (
         <>
