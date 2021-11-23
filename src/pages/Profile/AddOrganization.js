@@ -11,7 +11,11 @@ import {
     InputLabel, FormControlLabel, Checkbox, FormLabel, Backdrop, CircularProgress
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+// import TextField from '@mui/material/TextField';
+// import Autocomplete from '@mui/material/Autocomplete';
 
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo';
 import { addAnotherOrganization, getOrganizationList } from '../../store/action';
@@ -123,15 +127,16 @@ const AddOrganization = () => {
         ]
     })
 
-    const handleChangeHospital = (index, event, key) => {
+    const handleChangeHospital = (index, event, key, value) => {
+        let orgValue = value ? value.id : ''
         const organizationData = JSON.parse(JSON.stringify(data));
 
-        organizationData[key][index][event.target.name] = event.target.value
+        organizationData[key][index]['organization_id'] = orgValue
         organizationData[key][index].speciality = []
         organizationData[key][index].other_speciality_list = []
 
         let formErrorList = JSON.parse(JSON.stringify(formError));
-        if(event.target.value){
+        if(orgValue){
             // remove organization id error 
             const removeIndex = formErrorList.indexOf(`organization_id_error_${index}`);
             if (removeIndex > -1) {
@@ -148,7 +153,7 @@ const AddOrganization = () => {
         }
         setOrgIndex(index);
         setData(organizationData);
-        setOrgId(event.target.value)
+        setOrgId(orgValue)
         setFormError(formErrorList)
     };
 
@@ -189,7 +194,8 @@ const AddOrganization = () => {
     }, [])
 
     const getSpecialities = async () => {
-        await apiClient(true).get(`api/signee/get-org-specialities/${orgId}`)
+        if(orgId){
+            await apiClient(true).get(`api/signee/get-org-specialities/${orgId}`)
             .then(response => {
             if(response.data.status === true){
                 const specialityData = JSON.parse(JSON.stringify(data));
@@ -199,6 +205,7 @@ const AddOrganization = () => {
             }).catch(error => {
                 console.log('error: ', error);
             })
+        }
     }
 
     useEffect(() => {
@@ -255,7 +262,21 @@ const AddOrganization = () => {
         setData(specialityData)
         setFormError(formErrorList);
     };
+    
+    const getOptionDisabledOrgList = (option) => {
+        let defaultSelect = false;
+        let obj = data.organization.find(o => o.organization_id === option.id);
+        if(obj){
+            defaultSelect = true;
+        }
+        return defaultSelect;
+    }
 
+    const orgOptionList = () => {
+        let returnList = getOrglist?.data && getOrglist?.data ? getOrglist?.data.sort((a, b) => (a.organization_name > b.organization_name) ? 1 : -1) : []
+        return returnList;
+    }
+    
     return (
         <>
          {
@@ -289,7 +310,7 @@ const AddOrganization = () => {
                                             {
                                                 index !== 0 && <div className={classes.removeOrg}><CloseIcon onClick={() => removeOrg(index)} /></div>
                                             }
-                                            <FormControl variant="outlined" className={classes.formControl} required
+                                            {/* <FormControl variant="outlined" className={classes.formControl} required
                                                 error={(formError.includes(`organization_id_error_${index}`) ? true : false)}
                                             >
                                                 <InputLabel>Select Organization</InputLabel>
@@ -297,21 +318,38 @@ const AddOrganization = () => {
                                                     label="Select Organization"
                                                     name="organization_id"
                                                     onChange={(e) => handleChangeHospital(index, e, 'organization')}
-                                                    value={list?.organization_id || ""}
+                                                    // value={list?.organization_id || ""}
                                                     MenuProps={MenuProps}
                                                 >
                                                     <MenuItem value="">
                                                         Select Organization
                                                     </MenuItem>
                                                     {
-                                                        getOrglist?.data && getOrglist?.data.map((list, index) => {
+                                                        getOrglist?.data && getOrglist?.data.sort((a, b) => (a.organization_name > b.organization_name) ? 1 : -1).map((list, index) => {
                                                             return (
                                                                 <MenuItem value={list.id} disabled={data.organization.filter(val => val.organization_id === list.id).length > 0 ? true : false } key={index}>{list.organization_name}</MenuItem>
                                                             )
                                                         })
                                                     }
                                                 </Select>
-                                            </FormControl>
+                                            </FormControl> */}
+                                            <Autocomplete
+                                                id="disabled-options-demo"
+                                                options={orgOptionList()}
+                                                getOptionDisabled={getOptionDisabledOrgList}
+                                                // value={getOrglist?.data && getOrglist?.data.find(o => o.organization_id === list?.organization_id)}
+                                                // value={list?.organization_id || ""}
+                                                name="organization_id"
+                                                getOptionLabel={(option) => option.organization_name ? option.organization_name : ''}
+                                                onChange={(e,value) => handleChangeHospital(index, e, 'organization',value)}
+                                                renderInput={(params) => 
+                                                    <TextField 
+                                                        error={(formError.includes(`organization_id_error_${index}`) ? true : false)} 
+                                                        {...params}  
+                                                        variant="outlined" 
+                                                        label="Select Organization" 
+                                                    />}
+                                            />
                                         </Grid>
                                         <Grid item xs={12} sm={12} >
                                             <FormControl required
