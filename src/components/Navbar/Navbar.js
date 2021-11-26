@@ -76,6 +76,11 @@ const useStyles = makeStyles((theme) => ({
             position: "relative",
             top: "2px",
             left: "-3px"
+        },
+        '& img':{
+            width:"100%",
+            height:"100%",
+            objectFit:"cover"
         }
     },
     menuBox: {
@@ -123,6 +128,9 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    var signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
+    console.log('signeeInfo111: ', signeeInfo.profile_pic);
+    const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_profile_pic/";
     const [msg, setMsg] = useState()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [switchTrust, setSwitchTrust] = React.useState(null);
@@ -315,7 +323,11 @@ const Navbar = () => {
 
                         <Link to="/profile/information" color="inherit" className={classes.userIconCont}>
                             <div className={classes.userProfile}>
-                                <PersonIcon className={classes.userIcon} />
+                                {/* <PersonIcon className={classes.userIcon} /> */}
+                                {
+                                    signeeInfo.profile_pic !== "" ? <img src={baseUrl + signeeInfo.profile_pic} alt="" /> : <PersonIcon className={classes.userIcon} />
+                                }
+                                
                             </div>
                             <Typography variant="subtitle1">{getProfilerName.first_name}</Typography>
                         </Link>

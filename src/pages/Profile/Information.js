@@ -20,6 +20,8 @@ import { changePassword, updateProfile } from '../../store/action'
 import { useForm } from 'react-hook-form';
 import Notify from '../../components/Notify/Notify';
 import UtilService from '../../helper/service';
+import axios from 'axios';
+import { notificationFail, notificationSuccess } from '../../store/action/notificationMsg';
 // import WarningIcon from '@material-ui/icons/Warning';
 
 const useStyle = makeStyles((theme) => ({
@@ -122,11 +124,14 @@ const useStyle = makeStyles((theme) => ({
 const Information = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
+    const getToken = localStorage.getItem("token") ? localStorage.getItem("token").replace(/['"]+/g, '') : "";
 
     const { getProfileList: { data: dataItem }, passChange, passErrors, updateProfileErrors, updateProfileSuccess, loading } = useSelector(state => state.profile)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [changePassNotify, setChangePassNotify] = useState(false)
     const [updateProfileNotify, setUpdateProfileNotify] = useState(false)
+    const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_profile_pic/";
+    var signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
 
     const [data, setData] = useState({
         first_name: "",
@@ -179,6 +184,30 @@ const Information = () => {
         setUpdateProfileNotify(true)
     }
 
+    const setProfilePic1 = (e) => {
+        const data11 = e.target.files[0]
+        let formData = new FormData();
+        formData.append('profile_pic', data11)
+        axios.post('http://backendbooking.kanhasoftdev.com/public/api/signee/upload-profile-picture', formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                'Authorization': getToken ? `Bearer ${getToken}` : ""
+            },
+        }).then(response => {
+            const dataItem = response.data
+            if (dataItem && dataItem.status === true) {
+                dispatch(notificationSuccess(dataItem.message))
+                signeeInfo.profile_pic = dataItem.data.profile_pic
+                localStorage.setItem('signeeInfo', JSON.stringify(signeeInfo));
+                setTimeout(() => {
+                    window.location.reload()
+                }, 3000);
+            }
+        }).catch(error => {
+            dispatch(notificationFail(error.response.data))
+        });
+    }
+
     return (
         <>
             {
@@ -215,11 +244,13 @@ const Information = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={4}>
                                 <Card className={classes.userImage}>
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU" alt="profile img" />
-                                    {/* <div className="choose_file">
+                                    {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU" alt="profile img" /> */}
+                                    <img src={(data?.profile_pic ? (baseUrl + data?.profile_pic) : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU")} alt="profile img" />
+                                    <div className="choose_file">
                                         <span>Upload Photo</span>
-                                        <input name="filename" type="file" />
-                                    </div> */}
+                                        <input name="filename" type="file" onChange={(event) => setProfilePic1(event)} />
+                                    </div>
+                                    {/* <div className="choose_file" onClick={()=>setProfilePic1("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU")}>Clear</div> */}
                                     {/* <Typography variant="caption">PLUTO USER NUMBER</Typography>
                                     <Typography variant="body1">{data?.candidate_id}</Typography> */}
                                 </Card>
