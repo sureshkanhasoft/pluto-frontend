@@ -325,7 +325,7 @@ const Navbar = () => {
                             <div className={classes.userProfile}>
                                 {/* <PersonIcon className={classes.userIcon} /> */}
                                 {
-                                    signeeInfo.profile_pic !== "" ? <img src={baseUrl + signeeInfo.profile_pic} alt="" /> : <PersonIcon className={classes.userIcon} />
+                                    signeeInfo.profile_pic !== null ? <img src={baseUrl + signeeInfo.profile_pic} alt="" /> : <PersonIcon className={classes.userIcon} />
                                 }
                                 
                             </div>
