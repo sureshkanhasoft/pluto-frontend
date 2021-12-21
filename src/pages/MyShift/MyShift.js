@@ -16,6 +16,8 @@ import UpcomingShiftsDetail from './UpcomingShiftsDetail';
 import PastShiftsDetail from './PastShiftsDetail';
 import ApplyShiftsDetail from './ApplyShiftsDetail';
 import ApplyShift from './ApplyShift';
+import InviteShift from './InviteShift';
+import InviteShiftDetail from './InviteShiftDetail';
 
 const useStyle = makeStyles(() => ({
     shiftLink: {
@@ -47,6 +49,7 @@ const MyShift = ({match}) => {
     const upComingShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.upcoming.data.length : 0 
     const pastShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.past.data.length : 0 
     const applyShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.apply.data.length : 0 
+    const inviteShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.invite.data.length : 0 
 
     useEffect(() => {
         if(MyShiftAccessCheck()){
@@ -73,6 +76,7 @@ const MyShift = ({match}) => {
                                 <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/upcoming`} >Upcoming Shift <Chip size="small" label={upComingShiftCount} className={classes.chipText} /></NavLink>
                                 <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/past`} >Past Shift  <Chip size="small" label={pastShiftCount} className={classes.chipText} /></NavLink>
                                 <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/apply`} >Applied Shift  <Chip size="small" label={applyShiftCount} className={classes.chipText} /></NavLink>
+                                <NavLink className={classes.shiftLink} activeClassName="active" to={`${url}/invite`} >Invite Shift  <Chip size="small" label={inviteShiftCount} className={classes.chipText} /></NavLink>
                             </Box>
                         </Container>
                         <Switch>
@@ -82,6 +86,8 @@ const MyShift = ({match}) => {
                             <Route exact path={`${path}/past/:id`} component={PastShiftsDetail} />
                             <Route exact path={`${path}/apply`} component={ApplyShift} />
                             <Route exact path={`${path}/apply/:id`} component={ApplyShiftsDetail} />
+                            <Route exact path={`${path}/invite`} component={InviteShift} />
+                            <Route exact path={`${path}/invite/:id`} component={InviteShiftDetail} />
                             <Redirect from="" to={`${match.url}`} />
                         </Switch>
                     </section>
