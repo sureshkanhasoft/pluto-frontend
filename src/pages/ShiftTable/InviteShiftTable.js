@@ -8,6 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import UtilService from '../../helper/service';
+import history from '../../utils/HistoryUtils';
 
 const InviteShiftTable = (props) => {
     const { shiftList, handleChangePage, page } = props
@@ -21,6 +22,10 @@ const InviteShiftTable = (props) => {
         shiftFor[monthYear].push(getData);
         return shiftFor;
     }, {});
+
+    const shiftDetail = (id) => {
+        history.push(`/shifts/${id}`)
+    }
 
     return (
         <>
@@ -102,7 +107,8 @@ const InviteShiftTable = (props) => {
                                                     <div className="table-cloumn right-cloumn d-flex xy-center">
                                                         <div className="table-inner-cloumn">
                                                             <div className="table-cell">
-                                                                <Link to={`invite/${result.id}`} className="detail-btn">Details</Link>
+                                                                {/* <Link to="#" className="detail-btn" onClick={() => shiftDetail(result.id)}>Details</Link> */}
+                                                                <div  className="detail-btn" onClick={() => shiftDetail(result.id)}>Details</div>
                                                             </div>
                                                         </div>
                                                     </div>
