@@ -129,7 +129,6 @@ const Navbar = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     var signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
-    console.log('signeeInfo111: ', signeeInfo.profile_pic);
     const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_profile_pic/";
     const [msg, setMsg] = useState()
     const [anchorEl, setAnchorEl] = React.useState(null);

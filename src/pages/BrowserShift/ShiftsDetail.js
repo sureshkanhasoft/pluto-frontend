@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { confirmBook, getShiftDetail, shiftApply } from '../../store/action';
 import Notify from '../../components/Notify/Notify';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import history from '../../utils/HistoryUtils';
 
 const useStyles = makeStyles((theme) => ({
     leftBorder: {
@@ -89,6 +90,10 @@ const ShiftsDetail = ({ match }) => {
         }, 4000);
     }
 
+    const backShift = () => {
+        history.goBack()
+    }
+
     return (
         <>
             {
@@ -118,7 +123,8 @@ const ShiftsDetail = ({ match }) => {
             <ProfileUpdateInfo />
             <section className="pt-16 pb-32">
                 <Container maxWidth="lg">
-                    <Link to="/shifts" className="back-button"><KeyboardArrowLeftIcon /> Back to all shifts </Link>
+                    {/* <Link to="/shifts" className="back-button"><KeyboardArrowLeftIcon /> Back to all shifts </Link> */}
+                    <span onClick={backShift} className="back-button"><KeyboardArrowLeftIcon /> Back to all shifts </span>
                     <h1 className="mt-16">Shift Details</h1>
 
                     <Card className="shift-detail-container">
