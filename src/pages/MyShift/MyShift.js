@@ -49,7 +49,7 @@ const MyShift = ({match}) => {
     const upComingShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.upcoming.data.length : 0 
     const pastShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.past.data.length : 0 
     const applyShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.apply.data.length : 0 
-    const inviteShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.invite.data.length : 0 
+    const inviteShiftCount = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.offer.data.length : 0 
 
     useEffect(() => {
         if(MyShiftAccessCheck()){

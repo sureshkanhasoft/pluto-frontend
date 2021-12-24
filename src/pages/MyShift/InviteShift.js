@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 const InviteShift = () => {
     const classes = useStyles();
     const { getMyShiftList, loading } = useSelector(state => state.myShift)
-    const getInviteShiftList = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.invite : []
+    const getInviteShiftList = getMyShiftList && getMyShiftList.hasOwnProperty('data') ? getMyShiftList.data.offer : []
     return (
         <>
             {
