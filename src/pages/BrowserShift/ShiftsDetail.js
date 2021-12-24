@@ -183,16 +183,17 @@ const ShiftsDetail = ({ match }) => {
                                         <>
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "OFFER") &&
-                                                <span className="compliance-btn apply-btn " onClick={() => confirmBookApply("ACCEPT")}>ACCEPT</span>
+                                                <span className="compliance-btn apply-btn " onClick={() => confirmBookApply("CONFIRMED")}>ACCEPT</span>
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "OFFER" || getShiftDetails?.data?.signee_booking_status === "CONFIRMED") &&
-                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("DECLINE")}>DECLINE</span>
+                                                // <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("DECLINE")}>DECLINE</span>
+                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("PENDING")}>CANCEL</span>
                                             }
 
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "REJECT") &&
-                                                <span className="compliance-btn apply-btn ">REJECT</span>
+                                                <span className="compliance-btn apply-btn ">Rejected</span>
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "APPLY") &&
@@ -203,21 +204,21 @@ const ShiftsDetail = ({ match }) => {
                                                 <span className="compliance-btn apply-btn" onClick={applyShift}>Apply</span>
                                             }
                                             {
-                                                (getShiftDetails?.data?.signee_booking_status === "CANCEL") &&
-                                                <span className="compliance-btn apply-btn cursor-none">Rejected</span>
+                                                (getShiftDetails?.data?.signee_booking_status === "REJECTED") &&
+                                                <span className="compliance-btn apply-btn cursor-none">You are rejected</span>
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "DECLINE") &&
-                                                <span className="compliance-btn apply-btn cursor-none">DECLINE</span>
+                                                <span className="compliance-btn apply-btn cursor-none">Decline</span>
                                             }
-                                            {
+                                            {/* {
                                                 (getShiftDetails?.data?.signee_booking_status === "ACCEPT") &&
                                                 <>
                                                     <CheckCircleIcon style={{marginRight:12, color:"green"}} />
                                                     <Typography variant="body1">You have accepted this offer</Typography>
                                                     <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("PENDING")} style={{ marginLeft: "auto" }}>Cancel</span>
                                                 </>
-                                            }
+                                            } */}
                                         </>
                                 }
                                 {/* {getShiftDetails?.data?.compliance_status && getShiftDetails?.data?.profile_status === "Active" && getShiftDetails?.data?.compliance_status !== "COMPLIANT" &&

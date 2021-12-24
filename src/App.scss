@@ -632,6 +632,10 @@ footer{
             display: flex;
             align-items: center;
             justify-content: center;
+            &.transparent-bg{
+                background: transparent;
+                color: red;
+            }
         }
         .apply-btn{
             cursor: pointer;

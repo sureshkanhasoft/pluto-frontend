@@ -116,7 +116,7 @@ const ApplyShiftTable = (props) => {
                                                     <div className="table-cloumn right-cloumn d-flex xy-center">
                                                         <div className="table-inner-cloumn">
                                                             <div className="table-cell">
-                                                                <Link to={`apply/${result.id}`} className="detail-btn">Details</Link>
+                                                                {/* <Link to={`apply/${result.id}`} className="detail-btn">Details</Link> */}
                                                                 <div  className="detail-btn" onClick={() => shiftDetail(result.id)}>Details</div>
                                                             </div>
                                                         </div>
