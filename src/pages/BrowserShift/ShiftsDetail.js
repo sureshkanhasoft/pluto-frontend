@@ -182,7 +182,7 @@ const ShiftsDetail = ({ match }) => {
                                         getShiftDetails?.data?.profile_status === "Active" &&
                                         <>
                                             {
-                                                (getShiftDetails?.data?.signee_booking_status === "OFFER") &&
+                                                (getShiftDetails?.data?.signee_booking_status === "OFFER" || getShiftDetails?.data?.signee_booking_status === "INVITE") &&
                                                 <span className="compliance-btn apply-btn " onClick={() => confirmBookApply("CONFIRMED")}>ACCEPT</span>
                                             }
                                             {
@@ -209,7 +209,7 @@ const ShiftsDetail = ({ match }) => {
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "DECLINE") &&
-                                                <span className="compliance-btn apply-btn cursor-none">Decline</span>
+                                                <span className="compliance-btn apply-btn cursor-none">Shift Decline</span>
                                             }
                                             {/* {
                                                 (getShiftDetails?.data?.signee_booking_status === "ACCEPT") &&
