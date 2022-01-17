@@ -188,7 +188,7 @@ const ShiftsDetail = ({ match }) => {
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "OFFER" || getShiftDetails?.data?.signee_booking_status === "CONFIRMED") &&
                                                 // <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("DECLINE")}>DECLINE</span>
-                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("PENDING")}>CANCEL</span>
+                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("CANCEL")}>CANCEL</span>
                                             }
 
                                             {
@@ -197,7 +197,7 @@ const ShiftsDetail = ({ match }) => {
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "APPLY") &&
-                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("PENDING")}>Cancel</span>
+                                                <span className="compliance-btn apply-btn" onClick={() => confirmBookApply("CANCEL")}>Cancel</span>
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "PENDING") &&
@@ -206,6 +206,10 @@ const ShiftsDetail = ({ match }) => {
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "REJECTED") &&
                                                 <span className="compliance-btn apply-btn cursor-none">You are rejected</span>
+                                            }
+                                            {
+                                                (getShiftDetails?.data?.signee_booking_status === "CANCEL") &&
+                                                <span className="compliance-btn apply-btn cursor-none">You have canceled this shift</span>
                                             }
                                             {
                                                 (getShiftDetails?.data?.signee_booking_status === "DECLINE") &&

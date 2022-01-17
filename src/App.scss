@@ -626,7 +626,8 @@ footer{
         .compliance-btn{
             background: #21d5ac;
             color: #fff;
-            width: 185px;
+            min-width: 185px;
+            padding: 0 12px;
             height: 32px;
             border-radius: 4px;
             display: flex;
