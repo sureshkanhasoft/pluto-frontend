@@ -16,10 +16,13 @@ export const getProfile = () => {
         dispatch(getProfileRequest())
         await apiClient(true).get(`api/signee/get-signee-details`)
         .then(response => {
-            dispatch(getProfileSuccess(response.data))
+            dispatch(getProfileSuccess(response.data));
+            const dataItem = response.data;
+            const signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
+            signeeInfo.profile_pic = dataItem.data.profile_pic
+            localStorage.setItem('signeeInfo', JSON.stringify(signeeInfo));
         }).catch(error => {
             dispatch(getProfileError(error))
-
         })
     }
 }
@@ -45,16 +48,20 @@ export const getProfileError = (error) => {
 // -----------------------------
 
 export const updateProfile = (data) => {
+    const signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
+    signeeInfo.first_name = data.first_name;
     return async(dispatch) =>{
         dispatch(updateProfileRequest())
         await apiClient(true).post(`api/signee/signee-profile-update`, data)
         .then(response => {
+            localStorage.setItem('signeeInfo', JSON.stringify(signeeInfo));
             const data = response.data
             if (data.status === true) {
                 dispatch(updateProfileSuccess(data))
                 setTimeout(() => {
-                    dispatch(getProfile())
-                }, 2000);
+                        dispatch(getProfile())
+                        window.location.reload()
+                }, 4000);
             } else {
                 dispatch(updateProfileError(data))
             }
