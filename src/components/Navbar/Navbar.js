@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { switchAccount } from '../../store/action';
 import { MyShiftAccessCheck } from '../../components/MyShiftAccessInfo/MyShiftAccessInfo'
 import { notificationClear } from "../../../src/store/action/notificationMsg";
+import ApiConfig from '../../../src/config/ApiConfig';
 
 // import SwitchAccountIcon from '@material-ui/icons/SwitchAccount';
 // import SwitchAccountRoundedIcon from '@material-ui/icons/SwitchAccountRounded';
@@ -129,7 +130,9 @@ const Navbar = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     var signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
-    const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_profile_pic/";
+    const baseUrl = ApiConfig.API_URL + "uploads/signee_profile_pic/";
+
+    // const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_profile_pic/";
     const [msg, setMsg] = useState()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [switchTrust, setSwitchTrust] = React.useState(null);
@@ -157,7 +160,7 @@ const Navbar = () => {
         //     signee_id : signee.id
         // }
         dispatch(actions.getNotification(1))
-    },[])
+    },[dispatch])
     const handleClose = () => {
         setAnchorEl(null);
         setSwitchTrust(null)

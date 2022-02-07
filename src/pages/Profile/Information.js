@@ -23,6 +23,7 @@ import UtilService from '../../helper/service';
 import axios from 'axios';
 import { notificationFail, notificationSuccess } from '../../store/action/notificationMsg';
 // import WarningIcon from '@material-ui/icons/Warning';
+import ApiConfig from '../../../src/config/ApiConfig';
 
 const useStyle = makeStyles((theme) => ({
 
@@ -130,7 +131,8 @@ const Information = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [changePassNotify, setChangePassNotify] = useState(false)
     const [updateProfileNotify, setUpdateProfileNotify] = useState(false)
-    const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_profile_pic/";
+    // const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_profile_pic/";
+    const baseUrl = ApiConfig.API_URL + "uploads/signee_profile_pic/";
     var signeeInfo = JSON.parse(window.localStorage.getItem('signeeInfo'));
 
     const [data, setData] = useState({
@@ -188,7 +190,8 @@ const Information = () => {
         const data11 = e.target.files[0]
         let formData = new FormData();
         formData.append('profile_pic', data11)
-        axios.post('http://backendbooking.kanhasoftdev.com/public/api/signee/upload-profile-picture', formData, {
+        axios.post(ApiConfig.API_URL + 'api/signee/upload-profile-picture', formData, {
+        // axios.post('http://backendbooking.kanhasoftdev.com/public/api/signee/upload-profile-picture', formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 'Authorization': getToken ? `Bearer ${getToken}` : ""
