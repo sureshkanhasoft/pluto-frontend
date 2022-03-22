@@ -190,12 +190,14 @@ const Navbar = () => {
                     setTimeout(() => {
                         history.push('/login')
                         window.location.reload()
-
                     }, 2000);
                 }
-
             }).catch(error => {
                 console.log("error.message", error.message);
+                localStorage.clear();
+                    setTimeout(() => {
+                        history.push('/login')
+                    }, 2000);
             });
     }
 

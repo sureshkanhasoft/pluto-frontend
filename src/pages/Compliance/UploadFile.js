@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Chip, makeStyles, Box, LinearProgress } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import InfoIcon from "@material-ui/icons/Info";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
@@ -9,6 +7,14 @@ import PublishIcon from "@material-ui/icons/Publish";
 import InsertPhotoOutlinedIcon from "@material-ui/icons/InsertPhotoOutlined";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import { makeStyles, TextField } from "@material-ui/core";
+import { setDocumentExpireDate } from "../../store/action";
+import { useDispatch, useSelector } from "react-redux";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
+import Notify from "../../components/Notify/Notify";
+import { Box, Backdrop, CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   progressbar: {
@@ -28,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
       background: "#d76f2d",
     },
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
 }));
 
 const UploadFile = ({
@@ -38,10 +48,9 @@ const UploadFile = ({
   key1,
   documentDetail,
 }) => {
-  // const classes = useStyles();
-  // const dispatch = useDispatch()
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const [more, setMore] = useState(true);
-  // const [docStatustext, setDocStatustext] = useState("")
 
   // const [data, setData] = useState({
   //     key: "files",
@@ -70,9 +79,32 @@ const UploadFile = ({
   //     })
   // }, [documentDetail])
   // console.log('text: ', docStatustext);
+
+  const { loading, fileExpireDocumentSuccess, fileExpireDocumentError } =
+    useSelector((state) => state.addCompliance);
+
+  const handleChange = (date, id) => {
+    const data = { expire_date: moment(date).format("YYYY-MM-DD"), id: id };
+    dispatch(setDocumentExpireDate(data));
+  };
+  const [startDate, setStartDate] = useState(new Date());
+
   return (
     <>
       <div className="">
+        {loading ? (
+          <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        ) : (
+          ""
+        )}
+        {fileExpireDocumentSuccess && fileExpireDocumentSuccess?.message && (
+          <Notify data={fileExpireDocumentSuccess?.message} status="success" />
+        )}
+        {fileExpireDocumentError && fileExpireDocumentError?.message && (
+          <Notify data={fileExpireDocumentError?.message} status="error" />
+        )}
         <div className="document-upload-container">
           <div className="document-header">
             <div className="f-grow">
@@ -86,6 +118,7 @@ const UploadFile = ({
               <button className="btn">
                 <PublishIcon className="mr-8" />
                 <input
+                  key={key1}
                   accept="image/*,.pdf"
                   type="file"
                   multiple
@@ -164,32 +197,59 @@ const UploadFile = ({
                   const extension = list.file_name.split(".").pop();
                   return (
                     // <Link to={`/profile/documents/${key1}`} className="file-listing" key={index}>
-                    <Link
-                      to={{
-                        pathname: `/profile/documents/${key1}`,
-                        state: list.file_name,
-                      }}
-                      className="file-listing"
-                      key={index}
-                    >
-                      <div className="file-listing-inner d-flex flex-grow">
-                        <div className="image-icon">
-                          {extension === "pdf" ? (
-                            <PictureAsPdfIcon />
-                          ) : (
-                            <InsertPhotoOutlinedIcon />
-                          )}
+                    <>
+                      <div className="file-listing">
+                        <Link
+                          to={{
+                            pathname: `/profile/documents/${key1}`,
+                            state: list.file_name,
+                          }}
+                          className="file-listing-inner d-flex flex-grow"
+                          key={index}
+                        >
+                          <div className="file-listing-inner d-flex flex-grow">
+                            <div className="image-icon">
+                              {extension === "pdf" ? (
+                                <PictureAsPdfIcon />
+                              ) : (
+                                <InsertPhotoOutlinedIcon />
+                              )}
+                            </div>
+                            <div>
+                              <span className="file-list-lable">FILE NAME</span>
+                              <p className="mb-0">{list.file_name}</p>
+                            </div>
+                          </div>
+                        </Link>
+                        <div
+                          key={list.id + list.id}
+                          className="file-listing-inner expireDate mr-8"
+                        >
+                          <span key={list.id + index} className="file-list-lable">
+                            Expire Date
+                          </span>
+                          <p key={key1 + list.id} className="mb-0">
+                            {list.expire_date &&
+                              list.expire_date !== null &&
+                              list.expire_date}
+                            {list.expire_date === null && (
+                              <DatePicker
+                                placeholderText="Select expire date"
+                                key={index + key1}
+                                dateFormat="YYYY-MM-DD"
+                                // selected={startDate}
+                                onChange={(date) => handleChange(date, list.id)}
+                              />
+                            )}
+                          </p>
                         </div>
-                        <div>
-                          <span className="file-list-lable">FILE NAME</span>
-                          <p className="mb-0">{list.file_name}</p>
+
+                        <div key={list.date_added + list.id} className="file-listing-inner">
+                          <span key={key1 + list.date_added} className="file-list-lable">DATE ADDED</span>
+                          <p key={list.date_added + list.id} className="mb-0">{list.date_added}</p>
                         </div>
                       </div>
-                      <div className="file-listing-inner">
-                        <span className="file-list-lable">DATE ADDED</span>
-                        <p className="mb-0">{list.date_added}</p>
-                      </div>
-                    </Link>
+                    </>
                   );
                 })}
           </div>

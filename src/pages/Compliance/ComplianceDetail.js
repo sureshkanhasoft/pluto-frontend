@@ -11,6 +11,7 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Notify from "../../components/Notify/Notify";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
+import ApiConfig from '../../../src/config/ApiConfig';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -31,8 +32,7 @@ const ComplianceDetail = (props) => {
   const { match } = props;
   const paramsId = match.params.id;
   const classes = useStyles();
-  const baseUrl =
-    "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/";
+  const baseUrl = ApiConfig.API_URL + "uploads/signee_docs/";
   const dispatch = useDispatch();
   const [deleteNotify, setDeleteNotify] = useState(false);
   const [dirImgName, setDirImgName] = useState(props.location.state);
@@ -219,6 +219,7 @@ const ComplianceDetail = (props) => {
                             <a
                               href={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`}
                               target="_blank"
+                              rel="noreferrer" 
                               download={`http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/${list.file_name}`}
                               className="file-icons"
                             >

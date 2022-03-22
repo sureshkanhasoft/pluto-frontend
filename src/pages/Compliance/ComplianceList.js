@@ -6,7 +6,7 @@ import {
 
 import ProfileUpdateInfo from '../../components/ProfileUpdateInfo/ProfileUpdateInfo';
 import './compliance.scss';
-
+import ApiConfig from '../../../src/config/ApiConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import UploadFile from './UploadFile';
@@ -90,7 +90,8 @@ const ComplianceList = () => {
         }
         setAddDocMsg("")
 
-        axios.post('http://backendbooking.kanhasoftdev.com/public/api/signee/upload-document', formData, {
+        axios.post(ApiConfig.API_URL + 'api/signee/upload-document', formData, {
+        // axios.post('http://backendbooking.kanhasoftdev.com/public/api/signee/upload-document', formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 'Authorization': getToken ? `Bearer ${getToken}` : ""

@@ -42,6 +42,7 @@ export {
     addDocuments,
     documentDetails,
     deleteDocument,
+    setDocumentExpireDate,
 } from './compliance/complianceAction'
 
 export {
