@@ -92,13 +92,13 @@ const UploadFile = ({
   return (
     <>
       <div className="">
-        {loading ? (
+        {/* {loading ? (
           <Backdrop className={classes.backdrop} open={loading}>
             <CircularProgress color="inherit" />
           </Backdrop>
         ) : (
           ""
-        )}
+        )} */}
         {fileExpireDocumentSuccess && fileExpireDocumentSuccess?.message && (
           <Notify data={fileExpireDocumentSuccess?.message} status="success" />
         )}
