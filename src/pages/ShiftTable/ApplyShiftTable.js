@@ -109,7 +109,7 @@ const ApplyShiftTable = (props) => {
                                                         </div>
                                                         <div className="table-inner-cloumn payment d-flex y-center">
                                                             <div className="table-cell">
-                                                                <span className="payment-text">Rate: £ {result.rate}/h</span>
+                                                                <span className="payment-text">Rate: £ {Number(result.rate) - Number(result.commission)}/h</span>
                                                             </div>
                                                         </div>
                                                     </div>

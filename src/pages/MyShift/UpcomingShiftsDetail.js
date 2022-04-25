@@ -111,7 +111,7 @@ const UpcomingShiftsDetail = ({ match }) => {
                                 <Grid item xs={12} md={2} className={classes.leftBorder}>
                                     <div className="">
                                         <span className="title-text-sm">RATE</span>
-                                        <Typography variant="body1" className={classes.number}>£{getShiftDetails?.data?.rate}/h</Typography>
+                                        <Typography variant="body1" className={classes.number}>£{Number(getShiftDetails?.data?.rate) - Number(getShiftDetails?.data?.commission)}/h</Typography>
                                     </div>
                                 </Grid>
                             </Grid>
