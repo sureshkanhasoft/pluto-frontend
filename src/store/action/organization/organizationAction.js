@@ -95,7 +95,7 @@ export const updateSpeciality = (data, id) => {
                     window.location.reload();
                 }, 2000);
             } else {
-                dispatch(updateSpecialityFailure(data))
+                dispatch(updateSpecialityFailure(dataItem))
             }
         }).catch(error => {
             dispatch(updateSpecialitySuccess(""))

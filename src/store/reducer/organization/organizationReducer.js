@@ -75,7 +75,7 @@ const organizationReducer = (state = initialState, action) => {
         case actionTypes.UPDATE_SPECIALITY_ERROR:
             return updateObject(state, {
                 loading: false,
-                updateSpeError: true
+                updateSpeError: action.payload
             })
         default:
             return state
