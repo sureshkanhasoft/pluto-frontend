@@ -276,6 +276,10 @@ const Preferences = () => {
                                             <MenuItem value="1">1 shift</MenuItem>
                                             <MenuItem value="2">2 shift</MenuItem>
                                             <MenuItem value="3">3 shift</MenuItem>
+                                            <MenuItem value="4">4 shift</MenuItem>
+                                            <MenuItem value="5">5 shift</MenuItem>
+                                            <MenuItem value="6">6 shift</MenuItem>
+                                            <MenuItem value="7">7 shift</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>

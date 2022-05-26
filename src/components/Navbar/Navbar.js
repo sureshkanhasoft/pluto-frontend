@@ -266,6 +266,8 @@ const Navbar = () => {
                             <Typography variant="h4">Pluto</Typography>
                         </Link>
                         <div className={classes.grow}></div>
+                        <Typography variant="h6">{getProfilerName.organization_name}</Typography>
+                        <div className={classes.grow}></div>
                         <NavLink to="/shifts" color="inherit" className="menu-link">BROWSE SHIFTS</NavLink>
                         {MyShiftAccessCheck() &&
                             <NavLink to="/my-shifts/upcoming" color="inherit" className="menu-link">MY SHIFTS</NavLink>

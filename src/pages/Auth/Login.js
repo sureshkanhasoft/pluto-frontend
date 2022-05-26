@@ -180,6 +180,7 @@ const Login = () => {
                                 onBlur: handleBlurEmail
                             })}
                             error={(errors.email ? true : false)}
+                            onBlur={handleBlurEmail}
                             onChange={handleChange}
                             InputProps={{
                                 startAdornment: <MailIcon />
