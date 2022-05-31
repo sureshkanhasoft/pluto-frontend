@@ -110,9 +110,9 @@ const ApplyShiftsDetail = ({ match }) => {
                                 </Grid>
                                 <Grid item xs={12} md={2} className={classes.leftBorder}>
                                     <div className="">
-                                        <span className="title-text-sm">RATE</span>
-                                        <Typography variant="body1" className={classes.number}>£{Number(getShiftDetails?.data?.rate)}</Typography>
-                                        {/* <Typography variant="body1" className={classes.number}>£{Number(getShiftDetails?.data?.rate) - Number(getShiftDetails?.data?.commission)}/h</Typography> */}
+                                        <span className="title-text-sm">Payable</span>
+                                        <Typography variant="body1" className={classes.number}>£{Number(getShiftDetails?.data?.payable)}</Typography>
+                                        {/* <Typography variant="body1" className={classes.number}>£{Number(getShiftDetails?.data?.payable) - Number(getShiftDetails?.data?.chargeable)}/h</Typography> */}
                                     </div>
                                 </Grid>
                             </Grid>

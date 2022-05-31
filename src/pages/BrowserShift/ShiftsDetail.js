@@ -150,8 +150,8 @@ const ShiftsDetail = ({ match }) => {
                                 <Grid item xs={12} md={2} className={classes.leftBorder}>
                                     <div className="">
                                         <span className="title-text-sm">Payable Amount</span>
-                                        <Typography variant="body1" className={classes.number}>£{getShiftDetails && getShiftDetails?.data?.rate}</Typography>
-                                        {/* <Typography variant="body1" className={classes.number}>£{getShiftDetails && getShiftDetails?.data?.rate - getShiftDetails?.data?.commission}/h</Typography> */}
+                                        <Typography variant="body1" className={classes.number}>£{getShiftDetails && getShiftDetails?.data?.payable}</Typography>
+                                        {/* <Typography variant="body1" className={classes.number}>£{getShiftDetails && getShiftDetails?.data?.payable - getShiftDetails?.data?.chargeable}/h</Typography> */}
                                     </div>
                                 </Grid>
                             </Grid>
