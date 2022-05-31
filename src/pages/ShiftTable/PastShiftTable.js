@@ -110,7 +110,8 @@ const PastShiftTable = (props) => {
                                                         </div>
                                                         <div className="table-inner-cloumn payment d-flex y-center">
                                                             <div className="table-cell">
-                                                                <span className="payment-text">Payable Amount: £ {Number(result.rate) - Number(result.commission)}/h</span>
+                                                                <span className="payment-text">Payable Amount: £ {Number(result.rate)}</span>
+                                                                {/* <span className="payment-text">Payable Amount: £ {Number(result.rate) - Number(result.commission)}/h</span> */}
                                                             </div>
                                                         </div>
                                                     </div>
