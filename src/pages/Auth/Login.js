@@ -171,14 +171,14 @@ const Login = () => {
                             label="Email"
                             autoComplete="off"
                             variant="outlined"
-                            {...register('email', {
-                                required: "The email field is required.",
-                                pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                    message: "Enter a valid e-mail address",
-                                },
-                                onBlur: handleBlurEmail
-                            })}
+                            // {...register('email', {
+                            //     required: "The email field is required.",
+                            //     pattern: {
+                            //         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                            //         message: "Enter a valid e-mail address",
+                            //     },
+                            //     onBlur: handleBlurEmail
+                            // })}
                             error={(errors.email ? true : false)}
                             onBlur={handleBlurEmail}
                             onChange={handleChange}

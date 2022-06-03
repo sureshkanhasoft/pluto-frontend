@@ -111,7 +111,7 @@ const ShiftsDetail = ({ match }) => {
             {confirmNotify && confirmBookSuccess?.message &&
                 <Notify
                     data={confirmBookSuccess?.message}
-                    status="success"
+                    status={!confirmBookSuccess?.status ? "error" : "success"}
                 />
             }
             {/* {confirmNotify && confirmBookError?.message &&

@@ -30,6 +30,24 @@ const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
     },
+    orgname: {
+        // border: "1px solid #fff",
+        // padding: "10px",
+        borderRadius: "6px",
+        // height: "80px",
+        // borderLeft: "1px solid #2b6399",
+        // borderRight: "1px solid #2b6399",
+        border : "1px solid #2b6399",
+        fontWeight: 400,
+        padding: "3px 11px !important",
+        textTransform: "capitalize",
+        display: "flex",
+        alignItems: 'center',
+        color: "rgb(234 236 251)",
+        '&:hover': {
+            backgroundColor: "#2b6399"
+        }
+    },
     toolbar: {
         minHeight: 80,
         "& > .menu-link": {
@@ -266,7 +284,7 @@ const Navbar = () => {
                             <Typography variant="h4">Pluto</Typography>
                         </Link>
                         <div className={classes.grow}></div>
-                        <Typography variant="h6">{getProfilerName.organization_name}</Typography>
+                        <Typography className={classes.orgname} variant="h6">{getProfilerName.organization_name}</Typography>
                         <div className={classes.grow}></div>
                         <NavLink to="/shifts" color="inherit" className="menu-link">BROWSE SHIFTS</NavLink>
                         {MyShiftAccessCheck() &&
