@@ -3,22 +3,32 @@ import {
     Container,
     Divider,
     Chip,
-    // makeStyles,
+    makeStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import UtilService from '../../helper/service';
 
-// const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
 //     backdrop: {
 //         zIndex: theme.zIndex.drawer + 1,
 //         color: '#fff',
 //     },
-// }))
+    preferMatch: {
+        backgroundColor: "#ecf6ff !important",
+        borderBottom:"1px solid #184a7b",
+//         color: '#fff',
+        '& .tag':{
+        backgroundColor: "rgb(74 107 139) !important",
+        // rgb(21 130 236) !important
+        color: "#ffffff !important",
+    }
+    },
+}))
 
 const ShiftTable = (props) => {
     const { shiftList, handleChangePage, page } = props
-    // const classes = useStyles();
+    const classes = useStyles();
 
     const shiftData = shiftList?.data?.data.reduce((shiftFor, getData) => {
         let date2 = new Date(getData.date)
@@ -66,7 +76,7 @@ const ShiftTable = (props) => {
                                             let getMon = date2.toLocaleString("en", { month: "short" })
                                             const dayName = UtilService.getDayName(date2)
                                             return (
-                                                <div className="table-row" key={index1}>
+                                                <div className={result.preference_match == 1 ? classes.preferMatch+" table-row" : "table-row"} key={index1}>
                                                     <div className="table-cloumn left-cloumn d-flex">
                                                         <div className="table-inner-cloumn date-column d-flex xy-center">
                                                             <div className="table-cell text-center">
@@ -110,6 +120,7 @@ const ShiftTable = (props) => {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
                                                     <div className="table-cloumn right-cloumn d-flex xy-center">
                                                         <div className="table-inner-cloumn">
                                                             <div className="table-cell">
