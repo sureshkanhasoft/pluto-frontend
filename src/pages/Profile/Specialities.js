@@ -72,9 +72,11 @@ const Specialities = () => {
         await apiClient(true).get(`api/signee/get-signee-speciality`)
             .then(response => {
                 let speciality = [];
-                response.data.data.map(val => {
-                    speciality.push(val.speciality_id);
-                })
+                if(response.data.status === true){
+                    response.data.data.map(val => {
+                        speciality.push(val.speciality_id);
+                    })
+                }
                 console.log(speciality)
                 data.speciality_id = speciality
                 dispatch(getfilterSpeciality())
